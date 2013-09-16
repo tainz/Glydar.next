@@ -2,6 +2,8 @@ package org.glydar.mitm;
 
 import io.netty.channel.ChannelHandlerContext;
 
+import java.util.logging.Level;
+
 import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.protocol.Packet;
@@ -33,6 +35,7 @@ public class ClientRelay implements ProtocolHandler<ServerRelay> {
 
     public ClientRelay() {
         this.logger = Glydar.getLogger().getChildLogger(this, LOGGER_PREFIX);
+        logger.getJdkLogger().setLevel(Level.INFO);
         this.context = null;
         this.serverRelay = null;
     }
@@ -64,13 +67,12 @@ public class ClientRelay implements ProtocolHandler<ServerRelay> {
 
     @Override
     public void disconnect(ServerRelay client) {
-        logger.info("Disconnected");
         shutdownGracefully();
     }
 
     private void forward(Packet... packets) {
         for (Packet packet : packets) {
-            logger.info("Forwarding packet {0} to server", packet.getPacketType());
+            logger.fine("Forwarding packet {0} to server", packet.getPacketType());
         }
         serverRelay.send(packets);
     }

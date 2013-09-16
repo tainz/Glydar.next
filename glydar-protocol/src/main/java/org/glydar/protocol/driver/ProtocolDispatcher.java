@@ -71,13 +71,14 @@ public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHa
 
         if (cause instanceof IOException) {
             if (remote != null) {
-                logger.info("{0} has disconnected!", remote);
+                logger.info("{0} lost connection !", context.channel().remoteAddress());
                 handler.disconnect(remote);
             }
         }
         else if (cause instanceof ProtocolHandlerException) {
             Packet packet = ((ProtocolHandlerException) cause).getPacket();
-            logger.warning(cause.getCause(), "Error while handling packet {0} for {1}", packet.getPacketType(), remote);
+            logger.warning(cause.getCause(), "Error while handling packet {0} for {1}", packet.getPacketType(), context
+                    .channel().remoteAddress());
         }
         else {
             logger.severe(cause, "Unexpected error while handling packet in {0}", getClass().getCanonicalName());

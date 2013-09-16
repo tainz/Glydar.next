@@ -31,14 +31,6 @@ public class Packet00EntityUpdate implements Packet {
 
     public Packet00EntityUpdate(ByteBuf rawBuf) {
         int zlibLength = rawBuf.readInt();
-        if (zlibLength < 1) {
-            Glydar.getLogger().info("{0} Skipping ZlibLength {1}", getPacketType(), zlibLength);
-            this.entityId = -1;
-            this.changes = null;
-            this.data = null;
-            return;
-        }
-
         byte[] rawData = new byte[zlibLength];
         rawBuf.readBytes(rawData);
 
@@ -46,7 +38,6 @@ public class Packet00EntityUpdate implements Packet {
         try {
             byte[] decompressed = ZLibOperations.decompress(rawData);
             buf = Unpooled.copiedBuffer(decompressed);
-            Glydar.getLogger().warning("Decompressed Data : {1}", getPacketType(), Arrays.toString(decompressed));
         }
         catch (final Exception exc) {
             Glydar.getLogger().warning(exc, "Unable to decompress entity data");

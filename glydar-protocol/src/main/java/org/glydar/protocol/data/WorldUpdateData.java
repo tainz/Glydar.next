@@ -9,6 +9,8 @@ import org.glydar.protocol.packet.Packet07Hit;
 import org.glydar.protocol.packet.Packet09Shoot;
 import org.glydar.protocol.packet.Packet13MissionData;
 
+import com.google.common.base.Objects;
+
 public class WorldUpdateData {
 
     private final List<Unknown1Data>        unknown1List;
@@ -181,35 +183,42 @@ public class WorldUpdateData {
 
 class Unknown1Data {
 
-    private final int  u1;
-    private final int  u2;
-    private final int  u3;
-    private final byte u4;
-    private final byte u5;
-    private final byte u6;
-    private final byte u7;
-    private final long u8;
+    private final int   blockX;
+    private final int   blockY;
+    private final int   blockZ;
+    private final short colorRed;
+    private final short colorGreen;
+    private final short colorBlue;
+    private final short blockType;
+    private final long  unknown8;
 
     public Unknown1Data(ByteBuf buf) {
-        this.u1 = buf.readInt();
-        this.u2 = buf.readInt();
-        this.u3 = buf.readInt();
-        this.u4 = buf.readByte();
-        this.u5 = buf.readByte();
-        this.u6 = buf.readByte();
-        this.u7 = buf.readByte();
-        this.u8 = buf.readUnsignedInt();
+        this.blockX = buf.readInt();
+        this.blockY = buf.readInt();
+        this.blockZ = buf.readInt();
+        this.colorRed = buf.readUnsignedByte();
+        this.colorGreen = buf.readUnsignedByte();
+        this.colorBlue = buf.readUnsignedByte();
+        this.blockType = buf.readUnsignedByte();
+        this.unknown8 = buf.readUnsignedInt();
     }
 
     public void writeTo(ByteBuf buf) {
-        buf.writeInt(u1);
-        buf.writeInt(u2);
-        buf.writeInt(u3);
-        buf.writeByte(u4);
-        buf.writeByte(u5);
-        buf.writeByte(u6);
-        buf.writeByte(u7);
-        buf.writeInt((int) u8);
+        buf.writeInt(blockX);
+        buf.writeInt(blockY);
+        buf.writeInt(blockZ);
+        buf.writeByte(colorRed);
+        buf.writeByte(colorGreen);
+        buf.writeByte(colorBlue);
+        buf.writeByte(blockType);
+        buf.writeInt((int) unknown8);
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(getClass()).add("blockX", blockX).add("blockY", blockY).add("blockZ", blockZ)
+                .add("colorRed", colorRed).add("colorGreen", colorGreen).add("colorBlue", colorBlue)
+                .add("blockType", blockType).add("unknown8", unknown8).toString();
     }
 }
 

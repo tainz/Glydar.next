@@ -77,7 +77,7 @@ public class ServerRelay implements ProtocolHandler<CubeWorldServer>, Remote {
 
     @Override
     public void disconnect(CubeWorldServer remote) {
-        logger.info("Disconnected");
+        shutdownGracefully();
     }
 
     public void send(Packet... packets) {
@@ -91,7 +91,7 @@ public class ServerRelay implements ProtocolHandler<CubeWorldServer>, Remote {
 
     private void forward(Packet... packets) {
         for (Packet packet : packets) {
-            logger.info("Forwarding packet {0} to client", packet.getPacketType());
+            logger.fine("Forwarding packet {0} to client", packet.getPacketType());
         }
 
         clientRelay.send(packets);
