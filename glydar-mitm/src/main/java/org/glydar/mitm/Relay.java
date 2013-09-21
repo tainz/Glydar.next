@@ -182,7 +182,7 @@ public class Relay implements ProtocolHandler<CubeWorldServer>, Remote {
 
     @Override
     public void handle(CubeWorldServer remote, Packet16Join packet) {
-        forward(packet);
+        forward(packet, new Packet10Chat("Using Glydar MITM"));
     }
 
     @Override

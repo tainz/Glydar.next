@@ -16,6 +16,11 @@ public class Packet10Chat implements Packet {
     private final long   senderId;
     private final String message;
 
+    public Packet10Chat(String message) {
+        this.senderId = 0l;
+        this.message = message;
+    }
+
     public Packet10Chat(Entity sender, String message) {
         this.senderId = sender.getId();
         this.message = message;
