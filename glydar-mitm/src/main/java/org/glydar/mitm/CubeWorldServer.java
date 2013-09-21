@@ -14,13 +14,10 @@ public class CubeWorldServer implements Remote {
     }
 
     public void send(Packet... packets) {
-        if (packets.length < 0) {
-            return;
-        }
-
         for (Packet packet : packets) {
-            channel.writeAndFlush(packet);
+            channel.write(packet);
         }
+        channel.flush();
     }
 
     public void closeConnection() {

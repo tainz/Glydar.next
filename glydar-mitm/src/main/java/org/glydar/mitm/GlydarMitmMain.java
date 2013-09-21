@@ -19,7 +19,7 @@ public class GlydarMitmMain {
     private static NioEventLoopGroup workerGroup;
 
     public static void main(String[] args) {
-        Glydar.getLogger().getJdkLogger().setLevel(Level.INFO);
+        Glydar.getLogger().getJdkLogger().setLevel(Level.FINE);
         Glydar.getLogger().info("Starting {0} version {1}", Glydar.getName(), Glydar.getVersion());
 
         mitm = new MitmServer();

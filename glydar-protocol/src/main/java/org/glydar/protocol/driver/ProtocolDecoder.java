@@ -15,7 +15,7 @@ import org.glydar.protocol.PacketType;
 
 public class ProtocolDecoder extends ReplayingDecoder<Void> {
 
-    private final GlydarLogger    logger;
+    private final GlydarLogger logger;
 
     public ProtocolDecoder(GlydarLogger logger) {
         this.logger = logger;

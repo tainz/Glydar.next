@@ -6,20 +6,19 @@ import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
-import org.glydar.protocol.data.WorldUpdateData;
-import org.glydar.protocol.util.ZLibOperations;
 
 public class Packet04WorldUpdate implements Packet {
 
-    private final WorldUpdateData data;
+    private final byte[] rawData;
 
-    public Packet04WorldUpdate(WorldUpdateData data) {
-        this.data = data;
-    }
+    // private final WorldUpdateData data;
 
     public Packet04WorldUpdate(ByteBuf buf) {
-        ByteBuf decompressed = ZLibOperations.decompress(buf);
-        this.data = new WorldUpdateData(decompressed);
+        int length = buf.readInt();
+        this.rawData = new byte[length];
+        buf.readBytes(rawData);
+        // ByteBuf decompressed = ZLibOperations.decompress(buf);
+        // this.data = new WorldUpdateData(decompressed);
     }
 
     @Override
@@ -29,7 +28,9 @@ public class Packet04WorldUpdate implements Packet {
 
     @Override
     public void writeTo(ByteBuf buf) {
-        ZLibOperations.compress(buf, data);
+        buf.writeInt(rawData.length);
+        buf.writeBytes(rawData);
+        // ZLibOperations.compress(buf, data);
     }
 
     @Override

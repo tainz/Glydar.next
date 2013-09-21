@@ -99,8 +99,9 @@ public class Relay implements ProtocolHandler<CubeWorldServer>, Remote {
     private void forward(Packet... packets) {
         for (Packet packet : packets) {
             logger.fine("Sending packet {0} to client {1}", packet.getPacketType(), clientChannel.remoteAddress());
-            clientChannel.writeAndFlush(packet);
+            clientChannel.write(packet);
         }
+        clientChannel.flush();
     }
 
     @Override
