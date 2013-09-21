@@ -5,7 +5,9 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.glydar.api.item.ChunkItems;
 import org.glydar.protocol.RemoteType;
+import org.glydar.protocol.codec.ItemCodec;
 import org.glydar.protocol.packet.Packet07Hit;
 import org.glydar.protocol.packet.Packet09Shoot;
 import org.glydar.protocol.packet.Packet13MissionData;
@@ -19,7 +21,7 @@ public class WorldUpdateData implements BufWritable {
     private final List<SoundAction>         soundActions;
     private final List<Packet09Shoot>       shootPackets;
     private final List<Unknown6Data>        unknown6List;
-    private final List<ChunkItems>          chunkItems;
+    private final List<ChunkItems>          chunkItemsList;
     private final List<Unknown8Data>        unknown8List;
     private final List<PickupAction>        pickupActions;
     private final List<KillAction>          killActions;
@@ -34,7 +36,7 @@ public class WorldUpdateData implements BufWritable {
         this.soundActions = new ArrayList<>();
         this.shootPackets = new ArrayList<>();
         this.unknown6List = new ArrayList<>();
-        this.chunkItems = new ArrayList<>();
+        this.chunkItemsList = new ArrayList<>();
         this.unknown8List = new ArrayList<>();
         this.pickupActions = new ArrayList<>();
         this.killActions = new ArrayList<>();
@@ -79,7 +81,7 @@ public class WorldUpdateData implements BufWritable {
 
         length = buf.readInt();
         for (int i = 0; i < length; i++) {
-            chunkItems.add(new ChunkItems(buf));
+            chunkItemsList.add(ItemCodec.readChunkItems(buf));
         }
 
         length = buf.readInt();
@@ -145,9 +147,9 @@ public class WorldUpdateData implements BufWritable {
             unknown6.writeTo(buf);
         }
 
-        buf.writeInt(chunkItems.size());
-        for (ChunkItems c : chunkItems) {
-            c.writeTo(buf);
+        buf.writeInt(chunkItemsList.size());
+        for (ChunkItems chunkItems : chunkItemsList) {
+            ItemCodec.writeChunkItems(buf, chunkItems);
         }
 
         buf.writeInt(unknown8List.size());
