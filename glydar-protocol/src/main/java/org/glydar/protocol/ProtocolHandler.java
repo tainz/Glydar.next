@@ -1,6 +1,6 @@
 package org.glydar.protocol;
 
-import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.Channel;
 
 import org.glydar.protocol.packet.Packet00EntityUpdate;
 import org.glydar.protocol.packet.Packet02UpdateFinished;
@@ -21,7 +21,7 @@ import org.glydar.protocol.packet.Packet18ServerFull;
 
 public interface ProtocolHandler<T extends Remote> {
 
-    T createRemote(ChannelHandlerContext context);
+    T createRemote(Channel channel);
 
     void disconnect(T remote);
 

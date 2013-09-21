@@ -14,7 +14,7 @@ public class GlydarMitmMain {
 
     private static final int         SERVER_PORT = 12346;
 
-    private static ClientRelay       clientRelay;
+    private static MitmServer        mitm;
     private static NioEventLoopGroup bossGroup;
     private static NioEventLoopGroup workerGroup;
 
@@ -22,22 +22,22 @@ public class GlydarMitmMain {
         Glydar.getLogger().getJdkLogger().setLevel(Level.INFO);
         Glydar.getLogger().info("Starting {0} version {1}", Glydar.getName(), Glydar.getVersion());
 
-        clientRelay = new ClientRelay();
+        mitm = new MitmServer();
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
 
-        ServerBootstrap clientRelayBootstrap = new ServerBootstrap();
-        clientRelayBootstrap.group(bossGroup, workerGroup);
-        clientRelayBootstrap.channel(NioServerSocketChannel.class);
-        clientRelayBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-        clientRelayBootstrap.childHandler(new ProtocolInitializer<ServerRelay>(clientRelay.getLogger(), clientRelay));
-        clientRelayBootstrap.bind(SERVER_PORT);
+        ServerBootstrap mitmBootstrap = new ServerBootstrap();
+        mitmBootstrap.group(bossGroup, workerGroup);
+        mitmBootstrap.channel(NioServerSocketChannel.class);
+        mitmBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+        mitmBootstrap.childHandler(new ProtocolInitializer<Relay>(mitm.getLogger(), mitm));
+        mitmBootstrap.bind(SERVER_PORT);
 
         Glydar.getLogger().info("Started on port {0}", SERVER_PORT);
     }
 
     public static void shutdown() {
-        clientRelay.shutdownGracefully();
+        mitm.shutdownGracefully();
         workerGroup.shutdownGracefully();
         bossGroup.shutdownGracefully();
     }

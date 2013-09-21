@@ -1,7 +1,7 @@
 package org.glydar.mitm;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -34,20 +34,22 @@ import org.glydar.protocol.packet.Packet16Join;
 import org.glydar.protocol.packet.Packet17VersionExchange;
 import org.glydar.protocol.packet.Packet18ServerFull;
 
-public class ServerRelay implements ProtocolHandler<CubeWorldServer>, Remote {
+public class Relay implements ProtocolHandler<CubeWorldServer>, Remote {
 
-    private static final String  LOGGER_PREFIX = "Glydar Server Relay";
+    private static final String  LOGGER_PREFIX = "Glydar Relay";
     private static final int     CLIENT_PORT   = 12345;
 
     private final GlydarLogger   logger;
-    private final ClientRelay    clientRelay;
+    private final MitmServer     mitmServer;
+    private final Channel        clientChannel;
     private final EventLoopGroup workerGroup;
     private final List<Packet>   packetsQueue;
     private CubeWorldServer      cubeWorldServer;
 
-    public ServerRelay(ClientRelay clientRelay) {
+    public Relay(MitmServer mitmServer, Channel clientChannel) {
         this.logger = Glydar.getLogger().getChildLogger(this, LOGGER_PREFIX);
-        this.clientRelay = clientRelay;
+        this.mitmServer = mitmServer;
+        this.clientChannel = clientChannel;
         this.workerGroup = new NioEventLoopGroup();
         this.packetsQueue = new ArrayList<>();
 
@@ -67,9 +69,9 @@ public class ServerRelay implements ProtocolHandler<CubeWorldServer>, Remote {
     }
 
     @Override
-    public CubeWorldServer createRemote(ChannelHandlerContext context) {
+    public CubeWorldServer createRemote(Channel channel) {
         logger.info("Connected to Cube World Server");
-        cubeWorldServer = new CubeWorldServer(context);
+        cubeWorldServer = new CubeWorldServer(channel);
 
         cubeWorldServer.send(packetsQueue.toArray(new Packet[packetsQueue.size()]));
         packetsQueue.clear();
@@ -78,8 +80,7 @@ public class ServerRelay implements ProtocolHandler<CubeWorldServer>, Remote {
 
     @Override
     public void disconnect(CubeWorldServer remote) {
-        clientRelay.doShutdownGracefully();
-        shutdownGracefully();
+        mitmServer.disconnect(this);
     }
 
     public void send(Packet... packets) {
@@ -96,12 +97,14 @@ public class ServerRelay implements ProtocolHandler<CubeWorldServer>, Remote {
     }
 
     private void forward(Packet... packets) {
-        clientRelay.send(packets);
+        for (Packet packet : packets) {
+            logger.fine("Sending packet {0} to client {1}", packet.getPacketType(), clientChannel.remoteAddress());
+            clientChannel.writeAndFlush(packet);
+        }
     }
 
     @Override
     public void handle(CubeWorldServer remote, Packet00EntityUpdate packet) {
-        System.out.println(packet.getEntityId());
         forward(packet);
     }
 

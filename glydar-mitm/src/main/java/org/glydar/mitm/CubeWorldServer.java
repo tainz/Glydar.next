@@ -1,16 +1,16 @@
 package org.glydar.mitm;
 
-import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.Channel;
 
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.Remote;
 
 public class CubeWorldServer implements Remote {
 
-    private final ChannelHandlerContext context;
+    private final Channel channel;
 
-    public CubeWorldServer(ChannelHandlerContext context) {
-        this.context = context;
+    public CubeWorldServer(Channel channel) {
+        this.channel = channel;
     }
 
     public void send(Packet... packets) {
@@ -19,11 +19,11 @@ public class CubeWorldServer implements Remote {
         }
 
         for (Packet packet : packets) {
-            context.writeAndFlush(packet);
+            channel.writeAndFlush(packet);
         }
     }
 
     public void closeConnection() {
-        context.close();
+        channel.close();
     }
 }

@@ -2,8 +2,6 @@ package org.glydar.protocol.driver;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.util.Attribute;
-import io.netty.util.AttributeKey;
 
 import java.io.IOException;
 
@@ -16,25 +14,22 @@ import org.glydar.protocol.exceptions.ProtocolHandlerException;
 public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHandler<Packet> {
 
     private final GlydarLogger       logger;
-    private final AttributeKey<T>    remoteKey;
     private final ProtocolHandler<T> handler;
+    private T                        remote;
 
     public ProtocolDispatcher(GlydarLogger logger, ProtocolHandler<T> handler) {
         this.logger = logger;
-        this.remoteKey = new AttributeKey<T>(handler.getClass().getSimpleName());
         this.handler = handler;
+        this.remote = null;
     }
 
     @Override
     public void channelActive(ChannelHandlerContext context) {
-        Attribute<T> clientAttribute = context.attr(remoteKey);
-        T client = clientAttribute.get();
-        if (client != null) {
+        if (remote != null) {
             throw new RuntimeException("Tried to create a remote when one already existed");
         }
 
-        client = handler.createRemote(context);
-        clientAttribute.set(client);
+        this.remote = handler.createRemote(context.channel());
     }
 
     @Override
@@ -51,7 +46,6 @@ public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHa
     }
 
     private void channelRead1(ChannelHandlerContext context, Packet packet) throws Exception {
-        T remote = context.attr(remoteKey).get();
         packet.dispatchTo(handler, remote);
     }
 
@@ -67,8 +61,6 @@ public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHa
     }
 
     private void exceptionCaught0(ChannelHandlerContext context, Throwable cause) {
-        T remote = context.attr(remoteKey).get();
-
         if (cause instanceof IOException) {
             if (remote != null) {
                 logger.info("{0} lost connection !", context.channel().remoteAddress());

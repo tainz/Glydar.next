@@ -21,7 +21,6 @@ public class ProtocolInitializer<T extends Remote> extends ChannelInitializer<So
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         ChannelPipeline pipeline = socketChannel.pipeline();
-
         pipeline.addLast("decoder", new ProtocolDecoder(logger));
         pipeline.addLast("encoder", new ProtocolEncoder(logger));
         pipeline.addLast("dispatcher", new ProtocolDispatcher<T>(logger, handler));
