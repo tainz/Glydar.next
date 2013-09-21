@@ -7,6 +7,7 @@ import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
+import org.glydar.protocol.RemoteType;
 
 import com.google.common.base.Preconditions;
 
@@ -37,7 +38,7 @@ public class Packet16Join implements Packet {
     }
 
     @Override
-    public void writeTo(ByteBuf buf) {
+    public void writeTo(RemoteType receiver, ByteBuf buf) {
         buf.writeInt(0);
         buf.writeLong(id);
         buf.writeBytes(data);

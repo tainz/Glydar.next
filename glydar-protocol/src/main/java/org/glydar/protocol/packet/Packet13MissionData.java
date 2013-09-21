@@ -6,6 +6,7 @@ import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
+import org.glydar.protocol.RemoteType;
 
 public class Packet13MissionData implements Packet {
 
@@ -46,7 +47,7 @@ public class Packet13MissionData implements Packet {
     }
 
     @Override
-    public void writeTo(ByteBuf buf) {
+    public void writeTo(RemoteType receiver, ByteBuf buf) {
         buf.writeInt(sectorX * 8);
         buf.writeInt(sectorY * 8);
         buf.writeLong(something3);

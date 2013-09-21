@@ -16,6 +16,7 @@ import org.glydar.api.logging.GlydarLogger;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
+import org.glydar.protocol.RemoteType;
 import org.glydar.protocol.driver.ProtocolInitializer;
 import org.glydar.protocol.packet.Packet00EntityUpdate;
 import org.glydar.protocol.packet.Packet02UpdateFinished;
@@ -57,8 +58,18 @@ public class Relay implements ProtocolHandler<CubeWorldServer>, Remote {
         serverRelayBootstrap.group(workerGroup);
         serverRelayBootstrap.channel(NioSocketChannel.class);
         serverRelayBootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-        serverRelayBootstrap.handler(new ProtocolInitializer<CubeWorldServer>(logger, this));
+        serverRelayBootstrap.handler(new ProtocolInitializer<CubeWorldServer>(this));
         serverRelayBootstrap.connect("localhost", CLIENT_PORT);
+    }
+
+    @Override
+    public GlydarLogger getLogger() {
+        return logger;
+    }
+
+    @Override
+    public RemoteType getRemoteType() {
+        return RemoteType.SERVER;
     }
 
     public void shutdownGracefully() {

@@ -7,6 +7,7 @@ import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
+import org.glydar.protocol.RemoteType;
 
 import com.google.common.base.Charsets;
 
@@ -20,8 +21,13 @@ public class Packet10Chat implements Packet {
         this.message = message;
     }
 
-    public Packet10Chat(ByteBuf buf) {
-        this.senderId = -1;
+    public Packet10Chat(RemoteType sender, ByteBuf buf) {
+        if (sender == RemoteType.CLIENT) {
+            this.senderId = -1l;
+        }
+        else {
+            this.senderId = buf.readLong();
+        }
 
         int length = buf.readInt();
         byte[] messageBytes = new byte[length * 2];
@@ -35,14 +41,14 @@ public class Packet10Chat implements Packet {
     }
 
     @Override
-    public void writeTo(ByteBuf buf) {
-        byte[] msgBuf = message.getBytes(Charsets.UTF_16LE);
-        if (senderId == 0) {
+    public void writeTo(RemoteType receiver, ByteBuf buf) {
+        if (receiver == RemoteType.CLIENT) {
             buf.writeLong(senderId);
         }
 
-        buf.writeInt(msgBuf.length / 2);
-        buf.writeBytes(msgBuf);
+        byte[] messageBytes = message.getBytes(Charsets.UTF_16LE);
+        buf.writeInt(messageBytes.length / 2);
+        buf.writeBytes(messageBytes);
     }
 
     @Override

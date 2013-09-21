@@ -9,6 +9,7 @@ import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
+import org.glydar.protocol.RemoteType;
 import org.glydar.protocol.data.DataCodec;
 
 public class Packet07Hit implements Packet {
@@ -61,7 +62,7 @@ public class Packet07Hit implements Packet {
     }
 
     @Override
-    public void writeTo(ByteBuf buf) {
+    public void writeTo(RemoteType receiver, ByteBuf buf) {
         buf.writeLong(id);
         buf.writeLong(targetId);
         buf.writeFloat(damage);

@@ -19,7 +19,7 @@ public class GlydarMitmMain {
     private static NioEventLoopGroup workerGroup;
 
     public static void main(String[] args) {
-        Glydar.getLogger().getJdkLogger().setLevel(Level.FINE);
+        Glydar.getLogger().getJdkLogger().setLevel(Level.ALL);
         Glydar.getLogger().info("Starting {0} version {1}", Glydar.getName(), Glydar.getVersion());
 
         mitm = new MitmServer();
@@ -30,7 +30,7 @@ public class GlydarMitmMain {
         mitmBootstrap.group(bossGroup, workerGroup);
         mitmBootstrap.channel(NioServerSocketChannel.class);
         mitmBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-        mitmBootstrap.childHandler(new ProtocolInitializer<Relay>(mitm.getLogger(), mitm));
+        mitmBootstrap.childHandler(new ProtocolInitializer<Relay>(mitm));
         mitmBootstrap.bind(SERVER_PORT);
 
         Glydar.getLogger().info("Started on port {0}", SERVER_PORT);

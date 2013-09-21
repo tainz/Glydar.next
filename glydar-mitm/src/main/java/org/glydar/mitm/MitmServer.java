@@ -8,6 +8,7 @@ import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.ProtocolHandler;
+import org.glydar.protocol.RemoteType;
 import org.glydar.protocol.packet.Packet00EntityUpdate;
 import org.glydar.protocol.packet.Packet02UpdateFinished;
 import org.glydar.protocol.packet.Packet04WorldUpdate;
@@ -39,8 +40,14 @@ public class MitmServer implements ProtocolHandler<Relay> {
         this.relays = Sets.newIdentityHashSet();
     }
 
+    @Override
     public GlydarLogger getLogger() {
         return logger;
+    }
+
+    @Override
+    public RemoteType getRemoteType() {
+        return RemoteType.CLIENT;
     }
 
     @Override

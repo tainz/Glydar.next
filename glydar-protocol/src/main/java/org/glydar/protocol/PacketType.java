@@ -26,7 +26,7 @@ public enum PacketType {
     ENTITY_UPDATE {
 
         @Override
-        public Packet00EntityUpdate createPacket(ByteBuf buf) {
+        public Packet00EntityUpdate createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet00EntityUpdate(buf);
         }
     },
@@ -34,7 +34,7 @@ public enum PacketType {
     MULTIPLE_ENTITY_UPDATE {
 
         @Override
-        public Packet createPacket(ByteBuf buf) {
+        public Packet createPacket(RemoteType sender, ByteBuf buf) {
             throw new UnsupportedPacketException(this);
         }
     },
@@ -42,7 +42,7 @@ public enum PacketType {
     UPDATE_FINISHED {
 
         @Override
-        public Packet02UpdateFinished createPacket(ByteBuf buf) {
+        public Packet02UpdateFinished createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet02UpdateFinished();
         }
     },
@@ -50,7 +50,7 @@ public enum PacketType {
     UNKOWN_3 {
 
         @Override
-        public Packet createPacket(ByteBuf buf) {
+        public Packet createPacket(RemoteType sender, ByteBuf buf) {
             throw new UnsupportedPacketException(this);
         }
     },
@@ -58,7 +58,7 @@ public enum PacketType {
     WORLD_UPDATE {
 
         @Override
-        public Packet04WorldUpdate createPacket(ByteBuf buf) {
+        public Packet04WorldUpdate createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet04WorldUpdate(buf);
         }
     },
@@ -66,7 +66,7 @@ public enum PacketType {
     CURRENT_TIME {
 
         @Override
-        public Packet05CurrentTime createPacket(ByteBuf buf) {
+        public Packet05CurrentTime createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet05CurrentTime(buf);
         }
     },
@@ -74,7 +74,7 @@ public enum PacketType {
     INTERACTION {
 
         @Override
-        public Packet06Interaction createPacket(ByteBuf buf) {
+        public Packet06Interaction createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet06Interaction(buf);
         }
     },
@@ -82,7 +82,7 @@ public enum PacketType {
     HIT {
 
         @Override
-        public Packet07Hit createPacket(ByteBuf buf) {
+        public Packet07Hit createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet07Hit(buf);
         }
     },
@@ -90,7 +90,7 @@ public enum PacketType {
     STEALTH {
 
         @Override
-        public Packet08Stealth createPacket(ByteBuf buf) {
+        public Packet08Stealth createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet08Stealth(buf);
         }
     },
@@ -98,7 +98,7 @@ public enum PacketType {
     SHOOT {
 
         @Override
-        public Packet09Shoot createPacket(ByteBuf buf) {
+        public Packet09Shoot createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet09Shoot(buf);
         }
     },
@@ -106,15 +106,15 @@ public enum PacketType {
     CHAT {
 
         @Override
-        public Packet10Chat createPacket(ByteBuf buf) {
-            return new Packet10Chat(buf);
+        public Packet10Chat createPacket(RemoteType sender, ByteBuf buf) {
+            return new Packet10Chat(sender, buf);
         }
     },
 
     CHUNK_DISCOVERY {
 
         @Override
-        public Packet11ChunkDiscovery createPacket(ByteBuf buf) {
+        public Packet11ChunkDiscovery createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet11ChunkDiscovery(buf);
         }
     },
@@ -122,7 +122,7 @@ public enum PacketType {
     SECTOR_DISCOVERY {
 
         @Override
-        public Packet12SectorDiscovery createPacket(ByteBuf buf) {
+        public Packet12SectorDiscovery createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet12SectorDiscovery(buf);
         }
     },
@@ -130,7 +130,7 @@ public enum PacketType {
     MISSION_DATA {
 
         @Override
-        public Packet13MissionData createPacket(ByteBuf buf) {
+        public Packet13MissionData createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet13MissionData(buf);
         }
     },
@@ -138,7 +138,7 @@ public enum PacketType {
     UNKNOWN_14 {
 
         @Override
-        public Packet createPacket(ByteBuf buf) {
+        public Packet createPacket(RemoteType sender, ByteBuf buf) {
             throw new UnsupportedPacketException(this);
         }
     },
@@ -146,7 +146,7 @@ public enum PacketType {
     SEED {
 
         @Override
-        public Packet15Seed createPacket(ByteBuf buf) {
+        public Packet15Seed createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet15Seed(buf);
         }
     },
@@ -154,7 +154,7 @@ public enum PacketType {
     JOIN {
 
         @Override
-        public Packet16Join createPacket(ByteBuf buf) {
+        public Packet16Join createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet16Join(buf);
         }
     },
@@ -162,7 +162,7 @@ public enum PacketType {
     VERSION_EXCHANGE {
 
         @Override
-        public Packet17VersionExchange createPacket(ByteBuf buf) {
+        public Packet17VersionExchange createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet17VersionExchange(buf);
         }
     },
@@ -170,7 +170,7 @@ public enum PacketType {
     SERVER_FULL {
 
         @Override
-        public Packet18ServerFull createPacket(ByteBuf buf) {
+        public Packet18ServerFull createPacket(RemoteType sender, ByteBuf buf) {
             return new Packet18ServerFull();
         }
     };
@@ -179,7 +179,7 @@ public enum PacketType {
         return ordinal();
     }
 
-    public abstract Packet createPacket(ByteBuf buf);
+    public abstract Packet createPacket(RemoteType sender, ByteBuf buf);
 
     @Override
     public String toString() {

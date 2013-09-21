@@ -10,6 +10,8 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+import org.glydar.protocol.RemoteType;
+
 public class ZLibOperations {
 
     public static ByteBuf decompress(ByteBuf buf) {
@@ -46,10 +48,10 @@ public class ZLibOperations {
         }
     }
 
-    public static void compress(ByteBuf buf, BufWritable writable) {
+    public static void compress(RemoteType remoteType, ByteBuf buf, BufWritable writable) {
         ByteBuf buf2 = Unpooled.buffer();
         buf2 = buf2.order(ByteOrder.LITTLE_ENDIAN);
-        writable.writeTo(buf2);
+        writable.writeTo(remoteType, buf2);
         byte[] compressed = compressBytes(buf2.array());
 
         buf.writeInt(compressed.length);

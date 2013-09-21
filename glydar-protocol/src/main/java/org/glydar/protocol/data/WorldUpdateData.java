@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.glydar.protocol.RemoteType;
 import org.glydar.protocol.packet.Packet07Hit;
 import org.glydar.protocol.packet.Packet09Shoot;
 import org.glydar.protocol.packet.Packet13MissionData;
@@ -113,7 +114,7 @@ public class WorldUpdateData implements BufWritable {
     }
 
     @Override
-    public void writeTo(ByteBuf buf) {
+    public void writeTo(RemoteType receiver, ByteBuf buf) {
         buf.writeInt(unknown1List.size());
         for (Unknown1Data u : unknown1List) {
             u.writeTo(buf);
@@ -121,7 +122,7 @@ public class WorldUpdateData implements BufWritable {
 
         buf.writeInt(hitPackets.size());
         for (Packet07Hit packet : hitPackets) {
-            packet.writeTo(buf);
+            packet.writeTo(receiver, buf);
         }
 
         buf.writeInt(particles.size());
@@ -136,7 +137,7 @@ public class WorldUpdateData implements BufWritable {
 
         buf.writeInt(shootPackets.size());
         for (Packet09Shoot packets : shootPackets) {
-            packets.writeTo(buf);
+            packets.writeTo(receiver, buf);
         }
 
         buf.writeInt(unknown6List.size());
@@ -176,7 +177,7 @@ public class WorldUpdateData implements BufWritable {
 
         buf.writeInt(missions.size());
         for (Packet13MissionData p : missions) {
-            p.writeTo(buf);
+            p.writeTo(receiver, buf);
         }
     }
 }

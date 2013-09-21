@@ -6,6 +6,7 @@ import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
+import org.glydar.protocol.RemoteType;
 
 public class Packet00EntityUpdate implements Packet {
 
@@ -31,7 +32,7 @@ public class Packet00EntityUpdate implements Packet {
     }
 
     @Override
-    public void writeTo(ByteBuf buf) {
+    public void writeTo(RemoteType receiver, ByteBuf buf) {
         buf.writeInt(rawData.length);
         buf.writeBytes(rawData);
     }

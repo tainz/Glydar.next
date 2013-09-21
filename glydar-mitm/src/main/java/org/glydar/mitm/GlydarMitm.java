@@ -30,7 +30,8 @@ public class GlydarMitm implements Backend {
         logger.getJdkLogger().addHandler(consoleHandler);
 
         try {
-            FileHandler fileHandler = new FileHandler("target/logs");
+            String folder = getClass().getProtectionDomain().getCodeSource().getLocation().getFile().toString();
+            FileHandler fileHandler = new FileHandler(folder + "/../logs");
             fileHandler.setFormatter(new GlydarLoggerFormatter(false));
             fileHandler.setLevel(Level.ALL);
             logger.getJdkLogger().addHandler(fileHandler);

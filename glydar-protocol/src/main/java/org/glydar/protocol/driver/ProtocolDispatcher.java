@@ -5,7 +5,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.io.IOException;
 
-import org.glydar.api.logging.GlydarLogger;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
@@ -13,12 +12,10 @@ import org.glydar.protocol.exceptions.ProtocolHandlerException;
 
 public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHandler<Packet> {
 
-    private final GlydarLogger       logger;
     private final ProtocolHandler<T> handler;
     private T                        remote;
 
-    public ProtocolDispatcher(GlydarLogger logger, ProtocolHandler<T> handler) {
-        this.logger = logger;
+    public ProtocolDispatcher(ProtocolHandler<T> handler) {
         this.handler = handler;
         this.remote = null;
     }
@@ -56,24 +53,25 @@ public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHa
             exceptionCaught0(context, cause);
         }
         catch (Exception exc) {
-            logger.severe(exc, "Error while handling error in {0}", getClass().getCanonicalName());
+            handler.getLogger().severe(exc, "Error while handling error in {0}", getClass().getCanonicalName());
         }
     }
 
     private void exceptionCaught0(ChannelHandlerContext context, Throwable cause) {
         if (cause instanceof IOException) {
             if (remote != null) {
-                logger.info("{0} lost connection !", context.channel().remoteAddress());
+                handler.getLogger().info("{0} lost connection !", context.channel().remoteAddress());
                 handler.disconnect(remote);
             }
         }
         else if (cause instanceof ProtocolHandlerException) {
             Packet packet = ((ProtocolHandlerException) cause).getPacket();
-            logger.warning(cause.getCause(), "Error while handling packet {0} for {1}", packet.getPacketType(), context
-                    .channel().remoteAddress());
+            handler.getLogger().warning(cause.getCause(), "Error while handling packet {0} for {1}",
+                    packet.getPacketType(), context.channel().remoteAddress());
         }
         else {
-            logger.severe(cause, "Unexpected error while handling packet in {0}", getClass().getCanonicalName());
+            handler.getLogger().severe(cause, "Unexpected error while handling packet in {0}",
+                    getClass().getCanonicalName());
         }
     }
 }
