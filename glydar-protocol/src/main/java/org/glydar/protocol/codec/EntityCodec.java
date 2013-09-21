@@ -8,6 +8,8 @@ import org.glydar.api.entity.Appearance;
 import org.glydar.api.entity.EntityChange;
 import org.glydar.api.entity.EntityChanges;
 import org.glydar.api.entity.EntityData;
+import org.glydar.api.entity.Particle;
+import org.glydar.api.geom.LongVector3;
 import org.glydar.api.item.Item;
 
 import com.google.common.base.Charsets;
@@ -458,5 +460,35 @@ public final class EntityCodec {
         if (changes.get(EntityChange.ICE_BLOCK_FOUR)) {
             buf.writeInt((int) data.getIceBlockFour());
         }
+    }
+
+    public static Particle readParticle(ByteBuf buf) {
+        LongVector3 position = GeomCodec.readLongVector3(buf);
+        Particle particle = new Particle(position);
+        particle.setAcceleration(GeomCodec.readFloatVector3(buf));
+        particle.setColorRed(buf.readFloat());
+        particle.setColorBlue(buf.readFloat());
+        particle.setColorGreen(buf.readFloat());
+        particle.setColorAlpha(buf.readFloat());
+        particle.setScale(buf.readFloat());
+        particle.setCount(buf.readInt());
+        particle.setType(buf.readInt());
+        particle.setSpreading(buf.readFloat());
+        particle.setUnknown18(buf.readInt());
+        return particle;
+    }
+
+    public static void writeParticle(ByteBuf buf, Particle particle) {
+        GeomCodec.writeLongVector3(buf, particle.getPosition());
+        GeomCodec.writeFloatVector3(buf, particle.getAcceleration());
+        buf.writeFloat(particle.getColorRed());
+        buf.writeFloat(particle.getColorBlue());
+        buf.writeFloat(particle.getColorGreen());
+        buf.writeFloat(particle.getColorAlpha());
+        buf.writeFloat(particle.getScale());
+        buf.writeInt(particle.getCount());
+        buf.writeInt(particle.getType());
+        buf.writeFloat(particle.getSpreading());
+        buf.writeInt(particle.getUnknown18());
     }
 }

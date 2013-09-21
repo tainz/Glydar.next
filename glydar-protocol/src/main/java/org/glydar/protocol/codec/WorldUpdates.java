@@ -1,4 +1,4 @@
-package org.glydar.protocol.data;
+package org.glydar.protocol.codec;
 
 import io.netty.buffer.ByteBuf;
 
@@ -9,20 +9,19 @@ import org.glydar.api.actions.DamageAction;
 import org.glydar.api.actions.KillAction;
 import org.glydar.api.actions.PickupAction;
 import org.glydar.api.actions.SoundAction;
+import org.glydar.api.entity.Particle;
 import org.glydar.api.item.ChunkItems;
 import org.glydar.protocol.RemoteType;
-import org.glydar.protocol.codec.ActionCodec;
-import org.glydar.protocol.codec.ItemCodec;
 import org.glydar.protocol.packet.Packet07Hit;
 import org.glydar.protocol.packet.Packet09Shoot;
 import org.glydar.protocol.packet.Packet13MissionData;
 import org.glydar.protocol.util.BufWritable;
 
-public class WorldUpdateData implements BufWritable {
+public class WorldUpdates implements BufWritable {
 
     private final List<Unknown1Data>        unknown1List;
     private final List<Packet07Hit>         hitPackets;
-    private final List<ParticleData>        particles;
+    private final List<Particle>            particles;
     private final List<SoundAction>         soundActions;
     private final List<Packet09Shoot>       shootPackets;
     private final List<Unknown6Data>        unknown6List;
@@ -34,7 +33,7 @@ public class WorldUpdateData implements BufWritable {
     private final List<Unknown12Data>       unknown12List;
     private final List<Packet13MissionData> missions;
 
-    public WorldUpdateData() {
+    public WorldUpdates() {
         this.unknown1List = new ArrayList<>();
         this.hitPackets = new ArrayList<>();
         this.particles = new ArrayList<>();
@@ -50,7 +49,7 @@ public class WorldUpdateData implements BufWritable {
         this.missions = new ArrayList<>();
     }
 
-    public WorldUpdateData(ByteBuf buf) {
+    public WorldUpdates(ByteBuf buf) {
         this();
         int length;
 
@@ -66,7 +65,7 @@ public class WorldUpdateData implements BufWritable {
 
         length = buf.readInt();
         for (int i = 0; i < length; i++) {
-            particles.add(new ParticleData(buf));
+            particles.add(EntityCodec.readParticle(buf));
         }
 
         length = buf.readInt();
@@ -133,8 +132,8 @@ public class WorldUpdateData implements BufWritable {
         }
 
         buf.writeInt(particles.size());
-        for (ParticleData particle : particles) {
-            particle.writeTo(buf);
+        for (Particle particle : particles) {
+            EntityCodec.writeParticle(buf, particle);
         }
 
         buf.writeInt(soundActions.size());
