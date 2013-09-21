@@ -5,8 +5,13 @@ import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.glydar.api.actions.DamageAction;
+import org.glydar.api.actions.KillAction;
+import org.glydar.api.actions.PickupAction;
+import org.glydar.api.actions.SoundAction;
 import org.glydar.api.item.ChunkItems;
 import org.glydar.protocol.RemoteType;
+import org.glydar.protocol.codec.ActionCodec;
 import org.glydar.protocol.codec.ItemCodec;
 import org.glydar.protocol.packet.Packet07Hit;
 import org.glydar.protocol.packet.Packet09Shoot;
@@ -66,7 +71,7 @@ public class WorldUpdateData implements BufWritable {
 
         length = buf.readInt();
         for (int i = 0; i < length; i++) {
-            soundActions.add(new SoundAction(buf));
+            soundActions.add(ActionCodec.readSoundAction(buf));
         }
 
         length = buf.readInt();
@@ -91,17 +96,17 @@ public class WorldUpdateData implements BufWritable {
 
         length = buf.readInt();
         for (int i = 0; i < length; i++) {
-            pickupActions.add(new PickupAction(buf));
+            pickupActions.add(ActionCodec.readPickupAction(buf));
         }
 
         length = buf.readInt();
         for (int i = 0; i < length; i++) {
-            killActions.add(new KillAction(buf));
+            killActions.add(ActionCodec.readKillAction(buf));
         }
 
         length = buf.readInt();
         for (int i = 0; i < length; i++) {
-            damageActions.add(new DamageAction(buf));
+            damageActions.add(ActionCodec.readDamageAction(buf));
         }
 
         length = buf.readInt();
@@ -133,8 +138,8 @@ public class WorldUpdateData implements BufWritable {
         }
 
         buf.writeInt(soundActions.size());
-        for (SoundAction a : soundActions) {
-            a.writeTo(buf);
+        for (SoundAction soundAction : soundActions) {
+            ActionCodec.writeSoundAction(buf, soundAction);
         }
 
         buf.writeInt(shootPackets.size());
@@ -158,18 +163,18 @@ public class WorldUpdateData implements BufWritable {
         }
 
         buf.writeInt(pickupActions.size());
-        for (PickupAction a : pickupActions) {
-            a.writeTo(buf);
+        for (PickupAction pickupAction : pickupActions) {
+            ActionCodec.writePickupAction(buf, pickupAction);
         }
 
         buf.writeInt(killActions.size());
-        for (KillAction a : killActions) {
-            a.writeTo(buf);
+        for (KillAction killAction : killActions) {
+            ActionCodec.writeKillAction(buf, killAction);
         }
 
         buf.writeInt(damageActions.size());
-        for (DamageAction a : damageActions) {
-            a.writeTo(buf);
+        for (DamageAction damageAction : damageActions) {
+            ActionCodec.writeDamageAction(buf, damageAction);
         }
 
         buf.writeInt(unknown12List.size());
