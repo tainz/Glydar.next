@@ -1,11 +1,7 @@
 package org.glydar.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 
-import java.nio.ByteOrder;
-
-import org.glydar.api.Glydar;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
@@ -22,7 +18,8 @@ public class Packet04WorldUpdate implements Packet {
     }
 
     public Packet04WorldUpdate(ByteBuf buf) {
-        this.data = new WorldUpdateData(buf);
+        ByteBuf decompressed = ZLibOperations.decompress(buf);
+        this.data = new WorldUpdateData(decompressed);
     }
 
     @Override
@@ -32,23 +29,7 @@ public class Packet04WorldUpdate implements Packet {
 
     @Override
     public void writeTo(ByteBuf buf) {
-        ByteBuf buf2 = Unpooled.buffer();
-        buf2 = buf2.order(ByteOrder.LITTLE_ENDIAN);
-        data.writeTo(buf2);
-        byte[] compressedData = null;
-        try {
-            compressedData = ZLibOperations.compress(buf2.array());
-        }
-        catch (final Exception e) {
-            e.printStackTrace();
-        }
-        if (compressedData != null) {
-            buf.writeInt(compressedData.length);
-            buf.writeBytes(compressedData);
-        }
-        else {
-            Glydar.getLogger().severe("World update is null! o.o");
-        }
+        ZLibOperations.compress(buf, data);
     }
 
     @Override

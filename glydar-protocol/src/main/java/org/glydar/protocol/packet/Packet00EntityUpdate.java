@@ -1,12 +1,7 @@
 package org.glydar.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 
-import java.nio.ByteOrder;
-import java.util.Arrays;
-
-import org.glydar.api.Glydar;
 import org.glydar.api.entity.Entity;
 import org.glydar.api.entity.EntityChanges;
 import org.glydar.api.entity.EntityData;
@@ -15,6 +10,7 @@ import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
 import org.glydar.protocol.data.DataCodec;
+import org.glydar.protocol.util.BufWritable;
 import org.glydar.protocol.util.ZLibOperations;
 
 public class Packet00EntityUpdate implements Packet {
@@ -29,29 +25,11 @@ public class Packet00EntityUpdate implements Packet {
         this.data = entity.getData();
     }
 
-    public Packet00EntityUpdate(ByteBuf rawBuf) {
-        int zlibLength = rawBuf.readInt();
-        byte[] rawData = new byte[zlibLength];
-        rawBuf.readBytes(rawData);
-
-        ByteBuf buf;
-        try {
-            byte[] decompressed = ZLibOperations.decompress(rawData);
-            buf = Unpooled.copiedBuffer(decompressed);
-        }
-        catch (final Exception exc) {
-            Glydar.getLogger().warning(exc, "Unable to decompress entity data");
-            Glydar.getLogger().warning("{0} Data : {1}", getPacketType(), Arrays.toString(rawData));
-            this.entityId = -1;
-            this.changes = null;
-            this.data = null;
-            return;
-        }
-
-        buf = buf.order(ByteOrder.LITTLE_ENDIAN);
-        this.entityId = buf.readLong();
-        this.changes = DataCodec.readEntityChanges(buf);
-        this.data = DataCodec.readEntityData(buf, changes);
+    public Packet00EntityUpdate(ByteBuf buf) {
+        ByteBuf decompressed = ZLibOperations.decompress(buf);
+        this.entityId = decompressed.readLong();
+        this.changes = DataCodec.readEntityChanges(decompressed);
+        this.data = DataCodec.readEntityData(decompressed, changes);
     }
 
     @Override
@@ -61,21 +39,25 @@ public class Packet00EntityUpdate implements Packet {
 
     @Override
     public void writeTo(ByteBuf buf) {
-        ByteBuf buf2 = Unpooled.buffer();
-        buf2 = buf2.order(ByteOrder.LITTLE_ENDIAN);
-        buf2.writeLong(entityId);
-        DataCodec.writeEntityChanges(buf2, changes);
-        DataCodec.writeEntityData(buf2, changes, data);
-        byte[] compressedData = ZLibOperations.compress(buf2.array());
-        buf.writeBytes(compressedData);
+        ZLibOperations.compress(buf, new EntityUpdate());
     }
 
     @Override
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
-        if (entityId < 0) {
-            return;
-        }
-
         handler.handle(remote, this);
+    }
+
+    public long getEntityId() {
+        return entityId;
+    }
+
+    private class EntityUpdate implements BufWritable {
+
+        @Override
+        public void writeTo(ByteBuf buf) {
+            buf.writeLong(entityId);
+            DataCodec.writeEntityChanges(buf, changes);
+            DataCodec.writeEntityData(buf, changes, data);
+        }
     }
 }

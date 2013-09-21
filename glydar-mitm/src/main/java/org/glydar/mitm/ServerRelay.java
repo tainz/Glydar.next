@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.ProtocolHandler;
@@ -45,7 +46,7 @@ public class ServerRelay implements ProtocolHandler<CubeWorldServer>, Remote {
     private CubeWorldServer      cubeWorldServer;
 
     public ServerRelay(ClientRelay clientRelay) {
-        this.logger = clientRelay.getLogger().getChildLogger(this, LOGGER_PREFIX);
+        this.logger = Glydar.getLogger().getChildLogger(this, LOGGER_PREFIX);
         this.clientRelay = clientRelay;
         this.workerGroup = new NioEventLoopGroup();
         this.packetsQueue = new ArrayList<>();
@@ -77,10 +78,15 @@ public class ServerRelay implements ProtocolHandler<CubeWorldServer>, Remote {
 
     @Override
     public void disconnect(CubeWorldServer remote) {
+        clientRelay.doShutdownGracefully();
         shutdownGracefully();
     }
 
     public void send(Packet... packets) {
+        for (Packet packet : packets) {
+            logger.fine("Sending packet {0} to server", packet.getPacketType());
+        }
+
         if (cubeWorldServer == null) {
             Collections.addAll(packetsQueue, packets);
         }
@@ -90,15 +96,12 @@ public class ServerRelay implements ProtocolHandler<CubeWorldServer>, Remote {
     }
 
     private void forward(Packet... packets) {
-        for (Packet packet : packets) {
-            logger.fine("Forwarding packet {0} to client", packet.getPacketType());
-        }
-
         clientRelay.send(packets);
     }
 
     @Override
     public void handle(CubeWorldServer remote, Packet00EntityUpdate packet) {
+        System.out.println(packet.getEntityId());
         forward(packet);
     }
 

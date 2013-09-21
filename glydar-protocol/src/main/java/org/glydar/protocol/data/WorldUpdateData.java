@@ -8,10 +8,9 @@ import java.util.List;
 import org.glydar.protocol.packet.Packet07Hit;
 import org.glydar.protocol.packet.Packet09Shoot;
 import org.glydar.protocol.packet.Packet13MissionData;
+import org.glydar.protocol.util.BufWritable;
 
-import com.google.common.base.Objects;
-
-public class WorldUpdateData {
+public class WorldUpdateData implements BufWritable {
 
     private final List<Unknown1Data>        unknown1List;
     private final List<Packet07Hit>         hitPackets;
@@ -113,6 +112,7 @@ public class WorldUpdateData {
         }
     }
 
+    @Override
     public void writeTo(ByteBuf buf) {
         buf.writeInt(unknown1List.size());
         for (Unknown1Data u : unknown1List) {
@@ -212,13 +212,6 @@ class Unknown1Data {
         buf.writeByte(colorBlue);
         buf.writeByte(blockType);
         buf.writeInt((int) unknown8);
-    }
-
-    @Override
-    public String toString() {
-        return Objects.toStringHelper(getClass()).add("blockX", blockX).add("blockY", blockY).add("blockZ", blockZ)
-                .add("colorRed", colorRed).add("colorGreen", colorGreen).add("colorBlue", colorBlue)
-                .add("blockType", blockType).add("unknown8", unknown8).toString();
     }
 }
 

@@ -1,12 +1,10 @@
 package org.glydar.protocol;
 
-import io.netty.buffer.ByteBuf;
+import org.glydar.protocol.util.BufWritable;
 
-public interface Packet {
+public interface Packet extends BufWritable {
 
     PacketType getPacketType();
-
-    void writeTo(ByteBuf buf);
 
     <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T client);
 }
