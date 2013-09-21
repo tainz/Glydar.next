@@ -1,4 +1,4 @@
-package org.glydar.protocol.data;
+package org.glydar.protocol.codec;
 
 import io.netty.buffer.ByteBuf;
 
@@ -8,15 +8,60 @@ import org.glydar.api.entity.Appearance;
 import org.glydar.api.entity.EntityChange;
 import org.glydar.api.entity.EntityChanges;
 import org.glydar.api.entity.EntityData;
-import org.glydar.api.geom.FloatVector3;
-import org.glydar.api.geom.LongVector3;
-import org.glydar.api.geom.Orientation;
 import org.glydar.api.item.Item;
-import org.glydar.api.item.ItemUpgrade;
 
 import com.google.common.base.Charsets;
 
-public final class DataCodec {
+public final class EntityCodec {
+
+    private EntityCodec() {
+    }
+
+    public static Appearance readAppearance(ByteBuf buf) {
+        Appearance a = new Appearance();
+        a.setNotUsed1(buf.readByte());
+        a.setNotUsed2(buf.readByte());
+        a.setHairR(buf.readByte());
+        a.setHairG(buf.readByte());
+        a.setHairB(buf.readByte());
+        buf.skipBytes(1);
+        a.setMovementFlags(buf.readByte());
+        a.setEntityFlags(buf.readByte());
+        a.setScale(buf.readFloat());
+        a.setBoundingRadius(buf.readFloat());
+        a.setBoundingHeight(buf.readFloat());
+        a.setHeadModel(buf.readUnsignedShort());
+        a.setHairModel(buf.readUnsignedShort());
+        a.setHandModel(buf.readUnsignedShort());
+        a.setFootModel(buf.readUnsignedShort());
+        a.setBodyModel(buf.readUnsignedShort());
+        a.setBackModel(buf.readUnsignedShort());
+        a.setShoulderModel(buf.readUnsignedShort());
+        a.setWingModel(buf.readUnsignedShort());
+        a.setHeadScale(buf.readFloat());
+        a.setBodyScale(buf.readFloat());
+        a.setHandScale(buf.readFloat());
+        a.setFootScale(buf.readFloat());
+        a.setShoulderScale(buf.readFloat());
+        a.setWeaponScale(buf.readFloat());
+        a.setBackScale(buf.readFloat());
+        a.setUnknown(buf.readFloat());
+        a.setWingScale(buf.readFloat());
+        a.setBodyPitch(buf.readFloat());
+        a.setArmPitch(buf.readFloat());
+        a.setArmRoll(buf.readFloat());
+        a.setArmYaw(buf.readFloat());
+        a.setFeetPitch(buf.readFloat());
+        a.setWingPitch(buf.readFloat());
+        a.setBackPitch(buf.readFloat());
+        a.setBodyOffset(GeomCodec.readFloatVector3(buf));
+        a.setHeadOffset(GeomCodec.readFloatVector3(buf));
+        a.setHandOffset(GeomCodec.readFloatVector3(buf));
+        a.setFootOffset(GeomCodec.readFloatVector3(buf));
+        a.setBackOffset(GeomCodec.readFloatVector3(buf));
+        a.setWingOffset(GeomCodec.readFloatVector3(buf));
+        return a;
+    }
 
     public static EntityChanges readEntityChanges(ByteBuf buf) {
         byte[] bitSetBuf = new byte[8];
@@ -25,27 +70,23 @@ public final class DataCodec {
         return new EntityChanges(bitSet);
     }
 
-    public static void writeEntityChanges(ByteBuf buf, EntityChanges changes) {
-        buf.writeBytes(changes.toByteArray());
-    }
-
     public static EntityData readEntityData(ByteBuf buf, EntityChanges bitSet) {
         EntityData data = new EntityData();
 
         if (bitSet.get(EntityChange.POSITION)) {
-            data.setPosition(readLongVector3(buf));
+            data.setPosition(GeomCodec.readLongVector3(buf));
         }
         if (bitSet.get(EntityChange.ORIENTATION)) {
-            data.setOrientation(readOrientation(buf));
+            data.setOrientation(GeomCodec.readOrientation(buf));
         }
         if (bitSet.get(EntityChange.VELOCITY)) {
-            data.setVelocity(readFloatVector3(buf));
+            data.setVelocity(GeomCodec.readFloatVector3(buf));
         }
         if (bitSet.get(EntityChange.ACCELERATION)) {
-            data.setAccel(readFloatVector3(buf));
+            data.setAccel(GeomCodec.readFloatVector3(buf));
         }
         if (bitSet.get(EntityChange.EXTRA_VELOCITY)) {
-            data.setExtraVel(readFloatVector3(buf));
+            data.setExtraVel(GeomCodec.readFloatVector3(buf));
         }
         if (bitSet.get(EntityChange.LOOK_PITCH)) {
             data.setLookPitch(buf.readFloat());
@@ -116,7 +157,7 @@ public final class DataCodec {
             data.setNu6(buf.readUnsignedInt());
         }
         if (bitSet.get(EntityChange.RAY_HIT)) {
-            data.setRayHit(readFloatVector3(buf));
+            data.setRayHit(GeomCodec.readFloatVector3(buf));
         }
         if (bitSet.get(EntityChange.HP)) {
             data.setHp(buf.readFloat());
@@ -165,7 +206,7 @@ public final class DataCodec {
             data.setNu12(buf.readUnsignedInt());
         }
         if (bitSet.get(EntityChange.SPAWN_POSITION)) {
-            data.setSpawnPosition(readLongVector3(buf));
+            data.setSpawnPosition(GeomCodec.readLongVector3(buf));
         }
         if (bitSet.get(EntityChange.NU_20_21_22)) {
             data.setNu20(buf.readUnsignedInt());
@@ -176,12 +217,12 @@ public final class DataCodec {
             data.setNu19(buf.readByte());
         }
         if (bitSet.get(EntityChange.ITEM_DATA)) {
-            data.setItemData(readItem(buf));
+            data.setItemData(ItemCodec.readItem(buf));
         }
         if (bitSet.get(EntityChange.EQUIPMENT)) {
             Item[] equipment = data.getEquipment();
             for (int i = 0; i < 13; i++) {
-                equipment[i] = readItem(buf);
+                equipment[i] = ItemCodec.readItem(buf);
             }
             data.setEquipment(equipment);
         }
@@ -202,21 +243,69 @@ public final class DataCodec {
         return data;
     }
 
+    public static void writeAppearance(ByteBuf buf, Appearance a) {
+        buf.writeByte(a.getNotUsed1());
+        buf.writeByte(a.getNotUsed2());
+        buf.writeByte(a.getHairR());
+        buf.writeByte(a.getHairG());
+        buf.writeByte(a.getHairB());
+        buf.writeZero(1);
+        buf.writeByte(a.getMovementFlags());
+        buf.writeByte(a.getEntityFlags());
+        buf.writeFloat(a.getScale());
+        buf.writeFloat(a.getBoundingRadius());
+        buf.writeFloat(a.getBoundingHeight());
+        buf.writeShort(a.getHeadModel());
+        buf.writeShort(a.getHairModel());
+        buf.writeShort(a.getHandModel());
+        buf.writeShort(a.getFootModel());
+        buf.writeShort(a.getBodyModel());
+        buf.writeShort(a.getBackModel());
+        buf.writeShort(a.getShoulderModel());
+        buf.writeShort(a.getWingModel());
+        buf.writeFloat(a.getHeadScale());
+        buf.writeFloat(a.getBodyScale());
+        buf.writeFloat(a.getHandScale());
+        buf.writeFloat(a.getFootScale());
+        buf.writeFloat(a.getShoulderScale());
+        buf.writeFloat(a.getWeaponScale());
+        buf.writeFloat(a.getBackScale());
+        buf.writeFloat(a.getUnknown());
+        buf.writeFloat(a.getWingScale());
+        buf.writeFloat(a.getBodyPitch());
+        buf.writeFloat(a.getArmPitch());
+        buf.writeFloat(a.getArmRoll());
+        buf.writeFloat(a.getArmYaw());
+        buf.writeFloat(a.getFeetPitch());
+        buf.writeFloat(a.getWingPitch());
+        buf.writeFloat(a.getBackPitch());
+        GeomCodec.writeFloatVector3(buf, a.getBodyOffset());
+        GeomCodec.writeFloatVector3(buf, a.getHeadOffset());
+        GeomCodec.writeFloatVector3(buf, a.getHandOffset());
+        GeomCodec.writeFloatVector3(buf, a.getFootOffset());
+        GeomCodec.writeFloatVector3(buf, a.getBackOffset());
+        GeomCodec.writeFloatVector3(buf, a.getWingOffset());
+    }
+
+    public static void writeEntityChanges(ByteBuf buf, EntityChanges changes) {
+        buf.writeBytes(changes.toByteArray());
+    }
+
     public static void writeEntityData(ByteBuf buf, EntityChanges changes, EntityData data) {
         if (changes.get(EntityChange.POSITION)) {
-            writeLongVector3(buf, data.getPosition());
+            GeomCodec.writeLongVector3(buf, data.getPosition());
         }
         if (changes.get(EntityChange.ORIENTATION)) {
-            writeOrientation(buf, data.getOrientation());
+            GeomCodec.writeOrientation(buf, data.getOrientation());
         }
         if (changes.get(EntityChange.VELOCITY)) {
-            writeFloatVector3(buf, data.getVelocity());
+            GeomCodec.writeFloatVector3(buf, data.getVelocity());
         }
         if (changes.get(EntityChange.ACCELERATION)) {
-            writeFloatVector3(buf, data.getAccel());
+            GeomCodec.writeFloatVector3(buf, data.getAccel());
         }
         if (changes.get(EntityChange.EXTRA_VELOCITY)) {
-            writeFloatVector3(buf, data.getExtraVel());
+            GeomCodec.writeFloatVector3(buf, data.getExtraVel());
         }
         if (changes.get(EntityChange.LOOK_PITCH)) {
             buf.writeFloat(data.getLookPitch());
@@ -287,7 +376,7 @@ public final class DataCodec {
             buf.writeInt((int) data.getNu6());
         }
         if (changes.get(EntityChange.RAY_HIT)) {
-            writeFloatVector3(buf, data.getRayHit());
+            GeomCodec.writeFloatVector3(buf, data.getRayHit());
         }
         if (changes.get(EntityChange.HP)) {
             buf.writeFloat(data.getHp());
@@ -336,7 +425,7 @@ public final class DataCodec {
             buf.writeInt((int) data.getNu12());
         }
         if (changes.get(EntityChange.SPAWN_POSITION)) {
-            writeLongVector3(buf, data.getSpawnPosition());
+            GeomCodec.writeLongVector3(buf, data.getSpawnPosition());
         }
         if (changes.get(EntityChange.NU_20_21_22)) {
             buf.writeInt((int) data.getNu20());
@@ -347,12 +436,12 @@ public final class DataCodec {
             buf.writeByte(data.getNu19());
         }
         if (changes.get(EntityChange.ITEM_DATA)) {
-            writeItem(buf, data.getItemData());
+            ItemCodec.writeItem(buf, data.getItemData());
         }
         if (changes.get(EntityChange.EQUIPMENT)) {
             Item[] equipment = data.getEquipment();
             for (int i = 0; i < 13; i++) {
-                writeItem(buf, equipment[i]);
+                ItemCodec.writeItem(buf, equipment[i]);
             }
         }
         if (changes.get(EntityChange.NAME)) {
@@ -369,186 +458,5 @@ public final class DataCodec {
         if (changes.get(EntityChange.ICE_BLOCK_FOUR)) {
             buf.writeInt((int) data.getIceBlockFour());
         }
-    }
-
-    public static Appearance readAppearance(ByteBuf buf) {
-        Appearance a = new Appearance();
-        a.setNotUsed1(buf.readByte());
-        a.setNotUsed2(buf.readByte());
-        a.setHairR(buf.readByte());
-        a.setHairG(buf.readByte());
-        a.setHairB(buf.readByte());
-        buf.skipBytes(1);
-        a.setMovementFlags(buf.readByte());
-        a.setEntityFlags(buf.readByte());
-        a.setScale(buf.readFloat());
-        a.setBoundingRadius(buf.readFloat());
-        a.setBoundingHeight(buf.readFloat());
-        a.setHeadModel(buf.readUnsignedShort());
-        a.setHairModel(buf.readUnsignedShort());
-        a.setHandModel(buf.readUnsignedShort());
-        a.setFootModel(buf.readUnsignedShort());
-        a.setBodyModel(buf.readUnsignedShort());
-        a.setBackModel(buf.readUnsignedShort());
-        a.setShoulderModel(buf.readUnsignedShort());
-        a.setWingModel(buf.readUnsignedShort());
-        a.setHeadScale(buf.readFloat());
-        a.setBodyScale(buf.readFloat());
-        a.setHandScale(buf.readFloat());
-        a.setFootScale(buf.readFloat());
-        a.setShoulderScale(buf.readFloat());
-        a.setWeaponScale(buf.readFloat());
-        a.setBackScale(buf.readFloat());
-        a.setUnknown(buf.readFloat());
-        a.setWingScale(buf.readFloat());
-        a.setBodyPitch(buf.readFloat());
-        a.setArmPitch(buf.readFloat());
-        a.setArmRoll(buf.readFloat());
-        a.setArmYaw(buf.readFloat());
-        a.setFeetPitch(buf.readFloat());
-        a.setWingPitch(buf.readFloat());
-        a.setBackPitch(buf.readFloat());
-        a.setBodyOffset(readFloatVector3(buf));
-        a.setHeadOffset(readFloatVector3(buf));
-        a.setHandOffset(readFloatVector3(buf));
-        a.setFootOffset(readFloatVector3(buf));
-        a.setBackOffset(readFloatVector3(buf));
-        a.setWingOffset(readFloatVector3(buf));
-        return a;
-    }
-
-    public static void writeAppearance(ByteBuf buf, Appearance a) {
-        buf.writeByte(a.getNotUsed1());
-        buf.writeByte(a.getNotUsed2());
-        buf.writeByte(a.getHairR());
-        buf.writeByte(a.getHairG());
-        buf.writeByte(a.getHairB());
-        buf.writeZero(1);
-        buf.writeByte(a.getMovementFlags());
-        buf.writeByte(a.getEntityFlags());
-        buf.writeFloat(a.getScale());
-        buf.writeFloat(a.getBoundingRadius());
-        buf.writeFloat(a.getBoundingHeight());
-        buf.writeShort(a.getHeadModel());
-        buf.writeShort(a.getHairModel());
-        buf.writeShort(a.getHandModel());
-        buf.writeShort(a.getFootModel());
-        buf.writeShort(a.getBodyModel());
-        buf.writeShort(a.getBackModel());
-        buf.writeShort(a.getShoulderModel());
-        buf.writeShort(a.getWingModel());
-        buf.writeFloat(a.getHeadScale());
-        buf.writeFloat(a.getBodyScale());
-        buf.writeFloat(a.getHandScale());
-        buf.writeFloat(a.getFootScale());
-        buf.writeFloat(a.getShoulderScale());
-        buf.writeFloat(a.getWeaponScale());
-        buf.writeFloat(a.getBackScale());
-        buf.writeFloat(a.getUnknown());
-        buf.writeFloat(a.getWingScale());
-        buf.writeFloat(a.getBodyPitch());
-        buf.writeFloat(a.getArmPitch());
-        buf.writeFloat(a.getArmRoll());
-        buf.writeFloat(a.getArmYaw());
-        buf.writeFloat(a.getFeetPitch());
-        buf.writeFloat(a.getWingPitch());
-        buf.writeFloat(a.getBackPitch());
-        writeFloatVector3(buf, a.getBodyOffset());
-        writeFloatVector3(buf, a.getHeadOffset());
-        writeFloatVector3(buf, a.getHandOffset());
-        writeFloatVector3(buf, a.getFootOffset());
-        writeFloatVector3(buf, a.getBackOffset());
-        writeFloatVector3(buf, a.getWingOffset());
-    }
-
-    public static Item readItem(ByteBuf buf) {
-        Item i = new Item();
-        i.setType(buf.readByte());
-        i.setSubtype(buf.readByte());
-        buf.skipBytes(2);
-        i.setModifier(buf.readUnsignedInt());
-        i.setMinusModifier(buf.readUnsignedInt());
-        i.setRarity(buf.readByte());
-        i.setMaterial(buf.readByte());
-        i.setFlags(buf.readByte());
-        buf.skipBytes(1);
-        i.setLevel(buf.readShort());
-        buf.skipBytes(2);
-
-        ItemUpgrade[] upgrades = i.getUpgrades();
-        for (int j = 0; j < upgrades.length; ++j) {
-            upgrades[j] = readItemUpgrade(buf);
-        }
-        i.setUpgrades(upgrades);
-
-        i.setUpgradeCount(buf.readUnsignedInt());
-        return i;
-    }
-
-    public static void writeItem(ByteBuf buf, Item i) {
-        buf.writeByte(i.getType());
-        buf.writeByte(i.getSubtype());
-        buf.writeZero(2);
-        buf.writeInt((int) i.getModifier());
-        buf.writeInt((int) i.getMinusModifier());
-        buf.writeByte(i.getRarity());
-        buf.writeByte(i.getMaterial());
-        buf.writeByte(i.getFlags());
-        buf.writeZero(1);
-        buf.writeShort(i.getLevel());
-        buf.writeZero(2);
-        ItemUpgrade[] upgrades = i.getUpgrades();
-        for (int j = 0; j < upgrades.length; ++j) {
-            writeItemUpgrade(buf, upgrades[j]);
-        }
-        buf.writeInt((int) i.getUpgradeCount());
-    }
-
-    public static ItemUpgrade readItemUpgrade(ByteBuf buf) {
-        ItemUpgrade u = new ItemUpgrade();
-        u.setxOffset(buf.readByte());
-        u.setyOffset(buf.readByte());
-        u.setzOffset(buf.readByte());
-        u.setMaterial(buf.readByte());
-        u.setLevel(buf.readUnsignedInt());
-        return u;
-    }
-
-    public static void writeItemUpgrade(ByteBuf buf, ItemUpgrade u) {
-        buf.writeByte(u.getxOffset());
-        buf.writeByte(u.getyOffset());
-        buf.writeByte(u.getzOffset());
-        buf.writeByte(u.getMaterial());
-        buf.writeInt((int) u.getLevel());
-    }
-
-    public static FloatVector3 readFloatVector3(ByteBuf buf) {
-        return new FloatVector3(buf.readFloat(), buf.readFloat(), buf.readFloat());
-    }
-
-    public static LongVector3 readLongVector3(ByteBuf buf) {
-        return new LongVector3(buf.readLong(), buf.readLong(), buf.readLong());
-    }
-
-    public static Orientation readOrientation(ByteBuf buf) {
-        return new Orientation(buf.readFloat(), buf.readFloat(), buf.readFloat());
-    }
-
-    public static void writeFloatVector3(ByteBuf buf, FloatVector3 vector) {
-        buf.writeFloat(vector.getX());
-        buf.writeFloat(vector.getY());
-        buf.writeFloat(vector.getZ());
-    }
-
-    public static void writeLongVector3(ByteBuf buf, LongVector3 vector) {
-        buf.writeLong(vector.getX());
-        buf.writeLong(vector.getY());
-        buf.writeLong(vector.getZ());
-    }
-
-    public static void writeOrientation(ByteBuf buf, Orientation orientation) {
-        buf.writeFloat(orientation.getRoll());
-        buf.writeFloat(orientation.getPitch());
-        buf.writeFloat(orientation.getYaw());
     }
 }

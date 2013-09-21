@@ -9,7 +9,7 @@ import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
 import org.glydar.protocol.RemoteType;
-import org.glydar.protocol.data.DataCodec;
+import org.glydar.protocol.codec.GeomCodec;
 
 public class Packet09Shoot implements Packet {
 
@@ -45,13 +45,13 @@ public class Packet09Shoot implements Packet {
         this.chunkY = buf.readInt();
         this.something5 = buf.readUnsignedInt();
         buf.skipBytes(4);
-        this.position = DataCodec.readLongVector3(buf);
+        this.position = GeomCodec.readLongVector3(buf);
 
         this.something13 = buf.readUnsignedInt();
         this.something14 = buf.readUnsignedInt();
         this.something15 = buf.readUnsignedInt();
 
-        this.velocity = DataCodec.readFloatVector3(buf);
+        this.velocity = GeomCodec.readFloatVector3(buf);
 
         this.something19 = buf.readFloat();
         this.something20 = buf.readFloat();
@@ -79,11 +79,11 @@ public class Packet09Shoot implements Packet {
         buf.writeInt(chunkY);
         buf.writeInt((int) something5);
         buf.writeZero(4);
-        DataCodec.writeLongVector3(buf, position);
+        GeomCodec.writeLongVector3(buf, position);
         buf.writeInt((int) something13);
         buf.writeInt((int) something14);
         buf.writeInt((int) something15);
-        DataCodec.writeFloatVector3(buf, velocity);
+        GeomCodec.writeFloatVector3(buf, velocity);
         buf.writeFloat(something19);
         buf.writeFloat(something20);
         buf.writeFloat(something21);

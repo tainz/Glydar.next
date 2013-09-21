@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import org.glydar.api.geom.FloatVector3;
 import org.glydar.api.geom.LongVector3;
+import org.glydar.protocol.codec.GeomCodec;
 
 public class ParticleData {
 
@@ -20,8 +21,8 @@ public class ParticleData {
     private final int          something18;
 
     public ParticleData(ByteBuf buf) {
-        this.position = DataCodec.readLongVector3(buf);
-        this.acceleration = DataCodec.readFloatVector3(buf);
+        this.position = GeomCodec.readLongVector3(buf);
+        this.acceleration = GeomCodec.readFloatVector3(buf);
         this.colorRed = buf.readFloat();
         this.colorBlue = buf.readFloat();
         this.colorGreen = buf.readFloat();
@@ -34,8 +35,8 @@ public class ParticleData {
     }
 
     public void writeTo(ByteBuf buf) {
-        DataCodec.writeLongVector3(buf, position);
-        DataCodec.writeFloatVector3(buf, acceleration);
+        GeomCodec.writeLongVector3(buf, position);
+        GeomCodec.writeFloatVector3(buf, acceleration);
         buf.writeFloat(colorRed);
         buf.writeFloat(colorBlue);
         buf.writeFloat(colorGreen);

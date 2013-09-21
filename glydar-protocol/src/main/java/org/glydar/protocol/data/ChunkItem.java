@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 
 import org.glydar.api.geom.LongVector3;
 import org.glydar.api.item.Item;
+import org.glydar.protocol.codec.ItemCodec;
+import org.glydar.protocol.codec.GeomCodec;
 
 public class ChunkItem {
 
@@ -28,8 +30,8 @@ public class ChunkItem {
     }
 
     public ChunkItem(ByteBuf buf) {
-        this.item = DataCodec.readItem(buf);
-        this.position = DataCodec.readLongVector3(buf);
+        this.item = ItemCodec.readItem(buf);
+        this.position = GeomCodec.readLongVector3(buf);
         this.rotation = buf.readFloat();
         this.scale = buf.readFloat();
         this.unknown1 = buf.readByte();
@@ -40,8 +42,8 @@ public class ChunkItem {
     }
 
     public void writeTo(ByteBuf buf) {
-        DataCodec.writeItem(buf, item);
-        DataCodec.writeLongVector3(buf, position);
+        ItemCodec.writeItem(buf, item);
+        GeomCodec.writeLongVector3(buf, position);
         buf.writeFloat(rotation);
         buf.writeFloat(scale);
         buf.writeByte(unknown1);

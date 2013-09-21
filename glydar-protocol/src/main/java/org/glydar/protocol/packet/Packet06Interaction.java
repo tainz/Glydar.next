@@ -8,7 +8,7 @@ import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
 import org.glydar.protocol.RemoteType;
-import org.glydar.protocol.data.DataCodec;
+import org.glydar.protocol.codec.ItemCodec;
 
 public class Packet06Interaction implements Packet {
 
@@ -22,7 +22,7 @@ public class Packet06Interaction implements Packet {
     private final int  something7;  // ushort
 
     public Packet06Interaction(ByteBuf buf) {
-        item = DataCodec.readItem(buf);
+        item = ItemCodec.readItem(buf);
         chunkX = buf.readInt();
         chunkY = buf.readInt();
         itemIndex = buf.readInt();
@@ -39,7 +39,7 @@ public class Packet06Interaction implements Packet {
 
     @Override
     public void writeTo(RemoteType receiver, ByteBuf buf) {
-        DataCodec.writeItem(buf, item);
+        ItemCodec.writeItem(buf, item);
         buf.writeInt(chunkX);
         buf.writeInt(chunkY);
         buf.writeInt(itemIndex);

@@ -3,6 +3,7 @@ package org.glydar.protocol.data;
 import io.netty.buffer.ByteBuf;
 
 import org.glydar.api.item.Item;
+import org.glydar.protocol.codec.ItemCodec;
 
 public class PickupAction {
 
@@ -11,12 +12,12 @@ public class PickupAction {
 
     public PickupAction(ByteBuf buf) {
         this.id = buf.readLong();
-        this.item = DataCodec.readItem(buf);
+        this.item = ItemCodec.readItem(buf);
 
     }
 
     public void writeTo(ByteBuf buf) {
         buf.writeLong(id);
-        DataCodec.writeItem(buf, item);
+        ItemCodec.writeItem(buf, item);
     }
 }

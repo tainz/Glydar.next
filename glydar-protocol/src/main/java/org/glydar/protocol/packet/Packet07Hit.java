@@ -10,7 +10,7 @@ import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
 import org.glydar.protocol.RemoteType;
-import org.glydar.protocol.data.DataCodec;
+import org.glydar.protocol.codec.GeomCodec;
 
 public class Packet07Hit implements Packet {
 
@@ -48,8 +48,8 @@ public class Packet07Hit implements Packet {
         buf.skipBytes(3);
         this.stunDuration = buf.readUnsignedInt();
         this.unknown = buf.readUnsignedInt();
-        this.position = DataCodec.readLongVector3(buf);
-        this.hitDirection = DataCodec.readFloatVector3(buf);
+        this.position = GeomCodec.readLongVector3(buf);
+        this.hitDirection = GeomCodec.readFloatVector3(buf);
         this.skillHit = buf.readByte();
         this.type = buf.readByte();
         this.showLight = buf.readByte();
@@ -70,8 +70,8 @@ public class Packet07Hit implements Packet {
         buf.writeZero(3);
         buf.writeInt((int) stunDuration);
         buf.writeInt((int) unknown);
-        DataCodec.writeLongVector3(buf, position);
-        DataCodec.writeFloatVector3(buf, hitDirection);
+        GeomCodec.writeLongVector3(buf, position);
+        GeomCodec.writeFloatVector3(buf, hitDirection);
         buf.writeByte(skillHit);
         buf.writeByte(type);
         buf.writeByte(showLight);
