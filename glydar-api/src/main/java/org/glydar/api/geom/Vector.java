@@ -1,6 +1,6 @@
 package org.glydar.api.geom;
 
-public interface Vector3<N extends Number, V extends Vector3<N, V>> extends Comparable<V> {
+public interface Vector<N extends Number, V extends Vector<N, V>> extends Comparable<V> {
 
     double length();
 

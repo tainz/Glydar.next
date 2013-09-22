@@ -1,6 +1,6 @@
 package org.glydar.api.geom;
 
-public class IntVector3 implements Vector3<Integer, IntVector3> {
+public class IntVector3 implements Vector<Integer, IntVector3> {
 
     private final int x;
     private final int y;

@@ -2,7 +2,7 @@ package org.glydar.api.geom;
 
 import com.google.common.primitives.Floats;
 
-public class FloatVector3 implements Vector3<Float, FloatVector3> {
+public class FloatVector3 implements Vector<Float, FloatVector3> {
 
     private final float x;
     private final float y;

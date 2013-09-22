@@ -2,7 +2,7 @@ package org.glydar.api.geom;
 
 import com.google.common.primitives.Longs;
 
-public final class LongVector3 implements Vector3<Long, LongVector3> {
+public final class LongVector3 implements Vector<Long, LongVector3> {
 
     private final long x;
     private final long y;
