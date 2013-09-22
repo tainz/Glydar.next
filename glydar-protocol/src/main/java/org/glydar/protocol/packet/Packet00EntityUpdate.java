@@ -2,28 +2,23 @@ package org.glydar.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
 
+import org.glydar.api.entity.EntityData;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
 import org.glydar.protocol.RemoteType;
+import org.glydar.protocol.codec.EntityCodec;
+import org.glydar.protocol.util.BufWritable;
+import org.glydar.protocol.util.ZLibOperations;
 
 public class Packet00EntityUpdate implements Packet {
 
-    private final byte[] rawData;
-
-    // private final long entityId;
-    // private final EntityChanges changes;
-    // private final EntityData data;
+    private final EntityData data;
 
     public Packet00EntityUpdate(ByteBuf buf) {
-        int length = buf.readInt();
-        this.rawData = new byte[length];
-        buf.readBytes(rawData);
-        // ByteBuf decompressed = ZLibOperations.decompress(buf);
-        // this.entityId = decompressed.readLong();
-        // this.changes = DataCodec.readEntityChanges(decompressed);
-        // this.data = DataCodec.readEntityData(decompressed, changes);
+        ByteBuf decompressed = ZLibOperations.decompress(buf);
+        this.data = EntityCodec.readEntityData(decompressed);
     }
 
     @Override
@@ -33,8 +28,7 @@ public class Packet00EntityUpdate implements Packet {
 
     @Override
     public void writeTo(RemoteType receiver, ByteBuf buf) {
-        buf.writeInt(rawData.length);
-        buf.writeBytes(rawData);
+        ZLibOperations.compress(receiver, buf, new EntityUpdate());
     }
 
     @Override
@@ -42,13 +36,11 @@ public class Packet00EntityUpdate implements Packet {
         handler.handle(remote, this);
     }
 
-    // private class EntityUpdate implements BufWritable {
-    //
-    // @Override
-    // public void writeTo(ByteBuf buf) {
-    // buf.writeLong(entityId);
-    // DataCodec.writeEntityChanges(buf, changes);
-    // DataCodec.writeEntityData(buf, changes, data);
-    // }
-    // }
+    private class EntityUpdate implements BufWritable {
+
+        @Override
+        public void writeTo(RemoteType receiver, ByteBuf buf) {
+            EntityCodec.writeEntityData(buf, data);
+        }
+    }
 }

@@ -1,11 +1,18 @@
 package org.glydar.api.entity;
 
+import java.util.BitSet;
+
 import org.glydar.api.geom.FloatVector3;
 import org.glydar.api.geom.LongVector3;
 import org.glydar.api.geom.Orientation;
 import org.glydar.api.item.Item;
 
+/* Structures and data discovered by mat^2 (http://github.com/matpow2) */
+
 public class EntityData {
+
+    private long         id;
+    private BitSet       bitSet;
 
     private LongVector3  position;
     private Orientation  orientation;
@@ -39,8 +46,8 @@ public class EntityData {
 
     private FloatVector3 rayHit;
 
-    private float        hp;
-    private float        mp;
+    private float        HP;
+    private float        MP;
 
     private float        blockPower;
     private float        maxHPMultiplier;
@@ -80,6 +87,7 @@ public class EntityData {
     private byte         nu19;
 
     public EntityData() {
+        bitSet = new BitSet(64);
         position = new LongVector3();
         velocity = new FloatVector3();
         accel = new FloatVector3();
@@ -88,14 +96,15 @@ public class EntityData {
         app = new Appearance();
         itemData = new Item();
         equipment = new Item[13];
-        for (int i = 0; i < 13; i++) {
+        for (int i = 0; i < 13; i++)
             equipment[i] = new Item();
-        }
         spawnPosition = new LongVector3();
         skills = new long[11];
     }
 
     public EntityData(EntityData e) {
+        this.id = e.getId();
+        this.bitSet = e.getBitSet();
         this.position = e.getPosition();
         this.orientation = e.getOrientation();
         this.velocity = e.getVelocity();
@@ -122,8 +131,8 @@ public class EntityData {
         this.specialization = e.getSpecialization();
         this.chargedMP = e.getChargedMP();
         this.rayHit = e.getRayHit();
-        this.hp = e.getHp();
-        this.mp = e.getMp();
+        HP = e.getHP();
+        MP = e.getMP();
         this.blockPower = e.getBlockPower();
         this.maxHPMultiplier = e.getMaxHPMultiplier();
         this.shootSpeed = e.getShootSpeed();
@@ -161,6 +170,26 @@ public class EntityData {
         this.nu21 = e.getNu21();
         this.nu22 = e.getNu22();
         this.nu19 = e.getNu19();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public BitSet getBitSet() {
+        return bitSet;
+    }
+
+    public void setBitSet(BitSet b) {
+        this.bitSet = b;
+    }
+
+    public void fullUpdate() {
+        bitSet.set(0, 63);
     }
 
     public LongVector3 getPosition() {
@@ -371,20 +400,20 @@ public class EntityData {
         this.rayHit = rayHit;
     }
 
-    public float getHp() {
-        return hp;
+    public float getHP() {
+        return HP;
     }
 
-    public void setHp(float hP) {
-        hp = hP;
+    public void setHP(float hP) {
+        HP = hP;
     }
 
-    public float getMp() {
-        return mp;
+    public float getMP() {
+        return MP;
     }
 
-    public void setMp(float mP) {
-        mp = mP;
+    public void setMP(float mP) {
+        MP = mP;
     }
 
     public float getBlockPower() {
