@@ -2,20 +2,20 @@ package org.glydar.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
 
+import org.glydar.api.geom.IntVector2;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
 import org.glydar.protocol.RemoteType;
+import org.glydar.protocol.codec.GeomCodec;
 
 public class Packet11ChunkDiscovery implements Packet {
 
-    private final int chunkX;
-    private final int chunkZ;
+    private final IntVector2 position;
 
     public Packet11ChunkDiscovery(ByteBuf buf) {
-        chunkX = buf.readInt();
-        chunkZ = buf.readInt();
+        this.position = GeomCodec.readIntVector2(buf);
     }
 
     @Override
@@ -25,8 +25,7 @@ public class Packet11ChunkDiscovery implements Packet {
 
     @Override
     public void writeTo(RemoteType receiver, ByteBuf buf) {
-        buf.writeInt(chunkX);
-        buf.writeInt(chunkZ);
+        GeomCodec.writeIntVector2(buf, position);
     }
 
     @Override
@@ -34,11 +33,7 @@ public class Packet11ChunkDiscovery implements Packet {
         handler.handle(remote, this);
     }
 
-    public int getChunkX() {
-        return chunkX;
-    }
-
-    public int getChunkZ() {
-        return chunkZ;
+    public IntVector2 getPosition() {
+        return position;
     }
 }

@@ -4,24 +4,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.glydar.api.geom.IntVector2;
+
 public class ChunkItems {
 
-    private final int             chunkX;
-    private final int             chunkY;
+    private final IntVector2      position;
     private final List<ChunkItem> items;
 
-    public ChunkItems(int chunkX, int chunkY) {
-        this.chunkX = chunkX;
-        this.chunkY = chunkY;
+    public ChunkItems(IntVector2 position) {
+        this.position = position;
         this.items = new ArrayList<>();
     }
 
-    public int getChunkX() {
-        return chunkX;
-    }
-
-    public int getChunkY() {
-        return chunkY;
+    public IntVector2 getPosition() {
+        return position;
     }
 
     public List<ChunkItem> getItems() {

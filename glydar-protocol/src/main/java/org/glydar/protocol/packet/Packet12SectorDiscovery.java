@@ -2,20 +2,20 @@ package org.glydar.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
 
+import org.glydar.api.geom.IntVector2;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
 import org.glydar.protocol.RemoteType;
+import org.glydar.protocol.codec.GeomCodec;
 
 public class Packet12SectorDiscovery implements Packet {
 
-    private final int sectorX;
-    private final int sectorZ;
+    private final IntVector2 position;
 
     public Packet12SectorDiscovery(ByteBuf buf) {
-        this.sectorX = buf.readInt();
-        this.sectorZ = buf.readInt();
+        this.position = GeomCodec.readIntVector2(buf);
     }
 
     @Override
@@ -25,8 +25,7 @@ public class Packet12SectorDiscovery implements Packet {
 
     @Override
     public void writeTo(RemoteType receiver, ByteBuf buf) {
-        buf.writeInt(sectorX);
-        buf.writeInt(sectorZ);
+        GeomCodec.writeIntVector2(buf, position);
     }
 
     @Override
@@ -34,11 +33,7 @@ public class Packet12SectorDiscovery implements Packet {
         handler.handle(remote, this);
     }
 
-    public int getSectorX() {
-        return sectorX;
-    }
-
-    public int getSectorZ() {
-        return sectorZ;
+    public IntVector2 getPosition() {
+        return position;
     }
 }

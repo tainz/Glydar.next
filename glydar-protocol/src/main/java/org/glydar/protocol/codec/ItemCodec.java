@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
+import org.glydar.api.geom.IntVector2;
 import org.glydar.api.geom.LongVector3;
 import org.glydar.api.item.ChunkItem;
 import org.glydar.api.item.ChunkItems;
@@ -105,10 +106,8 @@ public final class ItemCodec {
     }
 
     public static ChunkItems readChunkItems(ByteBuf buf) {
-        int chunkX = buf.readInt();
-        int chunkY = buf.readInt();
-
-        ChunkItems chunkItems = new ChunkItems(chunkX, chunkY);
+        IntVector2 position = GeomCodec.readIntVector2(buf);
+        ChunkItems chunkItems = new ChunkItems(position);
         int length = buf.readInt();
         for (int i = 0; i < length; i++) {
             chunkItems.addItem(readChunkItem(buf));
@@ -118,9 +117,7 @@ public final class ItemCodec {
     }
 
     public static void writeChunkItems(ByteBuf buf, ChunkItems chunkItems) {
-        buf.writeInt(chunkItems.getChunkX());
-        buf.writeInt(chunkItems.getChunkY());
-
+        GeomCodec.writeIntVector2(buf, chunkItems.getPosition());
         List<ChunkItem> items = chunkItems.getItems();
         buf.writeInt(items.size());
         for (ChunkItem chunkItem : items) {

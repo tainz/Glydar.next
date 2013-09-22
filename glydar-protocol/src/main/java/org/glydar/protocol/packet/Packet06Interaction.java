@@ -2,29 +2,29 @@ package org.glydar.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
 
+import org.glydar.api.geom.IntVector2;
 import org.glydar.api.item.Item;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
 import org.glydar.protocol.RemoteType;
+import org.glydar.protocol.codec.GeomCodec;
 import org.glydar.protocol.codec.ItemCodec;
 
 public class Packet06Interaction implements Packet {
 
-    private final Item item;
-    private final int  chunkX;
-    private final int  chunkY;
-    private final int  itemIndex;   // Index of item in ChunkItems
-    private final long something4;  // uint
-    private final byte interactType; // TODO ENUM
-    private final byte something6;
-    private final int  something7;  // ushort
+    private final Item       item;
+    private final IntVector2 chunkPosition;
+    private final int        itemIndex;    // Index of item in ChunkItems
+    private final long       something4;   // uint
+    private final byte       interactType; // TODO ENUM
+    private final byte       something6;
+    private final int        something7;   // ushort
 
     public Packet06Interaction(ByteBuf buf) {
         item = ItemCodec.readItem(buf);
-        chunkX = buf.readInt();
-        chunkY = buf.readInt();
+        chunkPosition = GeomCodec.readIntVector2(buf);
         itemIndex = buf.readInt();
         something4 = buf.readUnsignedInt();
         interactType = buf.readByte();
@@ -40,8 +40,7 @@ public class Packet06Interaction implements Packet {
     @Override
     public void writeTo(RemoteType receiver, ByteBuf buf) {
         ItemCodec.writeItem(buf, item);
-        buf.writeInt(chunkX);
-        buf.writeInt(chunkY);
+        GeomCodec.writeIntVector2(buf, chunkPosition);
         buf.writeInt(itemIndex);
         buf.writeInt((int) something4);
         buf.writeByte(interactType);
@@ -58,12 +57,8 @@ public class Packet06Interaction implements Packet {
         return item;
     }
 
-    public int getChunkX() {
-        return chunkX;
-    }
-
-    public int getChunkY() {
-        return chunkY;
+    public IntVector2 getChunkPosition() {
+        return chunkPosition;
     }
 
     public int getItemIndex() {

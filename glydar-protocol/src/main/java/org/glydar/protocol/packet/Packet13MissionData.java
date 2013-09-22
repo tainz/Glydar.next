@@ -2,31 +2,31 @@ package org.glydar.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
 
+import org.glydar.api.geom.IntVector2;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
 import org.glydar.protocol.ProtocolHandler;
 import org.glydar.protocol.Remote;
 import org.glydar.protocol.RemoteType;
+import org.glydar.protocol.codec.GeomCodec;
 
 public class Packet13MissionData implements Packet {
 
-    private final int   sectorX;
-    private final int   sectorY;
-    private final long  something3; // uint
-    private final long  something4; // uint
-    private final long  something5; // uint
-    private final long  monsterId;  // uint
-    private final long  questLevel; // uint
-    private final short something8; // ubyte
-    private final short something9; // ubyte
-    private final float something10;
-    private final float something11;
-    private final long  chunkX;     // uint
-    private final long  chunkY;     // uint
+    private final IntVector2 sectorPosition;
+    private final long       something3;    // uint
+    private final long       something4;    // uint
+    private final long       something5;    // uint
+    private final long       monsterId;     // uint
+    private final long       questLevel;    // uint
+    private final short      something8;    // ubyte
+    private final short      something9;    // ubyte
+    private final float      something10;
+    private final float      something11;
+    private final long       chunkX;
+    private final long       chunkY;
 
     public Packet13MissionData(ByteBuf buf) {
-        this.sectorX = buf.readInt() / 8;
-        this.sectorY = buf.readInt() / 8;
+        this.sectorPosition = GeomCodec.readIntVector2(buf).divide(8);
         this.something3 = buf.readUnsignedInt();
         this.something4 = buf.readUnsignedInt();
         this.something5 = buf.readUnsignedInt();
@@ -48,8 +48,7 @@ public class Packet13MissionData implements Packet {
 
     @Override
     public void writeTo(RemoteType receiver, ByteBuf buf) {
-        buf.writeInt(sectorX * 8);
-        buf.writeInt(sectorY * 8);
+        GeomCodec.writeIntVector2(buf, sectorPosition.multiply(8));
         buf.writeLong(something3);
         buf.writeLong(something4);
         buf.writeLong(something5);
@@ -69,12 +68,8 @@ public class Packet13MissionData implements Packet {
         handler.handle(remote, this);
     }
 
-    public int getSectorX() {
-        return sectorX;
-    }
-
-    public int getSectorY() {
-        return sectorY;
+    public IntVector2 getSectorPosition() {
+        return sectorPosition;
     }
 
     public long getSomething3() {

@@ -3,6 +3,7 @@ package org.glydar.protocol.packet;
 import io.netty.buffer.ByteBuf;
 
 import org.glydar.api.geom.FloatVector3;
+import org.glydar.api.geom.IntVector2;
 import org.glydar.api.geom.LongVector3;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.PacketType;
@@ -13,36 +14,34 @@ import org.glydar.protocol.codec.GeomCodec;
 
 public class Packet09Shoot implements Packet {
 
-    private final long         entityId;   // Unsigned!
+    private final long         entityId;     // Unsigned!
 
-    private final int          chunkX;
-    private final int          chunkY;
+    private final IntVector2   chunkPosition;
 
-    private final long         something5; // Unsigned Int!
+    private final long         something5;   // Unsigned Int!
 
     private final LongVector3  position;
 
-    private final long         something13; // uint
-    private final long         something14; // uint
-    private final long         something15; // uint
+    private final long         something13;  // uint
+    private final long         something14;  // uint
+    private final long         something15;  // uint
 
     private final FloatVector3 velocity;
 
-    private final float        something19; // rand() ??
+    private final float        something19;  // rand() ??
     private final float        something20;
     private final float        something21;
-    private final float        something22; // ?????
-    private final long         something23; // uint
+    private final float        something22;  // ?????
+    private final long         something23;  // uint
     private final byte         something24;
-    private final long         something25; // uint
+    private final long         something25;  // uint
     private final byte         something26;
-    private final long         something27; // uint
-    private final long         something28; // uint
+    private final long         something27;  // uint
+    private final long         something28;  // uint
 
     public Packet09Shoot(ByteBuf buf) {
         this.entityId = buf.readLong(); // Unsigned long actually!
-        this.chunkX = buf.readInt();
-        this.chunkY = buf.readInt();
+        this.chunkPosition = GeomCodec.readIntVector2(buf);
         this.something5 = buf.readUnsignedInt();
         buf.skipBytes(4);
         this.position = GeomCodec.readLongVector3(buf);
@@ -75,8 +74,7 @@ public class Packet09Shoot implements Packet {
     @Override
     public void writeTo(RemoteType receiver, ByteBuf buf) {
         buf.writeLong(entityId);
-        buf.writeInt(chunkX);
-        buf.writeInt(chunkY);
+        GeomCodec.writeIntVector2(buf, chunkPosition);
         buf.writeInt((int) something5);
         buf.writeZero(4);
         GeomCodec.writeLongVector3(buf, position);
@@ -107,12 +105,8 @@ public class Packet09Shoot implements Packet {
         return entityId;
     }
 
-    public int getChunkX() {
-        return chunkX;
-    }
-
-    public int getChunkY() {
-        return chunkY;
+    public IntVector2 getChunkPosition() {
+        return chunkPosition;
     }
 
     public long getSomething5() {
