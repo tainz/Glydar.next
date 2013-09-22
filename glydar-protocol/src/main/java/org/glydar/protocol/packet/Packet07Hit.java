@@ -14,7 +14,7 @@ import org.glydar.protocol.codec.GeomCodec;
 
 public class Packet07Hit implements Packet {
 
-    private final long         id;
+    private final long         damagerId;
     private final long         targetId;
     private final float        damage;
     private final byte         critical;
@@ -27,7 +27,7 @@ public class Packet07Hit implements Packet {
     private final byte         showLight;
 
     public Packet07Hit(Entity entity) {
-        this.id = entity.getId();
+        this.damagerId = entity.getId();
         this.targetId = entity.getId();
         this.damage = -100F;
         this.critical = (byte) 0;
@@ -41,7 +41,7 @@ public class Packet07Hit implements Packet {
     }
 
     public Packet07Hit(ByteBuf buf) {
-        this.id = buf.readLong();
+        this.damagerId = buf.readLong();
         this.targetId = buf.readLong();
         this.damage = buf.readFloat();
         this.critical = buf.readByte();
@@ -63,7 +63,7 @@ public class Packet07Hit implements Packet {
 
     @Override
     public void writeTo(RemoteType receiver, ByteBuf buf) {
-        buf.writeLong(id);
+        buf.writeLong(damagerId);
         buf.writeLong(targetId);
         buf.writeFloat(damage);
         buf.writeByte(critical);
@@ -81,5 +81,49 @@ public class Packet07Hit implements Packet {
     @Override
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
+    }
+
+    public long getDamagerId() {
+        return damagerId;
+    }
+
+    public long getTargetId() {
+        return targetId;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    public byte getCritical() {
+        return critical;
+    }
+
+    public long getStunDuration() {
+        return stunDuration;
+    }
+
+    public long getUnknown() {
+        return unknown;
+    }
+
+    public LongVector3 getPosition() {
+        return position;
+    }
+
+    public FloatVector3 getHitDirection() {
+        return hitDirection;
+    }
+
+    public byte getSkillHit() {
+        return skillHit;
+    }
+
+    public byte getType() {
+        return type;
+    }
+
+    public byte getShowLight() {
+        return showLight;
     }
 }

@@ -13,7 +13,7 @@ import org.glydar.protocol.codec.GeomCodec;
 
 public class Packet09Shoot implements Packet {
 
-    private final long         entID;      // Unsigned!
+    private final long         entityId;   // Unsigned!
 
     private final int          chunkX;
     private final int          chunkY;
@@ -40,7 +40,7 @@ public class Packet09Shoot implements Packet {
     private final long         something28; // uint
 
     public Packet09Shoot(ByteBuf buf) {
-        this.entID = buf.readLong(); // Unsigned long actually!
+        this.entityId = buf.readLong(); // Unsigned long actually!
         this.chunkX = buf.readInt();
         this.chunkY = buf.readInt();
         this.something5 = buf.readUnsignedInt();
@@ -74,7 +74,7 @@ public class Packet09Shoot implements Packet {
 
     @Override
     public void writeTo(RemoteType receiver, ByteBuf buf) {
-        buf.writeLong(entID);
+        buf.writeLong(entityId);
         buf.writeInt(chunkX);
         buf.writeInt(chunkY);
         buf.writeInt((int) something5);
@@ -101,5 +101,81 @@ public class Packet09Shoot implements Packet {
     @Override
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
+    }
+
+    public long getEntityId() {
+        return entityId;
+    }
+
+    public int getChunkX() {
+        return chunkX;
+    }
+
+    public int getChunkY() {
+        return chunkY;
+    }
+
+    public long getSomething5() {
+        return something5;
+    }
+
+    public LongVector3 getPosition() {
+        return position;
+    }
+
+    public long getSomething13() {
+        return something13;
+    }
+
+    public long getSomething14() {
+        return something14;
+    }
+
+    public long getSomething15() {
+        return something15;
+    }
+
+    public FloatVector3 getVelocity() {
+        return velocity;
+    }
+
+    public float getSomething19() {
+        return something19;
+    }
+
+    public float getSomething20() {
+        return something20;
+    }
+
+    public float getSomething21() {
+        return something21;
+    }
+
+    public float getSomething22() {
+        return something22;
+    }
+
+    public float getSomething23() {
+        return something23;
+    }
+
+    public float getSomething24() {
+        return something24;
+    }
+
+    public float getSomething25() {
+        return something25;
+    }
+
+    public float getSomething26() {
+        return something26;
+    }
+
+    public float getSomething27() {
+        return something27;
+    }
+
+    public float getSomething28() {
+        return something28;
     }
 }

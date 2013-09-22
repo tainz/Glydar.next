@@ -33,4 +33,12 @@ public class Packet11ChunkDiscovery implements Packet {
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
     }
+
+    public int getChunkX() {
+        return chunkX;
+    }
+
+    public int getChunkZ() {
+        return chunkZ;
+    }
 }

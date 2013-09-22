@@ -34,4 +34,8 @@ public class Packet17VersionExchange implements Packet {
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
     }
+
+    public int getVersion() {
+        return version;
+    }
 }

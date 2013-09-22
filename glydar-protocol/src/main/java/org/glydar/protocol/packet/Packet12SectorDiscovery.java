@@ -33,4 +33,12 @@ public class Packet12SectorDiscovery implements Packet {
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
     }
+
+    public int getSectorX() {
+        return sectorX;
+    }
+
+    public int getSectorZ() {
+        return sectorZ;
+    }
 }

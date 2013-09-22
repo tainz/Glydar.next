@@ -11,12 +11,12 @@ import org.glydar.protocol.RemoteType;
 public class Packet08Stealth implements Packet {
 
     private final long   id;
-    private final byte[] unknowndata;
+    private final byte[] unknownData;
 
     public Packet08Stealth(ByteBuf buf) {
         id = buf.readLong();
-        this.unknowndata = new byte[32];
-        buf.readBytes(unknowndata);
+        this.unknownData = new byte[32];
+        buf.readBytes(unknownData);
     }
 
     @Override
@@ -27,11 +27,19 @@ public class Packet08Stealth implements Packet {
     @Override
     public void writeTo(RemoteType receiver, ByteBuf buf) {
         buf.writeLong(id);
-        buf.writeBytes(unknowndata);
+        buf.writeBytes(unknownData);
     }
 
     @Override
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public byte[] getUnknownData() {
+        return unknownData;
     }
 }

@@ -60,4 +60,12 @@ public class Packet10Chat implements Packet {
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
     }
+
+    public long getSenderId() {
+        return senderId;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

@@ -34,4 +34,8 @@ public class Packet15Seed implements Packet {
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
     }
+
+    public int getSeed() {
+        return seed;
+    }
 }

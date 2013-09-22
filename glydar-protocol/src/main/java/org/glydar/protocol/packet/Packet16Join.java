@@ -49,4 +49,13 @@ public class Packet16Join implements Packet {
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
 }

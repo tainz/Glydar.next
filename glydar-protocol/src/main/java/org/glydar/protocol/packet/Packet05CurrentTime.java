@@ -38,4 +38,12 @@ public class Packet05CurrentTime implements Packet {
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
     }
+
+    public long getDay() {
+        return day;
+    }
+
+    public long getTime() {
+        return time;
+    }
 }

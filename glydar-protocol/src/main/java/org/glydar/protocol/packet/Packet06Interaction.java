@@ -53,4 +53,36 @@ public class Packet06Interaction implements Packet {
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
     }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public int getChunkX() {
+        return chunkX;
+    }
+
+    public int getChunkY() {
+        return chunkY;
+    }
+
+    public int getItemIndex() {
+        return itemIndex;
+    }
+
+    public long getSomething4() {
+        return something4;
+    }
+
+    public int getInteractType() {
+        return interactType;
+    }
+
+    public byte getSomething6() {
+        return something6;
+    }
+
+    public int getSomething7() {
+        return something7;
+    }
 }
