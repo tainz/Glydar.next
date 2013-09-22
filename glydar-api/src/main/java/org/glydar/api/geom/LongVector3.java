@@ -1,5 +1,7 @@
 package org.glydar.api.geom;
 
+import java.util.Arrays;
+
 import com.google.common.primitives.Longs;
 
 public final class LongVector3 implements Vector<Long, LongVector3> {
@@ -150,5 +152,20 @@ public final class LongVector3 implements Vector<Long, LongVector3> {
     @Override
     public FloatVector3 toFloatVector3() {
         return new FloatVector3(x, y, z);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new long[] { x, y, z });
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof LongVector3)) {
+            return false;
+        }
+
+        LongVector3 other = (LongVector3) object;
+        return x == other.x && y == other.y && z == other.z;
     }
 }

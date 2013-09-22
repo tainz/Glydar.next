@@ -1,5 +1,7 @@
 package org.glydar.api.geom;
 
+import java.util.Arrays;
+
 public class IntVector3 implements Vector<Integer, IntVector3> {
 
     private final int x;
@@ -134,7 +136,7 @@ public class IntVector3 implements Vector<Integer, IntVector3> {
     public IntVector2 toIntVector2() {
         return new IntVector2(x, y);
     }
-    
+
     @Override
     public IntVector3 toIntVector3() {
         return this;
@@ -148,5 +150,20 @@ public class IntVector3 implements Vector<Integer, IntVector3> {
     @Override
     public FloatVector3 toFloatVector3() {
         return new FloatVector3(x, y, z);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new int[] { x, y, z });
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof IntVector3)) {
+            return false;
+        }
+
+        IntVector3 other = (IntVector3) object;
+        return x == other.x && y == other.y && z == other.z;
     }
 }

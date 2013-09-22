@@ -1,5 +1,7 @@
 package org.glydar.api.geom;
 
+import java.util.Arrays;
+
 public class Orientation {
 
     private final float roll;
@@ -46,5 +48,20 @@ public class Orientation {
 
     public Orientation setPitchAndYaw(float newPitch, float newYaw) {
         return new Orientation(roll, newPitch, newYaw);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new float[] { roll, pitch, yaw });
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Orientation)) {
+            return false;
+        }
+
+        Orientation other = (Orientation) object;
+        return roll == other.roll && pitch == other.pitch && yaw == other.yaw;
     }
 }

@@ -1,5 +1,7 @@
 package org.glydar.api.geom;
 
+import java.util.Arrays;
+
 public class IntVector2 implements Vector<Integer, IntVector2> {
 
     private final int x;
@@ -119,5 +121,20 @@ public class IntVector2 implements Vector<Integer, IntVector2> {
     @Override
     public FloatVector3 toFloatVector3() {
         return new FloatVector3(x, y, 0);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new int[] { x, y });
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof IntVector2)) {
+            return false;
+        }
+
+        IntVector2 other = (IntVector2) object;
+        return x == other.x && y == other.y;
     }
 }

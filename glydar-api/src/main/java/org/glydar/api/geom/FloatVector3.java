@@ -1,5 +1,7 @@
 package org.glydar.api.geom;
 
+import java.util.Arrays;
+
 import com.google.common.primitives.Floats;
 
 public class FloatVector3 implements Vector<Float, FloatVector3> {
@@ -150,5 +152,20 @@ public class FloatVector3 implements Vector<Float, FloatVector3> {
     @Override
     public FloatVector3 toFloatVector3() {
         return this;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new float[] { x, y, z });
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof FloatVector3)) {
+            return false;
+        }
+
+        FloatVector3 other = (FloatVector3) object;
+        return x == other.x && y == other.y && z == other.z;
     }
 }
