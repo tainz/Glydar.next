@@ -30,7 +30,7 @@ import com.google.common.collect.Sets;
 
 public class MitmServer implements ProtocolHandler<Relay> {
 
-    private static final String LOGGER_PREFIX = "Glydar MITM Server";
+    private static final String LOGGER_PREFIX = "MITM Server";
 
     private final GlydarLogger  logger;
     private final Set<Relay>    relays;

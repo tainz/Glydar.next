@@ -35,31 +35,33 @@ import org.glydar.protocol.packet.Packet16Join;
 import org.glydar.protocol.packet.Packet17VersionExchange;
 import org.glydar.protocol.packet.Packet18ServerFull;
 
-public class Relay implements ProtocolHandler<CubeWorldServer>, Remote {
+public class Relay implements ProtocolHandler<VanillaServer>, Remote {
 
-    private static final String  LOGGER_PREFIX = "Glydar Relay";
-    private static final int     CLIENT_PORT   = 12345;
+    private static final String  LOGGER_PREFIX = "MITM Relay ";
 
     private final GlydarLogger   logger;
     private final MitmServer     mitmServer;
     private final Channel        clientChannel;
     private final EventLoopGroup workerGroup;
     private final List<Packet>   packetsQueue;
-    private CubeWorldServer      cubeWorldServer;
+    private VanillaServer        vanillaServer;
+    private long                 entityId;
 
     public Relay(MitmServer mitmServer, Channel clientChannel) {
-        this.logger = Glydar.getLogger().getChildLogger(this, LOGGER_PREFIX);
+        this.logger = Glydar.getLogger().getChildLogger(this, LOGGER_PREFIX + clientChannel.remoteAddress());
         this.mitmServer = mitmServer;
         this.clientChannel = clientChannel;
         this.workerGroup = new NioEventLoopGroup();
         this.packetsQueue = new ArrayList<>();
+        this.vanillaServer = null;
+        this.entityId = -1;
 
         Bootstrap serverRelayBootstrap = new Bootstrap();
         serverRelayBootstrap.group(workerGroup);
         serverRelayBootstrap.channel(NioSocketChannel.class);
         serverRelayBootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-        serverRelayBootstrap.handler(new ProtocolInitializer<CubeWorldServer>(this));
-        serverRelayBootstrap.connect("localhost", CLIENT_PORT);
+        serverRelayBootstrap.handler(new ProtocolInitializer<VanillaServer>(this));
+        serverRelayBootstrap.connect("localhost", GlydarMitmMain.getServerPort());
     }
 
     @Override
@@ -72,25 +74,29 @@ public class Relay implements ProtocolHandler<CubeWorldServer>, Remote {
         return RemoteType.SERVER;
     }
 
+    public long getEntityId() {
+        return entityId;
+    }
+
     public void shutdownGracefully() {
-        if (cubeWorldServer != null) {
-            cubeWorldServer.closeConnection();
+        if (vanillaServer != null) {
+            vanillaServer.closeConnection();
         }
         workerGroup.shutdownGracefully();
     }
 
     @Override
-    public CubeWorldServer createRemote(Channel channel) {
+    public VanillaServer createRemote(Channel channel) {
         logger.info("Connected to Cube World Server");
-        cubeWorldServer = new CubeWorldServer(channel);
+        vanillaServer = new VanillaServer(channel);
 
-        cubeWorldServer.send(packetsQueue.toArray(new Packet[packetsQueue.size()]));
+        vanillaServer.send(packetsQueue.toArray(new Packet[packetsQueue.size()]));
         packetsQueue.clear();
-        return cubeWorldServer;
+        return vanillaServer;
     }
 
     @Override
-    public void disconnect(CubeWorldServer remote) {
+    public void disconnect(VanillaServer remote) {
         mitmServer.disconnect(this);
     }
 
@@ -99,11 +105,11 @@ public class Relay implements ProtocolHandler<CubeWorldServer>, Remote {
             logger.fine("Sending packet {0} to server", packet.getPacketType());
         }
 
-        if (cubeWorldServer == null) {
+        if (vanillaServer == null) {
             Collections.addAll(packetsQueue, packets);
         }
         else {
-            cubeWorldServer.send(packets);
+            vanillaServer.send(packets);
         }
     }
 
@@ -116,82 +122,85 @@ public class Relay implements ProtocolHandler<CubeWorldServer>, Remote {
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet00EntityUpdate packet) {
+    public void handle(VanillaServer remote, Packet00EntityUpdate packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet02UpdateFinished packet) {
+    public void handle(VanillaServer remote, Packet02UpdateFinished packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet04WorldUpdate packet) {
+    public void handle(VanillaServer remote, Packet04WorldUpdate packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet05CurrentTime packet) {
+    public void handle(VanillaServer remote, Packet05CurrentTime packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet06Interaction packet) {
+    public void handle(VanillaServer remote, Packet06Interaction packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet07Hit packet) {
+    public void handle(VanillaServer remote, Packet07Hit packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet08Stealth packet) {
+    public void handle(VanillaServer remote, Packet08Stealth packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet09Shoot packet) {
+    public void handle(VanillaServer remote, Packet09Shoot packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet10Chat packet) {
+    public void handle(VanillaServer remote, Packet10Chat packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet11ChunkDiscovery packet) {
+    public void handle(VanillaServer remote, Packet11ChunkDiscovery packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet12SectorDiscovery packet) {
+    public void handle(VanillaServer remote, Packet12SectorDiscovery packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet13MissionData packet) {
+    public void handle(VanillaServer remote, Packet13MissionData packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet15Seed packet) {
+    public void handle(VanillaServer remote, Packet15Seed packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet16Join packet) {
+    public void handle(VanillaServer remote, Packet16Join packet) {
+        this.entityId = packet.getId();
+        logger.info("Entity Id : {0}", entityId);
+
         forward(packet, new Packet10Chat("Using Glydar MITM"));
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet17VersionExchange packet) {
+    public void handle(VanillaServer remote, Packet17VersionExchange packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(CubeWorldServer remote, Packet18ServerFull packet) {
+    public void handle(VanillaServer remote, Packet18ServerFull packet) {
         forward(packet);
     }
 }

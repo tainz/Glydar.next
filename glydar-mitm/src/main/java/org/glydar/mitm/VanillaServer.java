@@ -5,11 +5,11 @@ import io.netty.channel.Channel;
 import org.glydar.protocol.Packet;
 import org.glydar.protocol.Remote;
 
-public class CubeWorldServer implements Remote {
+public class VanillaServer implements Remote {
 
     private final Channel channel;
 
-    public CubeWorldServer(Channel channel) {
+    public VanillaServer(Channel channel) {
         this.channel = channel;
     }
 
