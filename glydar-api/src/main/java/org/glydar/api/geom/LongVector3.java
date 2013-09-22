@@ -155,6 +155,11 @@ public final class LongVector3 implements Vector<Long, LongVector3> {
     }
 
     @Override
+    public String toString() {
+        return "LongVector3(" + x + ", " + y + ", " + z + ")";
+    }
+
+    @Override
     public int hashCode() {
         return Arrays.hashCode(new long[] { x, y, z });
     }

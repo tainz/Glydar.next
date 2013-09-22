@@ -51,6 +51,11 @@ public class Orientation {
     }
 
     @Override
+    public String toString() {
+        return "Orientation(roll=" + roll + ", pitch=" + pitch + ", yaw=" + yaw + ")";
+    }
+
+    @Override
     public int hashCode() {
         return Arrays.hashCode(new float[] { roll, pitch, yaw });
     }

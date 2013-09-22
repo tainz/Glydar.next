@@ -155,6 +155,11 @@ public class FloatVector3 implements Vector<Float, FloatVector3> {
     }
 
     @Override
+    public String toString() {
+        return "FloatVector3(" + x + ", " + y + ", " + z + ")";
+    }
+
+    @Override
     public int hashCode() {
         return Arrays.hashCode(new float[] { x, y, z });
     }

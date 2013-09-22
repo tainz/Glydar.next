@@ -153,6 +153,11 @@ public class IntVector3 implements Vector<Integer, IntVector3> {
     }
 
     @Override
+    public String toString() {
+        return "IntVector3(" + x + ", " + y + ", " + z + ")";
+    }
+
+    @Override
     public int hashCode() {
         return Arrays.hashCode(new int[] { x, y, z });
     }

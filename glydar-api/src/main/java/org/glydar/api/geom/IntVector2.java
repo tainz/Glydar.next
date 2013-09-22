@@ -124,6 +124,11 @@ public class IntVector2 implements Vector<Integer, IntVector2> {
     }
 
     @Override
+    public String toString() {
+        return "IntVector2(" + x + ", " + y + ")";
+    }
+
+    @Override
     public int hashCode() {
         return Arrays.hashCode(new int[] { x, y });
     }
