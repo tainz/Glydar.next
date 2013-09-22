@@ -131,6 +131,11 @@ public class IntVector3 implements Vector<Integer, IntVector3> {
     }
 
     @Override
+    public IntVector2 toIntVector2() {
+        return new IntVector2(x, y);
+    }
+    
+    @Override
     public IntVector3 toIntVector3() {
         return this;
     }

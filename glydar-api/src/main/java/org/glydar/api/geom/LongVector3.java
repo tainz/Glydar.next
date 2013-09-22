@@ -133,6 +133,11 @@ public final class LongVector3 implements Vector<Long, LongVector3> {
     }
 
     @Override
+    public IntVector2 toIntVector2() {
+        return new IntVector2((int) x, (int) y);
+    }
+
+    @Override
     public IntVector3 toIntVector3() {
         return new IntVector3((int) x, (int) y, (int) z);
     }

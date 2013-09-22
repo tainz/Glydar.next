@@ -14,6 +14,8 @@ public interface Vector<N extends Number, V extends Vector<N, V>> extends Compar
 
     V divide(V other);
 
+    IntVector2 toIntVector2();
+
     IntVector3 toIntVector3();
 
     LongVector3 toLongVector3();
