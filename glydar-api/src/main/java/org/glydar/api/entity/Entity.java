@@ -9,7 +9,7 @@ public class Entity {
 
     public Entity() {
         this.id = NEXT_ENTITY_ID++;
-        this.data = new EntityData();
+        this.data = new EntityData(new EntityChanges());
     }
 
     public long getId() {

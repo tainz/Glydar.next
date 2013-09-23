@@ -14,10 +14,12 @@ import org.glydar.protocol.util.ZLibOperations;
 
 public class Packet00EntityUpdate implements Packet {
 
+    private final long       entityId;
     private final EntityData data;
 
     public Packet00EntityUpdate(ByteBuf buf) {
         ByteBuf decompressed = ZLibOperations.decompress(buf);
+        this.entityId = decompressed.readLong();
         this.data = EntityCodec.readEntityData(decompressed);
     }
 
@@ -40,6 +42,7 @@ public class Packet00EntityUpdate implements Packet {
 
         @Override
         public void writeTo(RemoteType receiver, ByteBuf buf) {
+            buf.writeLong(entityId);
             EntityCodec.writeEntityData(buf, data);
         }
     }

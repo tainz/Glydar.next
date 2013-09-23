@@ -5,6 +5,8 @@ import io.netty.buffer.ByteBuf;
 import java.util.BitSet;
 
 import org.glydar.api.entity.Appearance;
+import org.glydar.api.entity.EntityChange;
+import org.glydar.api.entity.EntityChanges;
 import org.glydar.api.entity.EntityData;
 import org.glydar.api.entity.Particle;
 import org.glydar.api.geom.LongVector3;
@@ -18,362 +20,354 @@ public final class EntityCodec {
     }
 
     public static EntityData readEntityData(ByteBuf buf) {
-        EntityData e = new EntityData();
-        e.setId(buf.readLong());
-
         byte[] bitSetBuf = new byte[8];
         buf.readBytes(bitSetBuf);
-        e.setBitSet(BitSet.valueOf(bitSetBuf));
-        BitSet bitSet = e.getBitSet();
+        BitSet bitSet = BitSet.valueOf(bitSetBuf);
+        EntityChanges changes = new EntityChanges(bitSet);
 
-        if (bitSet.get(0)) {
-            e.setPosition(GeomCodec.readLongVector3(buf));
+        EntityData data = new EntityData(changes);
+        if (changes.get(EntityChange.POSITION)) {
+            data.setPosition(GeomCodec.readLongVector3(buf));
         }
-        if (bitSet.get(1)) {
-            e.setOrientation(GeomCodec.readOrientation(buf));
+        if (changes.get(EntityChange.ORIENTATION)) {
+            data.setOrientation(GeomCodec.readOrientation(buf));
         }
-        if (bitSet.get(2)) {
-            e.setVelocity(GeomCodec.readFloatVector3(buf));
+        if (changes.get(EntityChange.VELOCITY)) {
+            data.setVelocity(GeomCodec.readFloatVector3(buf));
         }
-        if (bitSet.get(3)) {
-            e.setAccel(GeomCodec.readFloatVector3(buf));
+        if (changes.get(EntityChange.ACCELERATION)) {
+            data.setAccel(GeomCodec.readFloatVector3(buf));
         }
-        if (bitSet.get(4)) {
-            e.setExtraVel(GeomCodec.readFloatVector3(buf));
+        if (changes.get(EntityChange.EXTRA_VELOCITY)) {
+            data.setExtraVel(GeomCodec.readFloatVector3(buf));
         }
-        if (bitSet.get(5)) {
-            e.setLookPitch(buf.readFloat());
+        if (changes.get(EntityChange.LOOK_PITCH)) {
+            data.setLookPitch(buf.readFloat());
         }
-        if (bitSet.get(6)) {
-            e.setPhysicsFlags(buf.readUnsignedInt());
+        if (changes.get(EntityChange.PHYSICS_FLAGS)) {
+            data.setPhysicsFlags(buf.readUnsignedInt());
         }
-        if (bitSet.get(7)) {
-            e.setHostileType(buf.readByte());
+        if (changes.get(EntityChange.HOSTILE_TYPE)) {
+            data.setHostileType(buf.readByte());
         }
-        if (bitSet.get(8)) {
-            e.setEntityType(buf.readUnsignedInt());
+        if (changes.get(EntityChange.ENTITY_TYPE)) {
+            data.setEntityType(buf.readUnsignedInt());
         }
-        if (bitSet.get(9)) {
-            e.setCurrentMode(buf.readByte());
+        if (changes.get(EntityChange.CURRENT_MODE)) {
+            data.setCurrentMode(buf.readByte());
         }
-        if (bitSet.get(10)) {
-            e.setLastShootTime(buf.readUnsignedInt());
+        if (changes.get(EntityChange.LAST_SHOOT_TIME)) {
+            data.setLastShootTime(buf.readUnsignedInt());
         }
-        if (bitSet.get(11)) {
-            e.setHitCounter(buf.readUnsignedInt());
+        if (changes.get(EntityChange.HIT_COUNTER)) {
+            data.setHitCounter(buf.readUnsignedInt());
         }
-        if (bitSet.get(12)) {
-            e.setLastHitTime(buf.readUnsignedInt());
+        if (changes.get(EntityChange.LAST_HIT_TIME)) {
+            data.setLastHitTime(buf.readUnsignedInt());
         }
-        if (bitSet.get(13)) {
-            e.setApp(readAppearance(buf));
+        if (changes.get(EntityChange.APPEARANCE)) {
+            data.setApp(readAppearance(buf));
         }
-        if (bitSet.get(14)) {
-            e.setFlags1(buf.readByte());
-            e.setFlags2(buf.readByte());
+        if (changes.get(EntityChange.FLAGS)) {
+            data.setFlags1(buf.readByte());
+            data.setFlags2(buf.readByte());
         }
-        if (bitSet.get(15)) {
-            e.setRollTime(buf.readUnsignedInt());
+        if (changes.get(EntityChange.ROLL_TIME)) {
+            data.setRollTime(buf.readUnsignedInt());
         }
-        if (bitSet.get(16)) {
-            e.setStunTime(buf.readInt());
+        if (changes.get(EntityChange.STUN_TIME)) {
+            data.setStunTime(buf.readInt());
         }
-        if (bitSet.get(17)) {
-            e.setSlowedTime(buf.readUnsignedInt());
+        if (changes.get(EntityChange.SLOWED_TIME)) {
+            data.setSlowedTime(buf.readUnsignedInt());
         }
-        if (bitSet.get(18)) {
-            e.setMakeBlueTime(buf.readUnsignedInt());
+        if (changes.get(EntityChange.MAKE_BLUE_TIME)) {
+            data.setMakeBlueTime(buf.readUnsignedInt());
         }
-        if (bitSet.get(19)) {
-            e.setSpeedUpTime(buf.readUnsignedInt());
+        if (changes.get(EntityChange.SPEED_UP_TIME)) {
+            data.setSpeedUpTime(buf.readUnsignedInt());
         }
-        if (bitSet.get(20)) {
-            e.setSlowPatchTime(buf.readFloat());
+        if (changes.get(EntityChange.SLOW_PATCH_TIME)) {
+            data.setSlowPatchTime(buf.readFloat());
         }
-        if (bitSet.get(21)) {
-            e.setClassType(buf.readByte());
+        if (changes.get(EntityChange.CLASS_TYPE)) {
+            data.setClassType(buf.readByte());
         }
-        if (bitSet.get(22)) {
-            e.setSpecialization(buf.readByte());
+        if (changes.get(EntityChange.SPECIALIZATION)) {
+            data.setSpecialization(buf.readByte());
         }
-        if (bitSet.get(23)) {
-            e.setChargedMP(buf.readFloat());
+        if (changes.get(EntityChange.CHARGED_MP)) {
+            data.setChargedMP(buf.readFloat());
         }
-        if (bitSet.get(24)) {
-            e.setNu1(buf.readUnsignedInt());
-            e.setNu2(buf.readUnsignedInt());
-            e.setNu3(buf.readUnsignedInt());
+        if (changes.get(EntityChange.NU_1_2_3)) {
+            data.setNu1(buf.readUnsignedInt());
+            data.setNu2(buf.readUnsignedInt());
+            data.setNu3(buf.readUnsignedInt());
         }
-        if (bitSet.get(25)) {
-            e.setNu4(buf.readUnsignedInt());
-            e.setNu5(buf.readUnsignedInt());
-            e.setNu6(buf.readUnsignedInt());
+        if (changes.get(EntityChange.NU_4_5_6)) {
+            data.setNu4(buf.readUnsignedInt());
+            data.setNu5(buf.readUnsignedInt());
+            data.setNu6(buf.readUnsignedInt());
         }
-        if (bitSet.get(26)) {
-            e.setRayHit(GeomCodec.readFloatVector3(buf));
+        if (changes.get(EntityChange.RAY_HIT)) {
+            data.setRayHit(GeomCodec.readFloatVector3(buf));
         }
-        if (bitSet.get(27)) {
-            e.setHP(buf.readFloat());
+        if (changes.get(EntityChange.HP)) {
+            data.setHP(buf.readFloat());
         }
-        if (bitSet.get(28)) {
-            e.setMP(buf.readFloat());
+        if (changes.get(EntityChange.MP)) {
+            data.setMP(buf.readFloat());
         }
-        if (bitSet.get(29)) {
-            e.setBlockPower(buf.readFloat());
+        if (changes.get(EntityChange.BLOCK_POWER)) {
+            data.setBlockPower(buf.readFloat());
         }
-        if (bitSet.get(30)) {
-            e.setMaxHPMultiplier(buf.readFloat());
-            e.setShootSpeed(buf.readFloat());
-            e.setDamageMultiplier(buf.readFloat());
-            e.setArmorMultiplier(buf.readFloat());
-            e.setResistanceMultiplier(buf.readFloat());
+        if (changes.get(EntityChange.MULTIPLIERS)) {
+            data.setMaxHPMultiplier(buf.readFloat());
+            data.setShootSpeed(buf.readFloat());
+            data.setDamageMultiplier(buf.readFloat());
+            data.setArmorMultiplier(buf.readFloat());
+            data.setResistanceMultiplier(buf.readFloat());
         }
-        if (bitSet.get(31)) {
-            e.setNu7(buf.readByte());
+        if (changes.get(EntityChange.NU_7)) {
+            data.setNu7(buf.readByte());
         }
-        if (bitSet.get(32)) {
-            e.setNu8(buf.readByte());
+        if (changes.get(EntityChange.NU_8)) {
+            data.setNu8(buf.readByte());
         }
-        if (bitSet.get(33)) {
-            e.setLevel(buf.readUnsignedInt());
+        if (changes.get(EntityChange.LEVEL)) {
+            data.setLevel(buf.readUnsignedInt());
         }
-        if (bitSet.get(34)) {
-            e.setCurrentXP(buf.readUnsignedInt());
+        if (changes.get(EntityChange.CURRENT_XP)) {
+            data.setCurrentXP(buf.readUnsignedInt());
         }
-        if (bitSet.get(35)) {
-            e.setParentOwner(buf.readLong());
+        if (changes.get(EntityChange.PARENT_OWNER)) {
+            data.setParentOwner(buf.readLong());
         }
-        if (bitSet.get(36)) {
-            e.setNa1(buf.readUnsignedInt());
-            e.setNa2(buf.readUnsignedInt());
+        if (changes.get(EntityChange.NA_1_2)) {
+            data.setNa1(buf.readUnsignedInt());
+            data.setNa2(buf.readUnsignedInt());
         }
-        if (bitSet.get(37)) {
-            e.setNa3(buf.readByte());
+        if (changes.get(EntityChange.NA_3)) {
+            data.setNa3(buf.readByte());
         }
-        if (bitSet.get(38)) {
-            e.setNa4(buf.readUnsignedInt());
+        if (changes.get(EntityChange.NA_4)) {
+            data.setNa4(buf.readUnsignedInt());
         }
-        if (bitSet.get(39)) {
-            e.setNa5(buf.readUnsignedInt());
-            e.setNu11(buf.readUnsignedInt());
-            e.setNu12(buf.readUnsignedInt());
+        if (changes.get(EntityChange.NA_5_NU_11_12)) {
+            data.setNa5(buf.readUnsignedInt());
+            data.setNu11(buf.readUnsignedInt());
+            data.setNu12(buf.readUnsignedInt());
         }
-        if (bitSet.get(40)) {
-            e.setSpawnPosition(GeomCodec.readLongVector3(buf));
+        if (changes.get(EntityChange.SPAWN_POSITION)) {
+            data.setSpawnPosition(GeomCodec.readLongVector3(buf));
         }
-        if (bitSet.get(41)) {
-            e.setNu20(buf.readUnsignedInt());
-            e.setNu21(buf.readUnsignedInt());
-            e.setNu22(buf.readUnsignedInt());
+        if (changes.get(EntityChange.NU_20_21_22)) {
+            data.setNu20(buf.readUnsignedInt());
+            data.setNu21(buf.readUnsignedInt());
+            data.setNu22(buf.readUnsignedInt());
         }
-        if (bitSet.get(42)) {
-            e.setNu19(buf.readByte());
+        if (changes.get(EntityChange.NU_19)) {
+            data.setNu19(buf.readByte());
         }
-        if (bitSet.get(43)) {
-            e.setItemData(ItemCodec.readItem(buf));
+        if (changes.get(EntityChange.ITEM_DATA)) {
+            data.setItemData(ItemCodec.readItem(buf));
         }
-        if (bitSet.get(44)) {
-            Item[] equipment = e.getEquipment();
+        if (changes.get(EntityChange.EQUIPMENT)) {
+            Item[] equipment = data.getEquipment();
             for (int i = 0; i < 13; i++) {
                 equipment[i] = ItemCodec.readItem(buf);
             }
-            e.setEquipment(equipment);
+            data.setEquipment(equipment);
         }
-        if (bitSet.get(45)) {
-            e.setName(new String(buf.readBytes(16).array(), Charsets.US_ASCII).trim());
+        if (changes.get(EntityChange.NAME)) {
+            data.setName(new String(buf.readBytes(16).array(), Charsets.US_ASCII).trim());
         }
-        if (bitSet.get(46)) {
-            long[] skills = e.getSkills();
+        if (changes.get(EntityChange.SKILLS)) {
+            long[] skills = data.getSkills();
             for (int i = 0; i < 11; i++) {
                 skills[i] = buf.readUnsignedInt();
             }
-            e.setSkills(skills);
+            data.setSkills(skills);
         }
-        if (bitSet.get(47)) {
-            e.setIceBlockFour(buf.readUnsignedInt());
+        if (changes.get(EntityChange.ICE_BLOCK_FOUR)) {
+            data.setIceBlockFour(buf.readUnsignedInt());
         }
 
-        return e;
+        return data;
     }
 
     public static void writeEntityData(ByteBuf buf, EntityData e) {
-        // For testing purposes using default dummy entity :)
-        /*
-         * boolean dummy = false; if (name.contains("dummy")) dummy = true;
-         */
+        EntityChanges changes = e.getChanges();
 
-        buf.writeLong(e.getId()); // Ulong but whatever
-        BitSet bitSet = e.getBitSet();
-        buf.writeBytes(bitSet.toByteArray());
-        buf.writeBytes(new byte[8 - bitSet.toByteArray().length]); // BitSet/BitArray
-                                                                   // are the
-                                                                   // stupidest
-                                                                   // classes
-                                                                   // ever :(
-        if (bitSet.get(0)) {
+        byte[] bitSetBytes = changes.getBitSet().toByteArray();
+        buf.writeBytes(bitSetBytes);
+        // BitSet/BitArray are the stupidest classes ever :(
+        buf.writeZero(8 - bitSetBytes.length);
+
+        if (changes.get(EntityChange.POSITION)) {
             GeomCodec.writeLongVector3(buf, e.getPosition());
         }
-        if (bitSet.get(1)) {
+        if (changes.get(EntityChange.ORIENTATION)) {
             GeomCodec.writeOrientation(buf, e.getOrientation());
         }
-        if (bitSet.get(2)) {
+        if (changes.get(EntityChange.VELOCITY)) {
             GeomCodec.writeFloatVector3(buf, e.getVelocity());
         }
-        if (bitSet.get(3)) {
+        if (changes.get(EntityChange.ACCELERATION)) {
             GeomCodec.writeFloatVector3(buf, e.getAccel());
         }
-        if (bitSet.get(4)) {
+        if (changes.get(EntityChange.EXTRA_VELOCITY)) {
             GeomCodec.writeFloatVector3(buf, e.getExtraVel());
         }
-        if (bitSet.get(5)) {
+        if (changes.get(EntityChange.LOOK_PITCH)) {
             buf.writeFloat(e.getLookPitch());
         }
-        if (bitSet.get(6)) {
+        if (changes.get(EntityChange.PHYSICS_FLAGS)) {
             buf.writeInt((int) e.getPhysicsFlags());
         }
-        if (bitSet.get(7)) {
+        if (changes.get(EntityChange.HOSTILE_TYPE)) {
             buf.writeByte(e.getHostileType());
         }
-        if (bitSet.get(8)) {
+        if (changes.get(EntityChange.ENTITY_TYPE)) {
             buf.writeInt((int) e.getEntityType());
         }
-        if (bitSet.get(9)) {
+        if (changes.get(EntityChange.CURRENT_MODE)) {
             buf.writeByte(e.getCurrentMode());
         }
-        if (bitSet.get(10)) {
+        if (changes.get(EntityChange.LAST_SHOOT_TIME)) {
             buf.writeInt((int) e.getLastShootTime());
         }
-        if (bitSet.get(11)) {
+        if (changes.get(EntityChange.HIT_COUNTER)) {
             buf.writeInt((int) e.getHitCounter());
         }
-        if (bitSet.get(12)) {
+        if (changes.get(EntityChange.LAST_HIT_TIME)) {
             buf.writeInt((int) e.getLastHitTime());
         }
-        if (bitSet.get(13)) {
+        if (changes.get(EntityChange.APPEARANCE)) {
             writeAppearance(buf, e.getApp());
         }
-        if (bitSet.get(14)) {
+        if (changes.get(EntityChange.FLAGS)) {
             buf.writeByte(e.getFlags1());
             buf.writeByte(e.getFlags2());
         }
-        if (bitSet.get(15)) {
+        if (changes.get(EntityChange.ROLL_TIME)) {
             buf.writeInt((int) e.getRollTime());
         }
-        if (bitSet.get(16)) {
+        if (changes.get(EntityChange.STUN_TIME)) {
             buf.writeInt(e.getStunTime());
         }
-        if (bitSet.get(17)) {
+        if (changes.get(EntityChange.SLOWED_TIME)) {
             buf.writeInt((int) e.getSlowedTime());
         }
-        if (bitSet.get(18)) {
+        if (changes.get(EntityChange.MAKE_BLUE_TIME)) {
             buf.writeInt((int) e.getMakeBlueTime());
         }
-        if (bitSet.get(19)) {
+        if (changes.get(EntityChange.SPEED_UP_TIME)) {
             buf.writeInt((int) e.getSpeedUpTime());
         }
-        if (bitSet.get(20)) {
+        if (changes.get(EntityChange.SLOW_PATCH_TIME)) {
             buf.writeFloat(e.getSlowPatchTime());
         }
-        if (bitSet.get(21)) {
+        if (changes.get(EntityChange.CLASS_TYPE)) {
             buf.writeByte(e.getClassType());
         }
-        if (bitSet.get(22)) {
+        if (changes.get(EntityChange.SPECIALIZATION)) {
             buf.writeByte(e.getSpecialization());
         }
-        if (bitSet.get(23)) {
+        if (changes.get(EntityChange.CHARGED_MP)) {
             buf.writeFloat(e.getChargedMP());
         }
-        if (bitSet.get(24)) {
+        if (changes.get(EntityChange.NU_1_2_3)) {
             buf.writeInt((int) e.getNu1());
             buf.writeInt((int) e.getNu2());
             buf.writeInt((int) e.getNu3());
         }
-        if (bitSet.get(25)) {
+        if (changes.get(EntityChange.NU_4_5_6)) {
             buf.writeInt((int) e.getNu4());
             buf.writeInt((int) e.getNu5());
             buf.writeInt((int) e.getNu6());
         }
-        if (bitSet.get(26)) {
+        if (changes.get(EntityChange.RAY_HIT)) {
             GeomCodec.writeFloatVector3(buf, e.getRayHit());
         }
-        if (bitSet.get(27)) {
+        if (changes.get(EntityChange.HP)) {
             buf.writeFloat(e.getHP());
         }
-        if (bitSet.get(28)) {
+        if (changes.get(EntityChange.MP)) {
             buf.writeFloat(e.getMP());
         }
-        if (bitSet.get(29)) {
+        if (changes.get(EntityChange.BLOCK_POWER)) {
             buf.writeFloat(e.getBlockPower());
         }
-        if (bitSet.get(30)) {
+        if (changes.get(EntityChange.MULTIPLIERS)) {
             buf.writeFloat(e.getMaxHPMultiplier());
             buf.writeFloat(e.getShootSpeed());
             buf.writeFloat(e.getDamageMultiplier());
             buf.writeFloat(e.getArmorMultiplier());
             buf.writeFloat(e.getResistanceMultiplier());
         }
-        if (bitSet.get(31)) {
+        if (changes.get(EntityChange.NU_7)) {
             buf.writeByte(e.getNu7());
         }
-        if (bitSet.get(32)) {
+        if (changes.get(EntityChange.NU_8)) {
             buf.writeByte(e.getNu8());
         }
-        if (bitSet.get(33)) {
+        if (changes.get(EntityChange.LEVEL)) {
             buf.writeInt((int) e.getLevel());
         }
-        if (bitSet.get(34)) {
+        if (changes.get(EntityChange.CURRENT_XP)) {
             buf.writeInt((int) e.getCurrentXP());
         }
-        if (bitSet.get(35)) {
+        if (changes.get(EntityChange.PARENT_OWNER)) {
             buf.writeLong(e.getParentOwner());
         }
-        if (bitSet.get(36)) {
+        if (changes.get(EntityChange.NA_1_2)) {
             buf.writeInt((int) e.getNa1());
             buf.writeInt((int) e.getNa2());
         }
-        if (bitSet.get(37)) {
+        if (changes.get(EntityChange.NA_3)) {
             buf.writeByte(e.getNa3());
         }
-        if (bitSet.get(38)) {
+        if (changes.get(EntityChange.NA_4)) {
             buf.writeInt((int) e.getNa4());
         }
-        if (bitSet.get(39)) {
+        if (changes.get(EntityChange.NA_5_NU_11_12)) {
             buf.writeInt((int) e.getNa5());
             buf.writeInt((int) e.getNu11());
             buf.writeInt((int) e.getNu12());
         }
-        if (bitSet.get(40)) {
+        if (changes.get(EntityChange.SPAWN_POSITION)) {
             GeomCodec.writeLongVector3(buf, e.getSpawnPosition());
         }
-        if (bitSet.get(41)) {
+        if (changes.get(EntityChange.NU_20_21_22)) {
             buf.writeInt((int) e.getNu20());
             buf.writeInt((int) e.getNu21());
             buf.writeInt((int) e.getNu22());
         }
-        if (bitSet.get(42)) {
+        if (changes.get(EntityChange.NU_19)) {
             buf.writeByte(e.getNu19());
         }
-        if (bitSet.get(43)) {
+        if (changes.get(EntityChange.ITEM_DATA)) {
             ItemCodec.writeItem(buf, e.getItemData());
         }
-        if (bitSet.get(44)) {
+        if (changes.get(EntityChange.EQUIPMENT)) {
             Item[] equipment = e.getEquipment();
             for (int i = 0; i < 13; i++) {
                 ItemCodec.writeItem(buf, equipment[i]);
             }
         }
-        if (bitSet.get(45)) {
+        if (changes.get(EntityChange.NAME)) {
             byte[] ascii = e.getName().getBytes(Charsets.US_ASCII);
             buf.writeBytes(ascii);
             buf.writeBytes(new byte[16 - e.getName().length()]);
         }
-        if (bitSet.get(46)) {
+        if (changes.get(EntityChange.SKILLS)) {
             long[] skills = e.getSkills();
             for (int i = 0; i < 11; i++) {
                 buf.writeInt((int) skills[i]);
             }
         }
-        if (bitSet.get(47)) {
+        if (changes.get(EntityChange.ICE_BLOCK_FOUR)) {
             buf.writeInt((int) e.getIceBlockFour());
         }
     }

@@ -1,7 +1,5 @@
 package org.glydar.api.entity;
 
-import java.util.BitSet;
-
 import org.glydar.api.geom.FloatVector3;
 import org.glydar.api.geom.LongVector3;
 import org.glydar.api.geom.Orientation;
@@ -11,100 +9,96 @@ import org.glydar.api.item.Item;
 
 public class EntityData {
 
-    private long         id;
-    private BitSet       bitSet;
+    private final EntityChanges changes;
 
-    private LongVector3  position;
-    private Orientation  orientation;
+    private LongVector3         position;
+    private Orientation         orientation;
+    private FloatVector3        velocity;
+    private FloatVector3        accel;
+    private FloatVector3        extraVel;
 
-    private FloatVector3 velocity;
+    private float               lookPitch;
+    private long                physicsFlags;        // Uint
+    private byte                hostileType;
+    private long                entityType;          // Uint
+    private byte                currentMode;
+    private long                lastShootTime;       // Uint
+    private long                hitCounter;          // Uint
+    private long                lastHitTime;         // Uint
+    private Appearance          app;
+    private byte                flags1;
+    private byte                flags2;
+    private long                rollTime;            // Uint
+    private int                 stunTime;
+    private long                slowedTime;          // Uint
+    private long                makeBlueTime;        // Uint
+    private long                speedUpTime;         // Uint
+    private float               slowPatchTime;
+    private byte                classType;
+    private byte                specialization;
+    private float               chargedMP;
 
-    private FloatVector3 accel;
+    private FloatVector3        rayHit;
 
-    private FloatVector3 extraVel;
+    private float               HP;
+    private float               MP;
 
-    private float        lookPitch;
-    private long         physicsFlags;        // Uint
-    private byte         hostileType;
-    private long         entityType;          // Uint
-    private byte         currentMode;
-    private long         lastShootTime;       // Uint
-    private long         hitCounter;          // Uint
-    private long         lastHitTime;         // Uint
-    private Appearance   app;
-    private byte         flags1;
-    private byte         flags2;
-    private long         rollTime;            // Uint
-    private int          stunTime;
-    private long         slowedTime;          // Uint
-    private long         makeBlueTime;        // Uint
-    private long         speedUpTime;         // Uint
-    private float        slowPatchTime;
-    private byte         classType;
-    private byte         specialization;
-    private float        chargedMP;
+    private float               blockPower;
+    private float               maxHPMultiplier;
+    private float               shootSpeed;
+    private float               damageMultiplier;
+    private float               armorMultiplier;
+    private float               resistanceMultiplier;
+    private long                level;               // Uint
+    private long                currentXP;           // Uint
+    private Item                itemData;
+    private Item[]              equipment;
 
-    private FloatVector3 rayHit;
+    private long                iceBlockFour;        // Uint
+    private long[]              skills;
+    private String              name;
 
-    private float        HP;
-    private float        MP;
+    private long                na1;                 // Uint
+    private long                na2;                 // |
+    private byte                na3;
+    private long                na4;
+    private long                na5;
+    private long                nu1;
+    private long                nu2;
+    private long                nu3;
+    private long                nu4;
+    private long                nu5;
+    private long                nu6;
+    private byte                nu7;
+    private byte                nu8;
+    private long                parentOwner;
+    private long                nu11;
+    private long                nu12;
+    private LongVector3         spawnPosition;
+    private long                nu20;
+    private long                nu21;
+    private long                nu22;
+    private byte                nu19;
 
-    private float        blockPower;
-    private float        maxHPMultiplier;
-    private float        shootSpeed;
-    private float        damageMultiplier;
-    private float        armorMultiplier;
-    private float        resistanceMultiplier;
-    private long         level;               // Uint
-    private long         currentXP;           // Uint
-    private Item         itemData;
-    private Item[]       equipment;
-
-    private long         iceBlockFour;        // Uint
-    private long[]       skills;
-    private String       name;
-
-    private long         na1;                 // Uint
-    private long         na2;                 // |
-    private byte         na3;
-    private long         na4;
-    private long         na5;
-    private long         nu1;
-    private long         nu2;
-    private long         nu3;
-    private long         nu4;
-    private long         nu5;
-    private long         nu6;
-    private byte         nu7;
-    private byte         nu8;
-    private long         parentOwner;
-    private long         nu11;
-    private long         nu12;
-    private LongVector3  spawnPosition;
-    private long         nu20;
-    private long         nu21;
-    private long         nu22;
-    private byte         nu19;
-
-    public EntityData() {
-        bitSet = new BitSet(64);
-        position = new LongVector3();
-        velocity = new FloatVector3();
-        accel = new FloatVector3();
-        extraVel = new FloatVector3();
-        rayHit = new FloatVector3();
-        app = new Appearance();
-        itemData = new Item();
-        equipment = new Item[13];
-        for (int i = 0; i < 13; i++)
+    public EntityData(EntityChanges changes) {
+        this.changes = changes;
+        this.position = new LongVector3();
+        this.velocity = new FloatVector3();
+        this.accel = new FloatVector3();
+        this.extraVel = new FloatVector3();
+        this.rayHit = new FloatVector3();
+        this.app = new Appearance();
+        this.itemData = new Item();
+        this.equipment = new Item[13];
+        for (int i = 0; i < 13; i++) {
             equipment[i] = new Item();
-        spawnPosition = new LongVector3();
-        skills = new long[11];
+        }
+        this.spawnPosition = new LongVector3();
+        this.skills = new long[11];
     }
 
     public EntityData(EntityData e) {
-        this.id = e.getId();
-        this.bitSet = e.getBitSet();
+        this.changes = e.getChanges();
         this.position = e.getPosition();
         this.orientation = e.getOrientation();
         this.velocity = e.getVelocity();
@@ -172,24 +166,8 @@ public class EntityData {
         this.nu19 = e.getNu19();
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public BitSet getBitSet() {
-        return bitSet;
-    }
-
-    public void setBitSet(BitSet b) {
-        this.bitSet = b;
-    }
-
-    public void fullUpdate() {
-        bitSet.set(0, 63);
+    public EntityChanges getChanges() {
+        return changes;
     }
 
     public LongVector3 getPosition() {
