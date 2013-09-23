@@ -61,7 +61,7 @@ public final class ActionCodec {
 
     public static SoundAction readSoundAction(ByteBuf buf) {
         FloatVector3 position = GeomCodec.readFloatVector3(buf);
-        SoundType soundType = readSoundType(buf);
+        int soundType = buf.readInt();
         SoundAction action = new SoundAction(position, soundType);
         action.setPitch(buf.readFloat());
         action.setVolume(buf.readFloat());
@@ -70,7 +70,7 @@ public final class ActionCodec {
 
     public static void writeSoundAction(ByteBuf buf, SoundAction action) {
         GeomCodec.writeFloatVector3(buf, action.getPosition());
-        writeSoundType(buf, action.getSoundType());
+        buf.writeInt(action.getSoundType());
         buf.writeFloat(action.getPitch());
         buf.writeFloat(action.getVolume());
     }

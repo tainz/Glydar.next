@@ -5,11 +5,11 @@ import org.glydar.api.geom.FloatVector3;
 public class SoundAction {
 
     private final FloatVector3 position;
-    private final SoundType    soundType;
+    private final int          soundType;
     private float              pitch;
     private float              volume;
 
-    public SoundAction(FloatVector3 position, SoundType type) {
+    public SoundAction(FloatVector3 position, int type) {
         this.position = position;
         this.soundType = type;
         this.pitch = 0f;
@@ -20,7 +20,7 @@ public class SoundAction {
         return position;
     }
 
-    public SoundType getSoundType() {
+    public int getSoundType() {
         return soundType;
     }
 
