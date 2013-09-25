@@ -267,7 +267,7 @@ class Unknown12Data {
     private final byte[] bytes;
 
     public Unknown12Data(ByteBuf buf) {
-        this.bytes = new byte[88];
+        this.bytes = new byte[40];
         buf.readBytes(bytes);
     }
 
