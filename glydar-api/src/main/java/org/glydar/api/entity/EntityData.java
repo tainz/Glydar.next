@@ -171,6 +171,7 @@ public class EntityData {
 
     public void setPosition(LongVector3 pos) {
         this.position = pos;
+        changes.set(EntityChange.POSITION);
     }
 
     public Orientation getOrientation() {
@@ -179,6 +180,7 @@ public class EntityData {
 
     public void setOrientation(Orientation orientation) {
         this.orientation = orientation;
+        changes.set(EntityChange.ORIENTATION);
     }
 
     public FloatVector3 getVelocity() {
@@ -187,6 +189,7 @@ public class EntityData {
 
     public void setVelocity(FloatVector3 velocity) {
         this.velocity = velocity;
+        changes.set(EntityChange.VELOCITY);
     }
 
     public FloatVector3 getAcceleration() {
@@ -195,6 +198,7 @@ public class EntityData {
 
     public void setAcceleration(FloatVector3 accel) {
         this.acceleration = accel;
+        changes.set(EntityChange.ACCELERATION);
     }
 
     public FloatVector3 getExtraVelocity() {
@@ -203,6 +207,7 @@ public class EntityData {
 
     public void setExtraVelocity(FloatVector3 extraVel) {
         this.extraVelocity = extraVel;
+        changes.set(EntityChange.EXTRA_VELOCITY);
     }
 
     public float getLookPitch() {
@@ -211,6 +216,7 @@ public class EntityData {
 
     public void setLookPitch(float lookPitch) {
         this.lookPitch = lookPitch;
+        changes.set(EntityChange.LOOK_PITCH);
     }
 
     public long getPhysicsFlags() {
@@ -219,6 +225,7 @@ public class EntityData {
 
     public void setPhysicsFlags(long physicsFlags) {
         this.physicsFlags = physicsFlags;
+        changes.set(EntityChange.PHYSICS_FLAGS);
     }
 
     public byte getHostileType() {
@@ -227,6 +234,7 @@ public class EntityData {
 
     public void setHostileType(byte hostileType) {
         this.hostileType = hostileType;
+        changes.set(EntityChange.HOSTILE_TYPE);
     }
 
     public long getEntityType() {
@@ -235,6 +243,7 @@ public class EntityData {
 
     public void setEntityType(long entityType) {
         this.entityType = entityType;
+        changes.set(EntityChange.ENTITY_TYPE);
     }
 
     public byte getCurrentMode() {
@@ -243,6 +252,7 @@ public class EntityData {
 
     public void setCurrentMode(byte currentMode) {
         this.currentMode = currentMode;
+        changes.set(EntityChange.CURRENT_MODE);
     }
 
     public long getLastShootTime() {
@@ -251,6 +261,7 @@ public class EntityData {
 
     public void setLastShootTime(long lastShootTime) {
         this.lastShootTime = lastShootTime;
+        changes.set(EntityChange.LAST_SHOOT_TIME);
     }
 
     public long getHitCounter() {
@@ -259,6 +270,7 @@ public class EntityData {
 
     public void setHitCounter(long hitCounter) {
         this.hitCounter = hitCounter;
+        changes.set(EntityChange.HIT_COUNTER);
     }
 
     public long getLastHitTime() {
@@ -267,6 +279,7 @@ public class EntityData {
 
     public void setLastHitTime(long lastHitTime) {
         this.lastHitTime = lastHitTime;
+        changes.set(EntityChange.LAST_HIT_TIME);
     }
 
     public Appearance getAppearance() {
@@ -275,6 +288,7 @@ public class EntityData {
 
     public void setAppearance(Appearance app) {
         this.appearance = app;
+        changes.set(EntityChange.APPEARANCE);
     }
 
     public byte getFlags1() {
@@ -283,6 +297,7 @@ public class EntityData {
 
     public void setFlags1(byte flags1) {
         this.flags1 = flags1;
+        changes.set(EntityChange.FLAGS);
     }
 
     public byte getFlags2() {
@@ -291,6 +306,7 @@ public class EntityData {
 
     public void setFlags2(byte flags2) {
         this.flags2 = flags2;
+        changes.set(EntityChange.FLAGS);
     }
 
     public long getRollTime() {
@@ -299,6 +315,7 @@ public class EntityData {
 
     public void setRollTime(long rollTime) {
         this.rollTime = rollTime;
+        changes.set(EntityChange.ROLL_TIME);
     }
 
     public int getStunTime() {
@@ -307,6 +324,7 @@ public class EntityData {
 
     public void setStunTime(int stunTime) {
         this.stunTime = stunTime;
+        changes.set(EntityChange.STUN_TIME);
     }
 
     public long getSlowedTime() {
@@ -315,6 +333,7 @@ public class EntityData {
 
     public void setSlowedTime(long slowedTime) {
         this.slowedTime = slowedTime;
+        changes.set(EntityChange.SLOWED_TIME);
     }
 
     public long getMakeBlueTime() {
@@ -323,6 +342,7 @@ public class EntityData {
 
     public void setMakeBlueTime(long makeBlueTime) {
         this.makeBlueTime = makeBlueTime;
+        changes.set(EntityChange.MAKE_BLUE_TIME);
     }
 
     public long getSpeedUpTime() {
@@ -331,6 +351,7 @@ public class EntityData {
 
     public void setSpeedUpTime(long speedUpTime) {
         this.speedUpTime = speedUpTime;
+        changes.set(EntityChange.SPEED_UP_TIME);
     }
 
     public float getSlowPatchTime() {
@@ -339,6 +360,7 @@ public class EntityData {
 
     public void setSlowPatchTime(float slowPatchTime) {
         this.slowPatchTime = slowPatchTime;
+        changes.set(EntityChange.SLOW_PATCH_TIME);
     }
 
     public byte getClassType() {
@@ -347,6 +369,7 @@ public class EntityData {
 
     public void setClassType(byte classType) {
         this.classType = classType;
+        changes.set(EntityChange.CLASS_TYPE);
     }
 
     public byte getSpecialization() {
@@ -355,6 +378,7 @@ public class EntityData {
 
     public void setSpecialization(byte specialization) {
         this.specialization = specialization;
+        changes.set(EntityChange.SPECIALIZATION);
     }
 
     public float getChargedMP() {
@@ -363,6 +387,7 @@ public class EntityData {
 
     public void setChargedMP(float chargedMP) {
         this.chargedMP = chargedMP;
+        changes.set(EntityChange.CHARGED_MP);
     }
 
     public FloatVector3 getRayHit() {
@@ -371,6 +396,7 @@ public class EntityData {
 
     public void setRayHit(FloatVector3 rayHit) {
         this.rayHit = rayHit;
+        changes.set(EntityChange.RAY_HIT);
     }
 
     public float getHp() {
@@ -379,6 +405,7 @@ public class EntityData {
 
     public void setHp(float hP) {
         hp = hP;
+        changes.set(EntityChange.HP);
     }
 
     public float getMp() {
@@ -387,6 +414,7 @@ public class EntityData {
 
     public void setMp(float mP) {
         mp = mP;
+        changes.set(EntityChange.MP);
     }
 
     public float getBlockPower() {
@@ -395,6 +423,7 @@ public class EntityData {
 
     public void setBlockPower(float blockPower) {
         this.blockPower = blockPower;
+        changes.set(EntityChange.BLOCK_POWER);
     }
 
     public float getMaxHPMultiplier() {
@@ -403,6 +432,7 @@ public class EntityData {
 
     public void setMaxHPMultiplier(float maxHPMultiplier) {
         this.maxHPMultiplier = maxHPMultiplier;
+        changes.set(EntityChange.MULTIPLIERS);
     }
 
     public float getShootSpeed() {
@@ -411,6 +441,7 @@ public class EntityData {
 
     public void setShootSpeed(float shootSpeed) {
         this.shootSpeed = shootSpeed;
+        changes.set(EntityChange.MULTIPLIERS);
     }
 
     public float getDamageMultiplier() {
@@ -419,6 +450,7 @@ public class EntityData {
 
     public void setDamageMultiplier(float damageMultiplier) {
         this.damageMultiplier = damageMultiplier;
+        changes.set(EntityChange.MULTIPLIERS);
     }
 
     public float getArmorMultiplier() {
@@ -427,6 +459,7 @@ public class EntityData {
 
     public void setArmorMultiplier(float armorMultiplier) {
         this.armorMultiplier = armorMultiplier;
+        changes.set(EntityChange.MULTIPLIERS);
     }
 
     public float getResistanceMultiplier() {
@@ -435,6 +468,7 @@ public class EntityData {
 
     public void setResistanceMultiplier(float resistanceMultiplier) {
         this.resistanceMultiplier = resistanceMultiplier;
+        changes.set(EntityChange.MULTIPLIERS);
     }
 
     public long getLevel() {
@@ -443,6 +477,7 @@ public class EntityData {
 
     public void setLevel(long level) {
         this.level = level;
+        changes.set(EntityChange.LEVEL);
     }
 
     public long getCurrentXP() {
@@ -451,6 +486,7 @@ public class EntityData {
 
     public void setCurrentXP(long currentXP) {
         this.currentXP = currentXP;
+        changes.set(EntityChange.CURRENT_XP);
     }
 
     public Item getQuickItem() {
@@ -459,6 +495,7 @@ public class EntityData {
 
     public void setQuickItem(Item itemData) {
         this.quickItem = itemData;
+        changes.set(EntityChange.ITEM_DATA);
     }
 
     public Equipment getEquipment() {
@@ -467,6 +504,7 @@ public class EntityData {
 
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
+
     }
 
     public long getIceBlockFour() {
@@ -475,6 +513,7 @@ public class EntityData {
 
     public void setIceBlockFour(long iceBlockFour) {
         this.iceBlockFour = iceBlockFour;
+        changes.set(EntityChange.ICE_BLOCK_FOUR);
     }
 
     public long[] getSkills() {
@@ -483,6 +522,7 @@ public class EntityData {
 
     public void setSkills(long[] skills) {
         this.skills = skills;
+        changes.set(EntityChange.SKILLS);
     }
 
     public String getName() {
@@ -491,6 +531,7 @@ public class EntityData {
 
     public void setName(String name) {
         this.name = name;
+        changes.set(EntityChange.NAME);
     }
 
     public long getNa1() {
@@ -499,6 +540,7 @@ public class EntityData {
 
     public void setNa1(long na1) {
         this.na1 = na1;
+        changes.set(EntityChange.NA_1_2);
     }
 
     public long getNa2() {
@@ -507,6 +549,7 @@ public class EntityData {
 
     public void setNa2(long na2) {
         this.na2 = na2;
+        changes.set(EntityChange.NA_1_2);
     }
 
     public byte getNa3() {
@@ -515,6 +558,7 @@ public class EntityData {
 
     public void setNa3(byte na3) {
         this.na3 = na3;
+        changes.set(EntityChange.NA_3);
     }
 
     public long getNa4() {
@@ -523,6 +567,7 @@ public class EntityData {
 
     public void setNa4(long na4) {
         this.na4 = na4;
+        changes.set(EntityChange.NA_4);
     }
 
     public long getNa5() {
@@ -531,6 +576,7 @@ public class EntityData {
 
     public void setNa5(long na5) {
         this.na5 = na5;
+        changes.set(EntityChange.NA_5_NU_11_12);
     }
 
     public long getNu1() {
@@ -539,6 +585,7 @@ public class EntityData {
 
     public void setNu1(long nu1) {
         this.nu1 = nu1;
+        changes.set(EntityChange.NU_1_2_3);
     }
 
     public long getNu2() {
@@ -547,6 +594,7 @@ public class EntityData {
 
     public void setNu2(long nu2) {
         this.nu2 = nu2;
+        changes.set(EntityChange.NU_1_2_3);
     }
 
     public long getNu3() {
@@ -555,6 +603,7 @@ public class EntityData {
 
     public void setNu3(long nu3) {
         this.nu3 = nu3;
+        changes.set(EntityChange.NU_1_2_3);
     }
 
     public long getNu4() {
@@ -563,6 +612,7 @@ public class EntityData {
 
     public void setNu4(long nu4) {
         this.nu4 = nu4;
+        changes.set(EntityChange.NU_4_5_6);
     }
 
     public long getNu5() {
@@ -571,6 +621,7 @@ public class EntityData {
 
     public void setNu5(long nu5) {
         this.nu5 = nu5;
+        changes.set(EntityChange.NU_4_5_6);
     }
 
     public long getNu6() {
@@ -579,6 +630,7 @@ public class EntityData {
 
     public void setNu6(long nu6) {
         this.nu6 = nu6;
+        changes.set(EntityChange.NU_4_5_6);
     }
 
     public byte getNu7() {
@@ -587,6 +639,7 @@ public class EntityData {
 
     public void setNu7(byte nu7) {
         this.nu7 = nu7;
+        changes.set(EntityChange.NU_7);
     }
 
     public byte getNu8() {
@@ -595,6 +648,7 @@ public class EntityData {
 
     public void setNu8(byte nu8) {
         this.nu8 = nu8;
+        changes.set(EntityChange.NU_8);
     }
 
     public long getParentOwner() {
@@ -603,6 +657,7 @@ public class EntityData {
 
     public void setParentOwner(long parentOwner) {
         this.parentOwner = parentOwner;
+        changes.set(EntityChange.PARENT_OWNER);
     }
 
     public long getNu11() {
@@ -611,6 +666,7 @@ public class EntityData {
 
     public void setNu11(long nu11) {
         this.nu11 = nu11;
+        changes.set(EntityChange.NA_5_NU_11_12);
     }
 
     public long getNu12() {
@@ -619,6 +675,7 @@ public class EntityData {
 
     public void setNu12(long nu12) {
         this.nu12 = nu12;
+        changes.set(EntityChange.NA_5_NU_11_12);
     }
 
     public LongVector3 getSpawnPosition() {
@@ -627,6 +684,7 @@ public class EntityData {
 
     public void setSpawnPosition(LongVector3 spawnPosition) {
         this.spawnPosition = spawnPosition;
+        changes.set(EntityChange.SPAWN_POSITION);
     }
 
     public long getNu20() {
@@ -635,6 +693,7 @@ public class EntityData {
 
     public void setNu20(long nu20) {
         this.nu20 = nu20;
+        changes.set(EntityChange.NU_20_21_22);
     }
 
     public long getNu21() {
@@ -643,6 +702,7 @@ public class EntityData {
 
     public void setNu21(long nu21) {
         this.nu21 = nu21;
+        changes.set(EntityChange.NU_20_21_22);
     }
 
     public long getNu22() {
@@ -651,6 +711,7 @@ public class EntityData {
 
     public void setNu22(long nu22) {
         this.nu22 = nu22;
+        changes.set(EntityChange.NU_20_21_22);
     }
 
     public byte getNu19() {
@@ -659,5 +720,6 @@ public class EntityData {
 
     public void setNu19(byte nu19) {
         this.nu19 = nu19;
+        changes.set(EntityChange.NU_19);
     }
 }
