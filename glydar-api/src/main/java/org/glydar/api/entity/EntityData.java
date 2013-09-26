@@ -52,7 +52,7 @@ public class EntityData {
     private float               resistanceMultiplier;
     private long                level;               // Uint
     private long                currentXP;           // Uint
-    private Item                itemData;
+    private Item                quickItem;
     private Equipment           equipment;
 
     private long                iceBlockFour;        // Uint
@@ -89,7 +89,7 @@ public class EntityData {
         this.extraVelocity = new FloatVector3();
         this.rayHit = new FloatVector3();
         this.appearance = new Appearance();
-        this.itemData = new Item();
+        this.quickItem = new Item();
         this.equipment = new Equipment();
         this.spawnPosition = new LongVector3();
         this.skills = new long[11];
@@ -133,7 +133,7 @@ public class EntityData {
         this.resistanceMultiplier = e.getResistanceMultiplier();
         this.level = e.getLevel();
         this.currentXP = e.getCurrentXP();
-        this.itemData = new Item(e.getItemData());
+        this.quickItem = new Item(e.getQuickItem());
         this.equipment = new Equipment(e.getEquipment());
         this.iceBlockFour = e.getIceBlockFour();
         this.skills = e.getSkills();
@@ -453,12 +453,12 @@ public class EntityData {
         this.currentXP = currentXP;
     }
 
-    public Item getItemData() {
-        return itemData;
+    public Item getQuickItem() {
+        return quickItem;
     }
 
-    public void setItemData(Item itemData) {
-        this.itemData = itemData;
+    public void setQuickItem(Item itemData) {
+        this.quickItem = itemData;
     }
 
     public Equipment getEquipment() {

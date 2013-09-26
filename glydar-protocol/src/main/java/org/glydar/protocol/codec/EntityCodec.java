@@ -169,7 +169,7 @@ public final class EntityCodec {
             data.setNu19(buf.readByte());
         }
         if (changes.get(EntityChange.ITEM_DATA)) {
-            data.setItemData(ItemCodec.readItem(buf));
+            data.setQuickItem(ItemCodec.readItem(buf));
         }
         if (changes.get(EntityChange.EQUIPMENT)) {
             data.setEquipment(ItemCodec.readEquipment(buf));
@@ -343,7 +343,7 @@ public final class EntityCodec {
             buf.writeByte(e.getNu19());
         }
         if (changes.get(EntityChange.ITEM_DATA)) {
-            ItemCodec.writeItem(buf, e.getItemData());
+            ItemCodec.writeItem(buf, e.getQuickItem());
         }
         if (changes.get(EntityChange.EQUIPMENT)) {
             ItemCodec.writeEquipment(buf, e.getEquipment());
