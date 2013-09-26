@@ -1,6 +1,7 @@
-package org.glydar.api.item;
+package org.glydar.api.world;
 
 import org.glydar.api.geom.LongVector3;
+import org.glydar.api.item.Item;
 
 public class ChunkItem {
 

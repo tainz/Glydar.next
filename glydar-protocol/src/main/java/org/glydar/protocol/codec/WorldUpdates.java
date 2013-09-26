@@ -10,7 +10,7 @@ import org.glydar.api.actions.KillAction;
 import org.glydar.api.actions.PickupAction;
 import org.glydar.api.actions.SoundAction;
 import org.glydar.api.entity.Particle;
-import org.glydar.api.item.ChunkItems;
+import org.glydar.api.world.ChunkItems;
 import org.glydar.protocol.RemoteType;
 import org.glydar.protocol.packet.Packet07Hit;
 import org.glydar.protocol.packet.Packet09Shoot;
@@ -85,7 +85,7 @@ public class WorldUpdates implements BufWritable {
 
         length = buf.readInt();
         for (int i = 0; i < length; i++) {
-            chunkItemsList.add(ItemCodec.readChunkItems(buf));
+            chunkItemsList.add(WorldCodec.readChunkItems(buf));
         }
 
         length = buf.readInt();
@@ -153,7 +153,7 @@ public class WorldUpdates implements BufWritable {
 
         buf.writeInt(chunkItemsList.size());
         for (ChunkItems chunkItems : chunkItemsList) {
-            ItemCodec.writeChunkItems(buf, chunkItems);
+            WorldCodec.writeChunkItems(buf, chunkItems);
         }
 
         buf.writeInt(unknown8List.size());
