@@ -19,7 +19,7 @@ public final class ItemCodec {
         i.setModifier(buf.readUnsignedInt());
         i.setMinusModifier(buf.readUnsignedInt());
         i.setRarity(buf.readByte());
-        i.setMaterial(buf.readByte());
+        i.setMaterialId(buf.readByte());
         i.setFlags(buf.readByte());
         buf.skipBytes(1);
         i.setLevel(buf.readShort());
@@ -42,7 +42,7 @@ public final class ItemCodec {
         buf.writeInt((int) i.getModifier());
         buf.writeInt((int) i.getMinusModifier());
         buf.writeByte(i.getRarity());
-        buf.writeByte(i.getMaterial());
+        buf.writeByte(i.getMaterialId());
         buf.writeByte(i.getFlags());
         buf.writeZero(1);
         buf.writeShort(i.getLevel());

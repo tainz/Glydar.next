@@ -7,7 +7,7 @@ public class Item {
     private long          modifier;     // Uint
     private long          minusModifier; // Uint
     private byte          rarity;
-    private byte          material;
+    private byte          materialId;
     private byte          flags;
     private short         level;        // ushort
     private ItemUpgrade[] upgrades;
@@ -16,17 +16,17 @@ public class Item {
     public Item(Item i) {
         this.typeId = i.typeId;
         this.subtypeId = i.subtypeId;
-        this.modifier = i.getModifier();
-        this.minusModifier = i.getMinusModifier();
-        this.rarity = i.getRarity();
-        this.material = i.getMaterial();
-        this.flags = i.getFlags();
-        this.level = i.getLevel();
-        this.upgrades = new ItemUpgrade[i.getUpgrades().length];
-        for (int j = 0; j < i.getUpgrades().length; j++) {
-            this.upgrades[j] = new ItemUpgrade(i.getUpgrades()[j]);
+        this.modifier = i.modifier;
+        this.minusModifier = i.minusModifier;
+        this.rarity = i.rarity;
+        this.materialId = i.materialId;
+        this.flags = i.flags;
+        this.level = i.level;
+        this.upgrades = new ItemUpgrade[i.upgrades.length];
+        for (int j = 0; j < i.upgrades.length; j++) {
+            this.upgrades[j] = new ItemUpgrade(i.upgrades[j]);
         }
-        this.upgradeCount = i.getUpgradeCount();
+        this.upgradeCount = i.upgradeCount;
     }
 
     public Item() {
@@ -87,12 +87,20 @@ public class Item {
         this.rarity = rarity;
     }
 
-    public byte getMaterial() {
-        return material;
+    public byte getMaterialId() {
+        return materialId;
     }
 
-    public void setMaterial(byte material) {
-        this.material = material;
+    public Material getMaterial() {
+        return Material.getById(materialId);
+    }
+
+    public void setMaterialId(byte material) {
+        this.materialId = material;
+    }
+
+    public void setMaterial(Material material) {
+        this.materialId = material.getId();
     }
 
     public byte getFlags() {
