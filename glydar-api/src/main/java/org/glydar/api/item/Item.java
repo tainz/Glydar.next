@@ -2,8 +2,8 @@ package org.glydar.api.item;
 
 public class Item {
 
-    private final byte    type;
-    private final byte    subtype;
+    private final byte    typeId;
+    private final byte    subtypeId;
     private long          modifier;     // Uint
     private long          minusModifier; // Uint
     private byte          rarity;
@@ -14,8 +14,8 @@ public class Item {
     private long          upgradeCount; // unsigned
 
     public Item(Item i) {
-        this.type = (byte) i.getType().ordinal();
-        this.subtype = i.getSubtype();
+        this.typeId = i.typeId;
+        this.subtypeId = i.subtypeId;
         this.modifier = i.getModifier();
         this.minusModifier = i.getMinusModifier();
         this.rarity = i.getRarity();
@@ -33,9 +33,9 @@ public class Item {
         this(ItemType.CRASH, (byte) 0);
     }
 
-    public Item(ItemType type, byte subtype) {
-        this.type = (byte) type.ordinal();
-        this.subtype = subtype;
+    public Item(byte typeId, byte subtypeId) {
+        this.typeId = typeId;
+        this.subtypeId = subtypeId;
 
         upgrades = new ItemUpgrade[32];
         for (int i = 0; i < 32; i++) {
@@ -43,12 +43,24 @@ public class Item {
         }
     }
 
-    public ItemType getType() {
-        return ItemType.values()[type];
+    public Item(ItemType type, byte subtype) {
+        this(type.getId(), subtype);
     }
 
-    public byte getSubtype() {
-        return subtype;
+    public byte getTypeId() {
+        return typeId;
+    }
+
+    public ItemType getType() {
+        return ItemType.getById(typeId);
+    }
+
+    public byte getSubtypeId() {
+        return subtypeId;
+    }
+
+    public ItemSubtype getSubtype() {
+        return getType().getSubtypeById(subtypeId);
     }
 
     public long getModifier() {
