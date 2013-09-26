@@ -13,9 +13,9 @@ public final class ItemCodec {
     }
 
     public static Item readItem(ByteBuf buf) {
-        Item i = new Item();
-        i.setType(ItemType.values()[buf.readByte()]);
-        i.setSubtype(buf.readByte());
+        ItemType type = ItemType.values()[buf.readByte()];
+        byte subtype = buf.readByte();
+        Item i = new Item(type, subtype);
         buf.skipBytes(2);
         i.setModifier(buf.readUnsignedInt());
         i.setMinusModifier(buf.readUnsignedInt());
@@ -92,18 +92,18 @@ public final class ItemCodec {
     }
 
     public static void writeEquipment(ByteBuf buf, Equipment e) {
-    	writeItem(buf, e.getUnknown1());
-    	writeItem(buf, e.getNeck());
-    	writeItem(buf, e.getChest());
-    	writeItem(buf, e.getFeet());
-    	writeItem(buf, e.getHands());
-    	writeItem(buf, e.getShoulder());
-    	writeItem(buf, e.getWeaponLeft());
-    	writeItem(buf, e.getWeaponRight());
-    	writeItem(buf, e.getRingLeft());
-    	writeItem(buf, e.getRingRight());
-    	writeItem(buf, e.getLight());
-    	writeItem(buf, e.getSpecial());
-    	writeItem(buf, e.getPet());
+        writeItem(buf, e.getUnknown1());
+        writeItem(buf, e.getNeck());
+        writeItem(buf, e.getChest());
+        writeItem(buf, e.getFeet());
+        writeItem(buf, e.getHands());
+        writeItem(buf, e.getShoulder());
+        writeItem(buf, e.getWeaponLeft());
+        writeItem(buf, e.getWeaponRight());
+        writeItem(buf, e.getRingLeft());
+        writeItem(buf, e.getRingRight());
+        writeItem(buf, e.getLight());
+        writeItem(buf, e.getSpecial());
+        writeItem(buf, e.getPet());
     }
 }

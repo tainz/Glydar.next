@@ -2,8 +2,8 @@ package org.glydar.api.item;
 
 public class Item {
 
-    private byte          type;
-    private byte          subtype;
+    private final byte    type;
+    private final byte    subtype;
     private long          modifier;     // Uint
     private long          minusModifier; // Uint
     private byte          rarity;
@@ -30,6 +30,13 @@ public class Item {
     }
 
     public Item() {
+        this(ItemType.CRASH, (byte) 0);
+    }
+
+    public Item(ItemType type, byte subtype) {
+        this.type = (byte) type.ordinal();
+        this.subtype = subtype;
+
         upgrades = new ItemUpgrade[32];
         for (int i = 0; i < 32; i++) {
             upgrades[i] = new ItemUpgrade();
@@ -40,16 +47,8 @@ public class Item {
         return ItemType.values()[type];
     }
 
-    public void setType(ItemType type) {
-        this.type = (byte) type.ordinal();
-    }
-
     public byte getSubtype() {
         return subtype;
-    }
-
-    public void setSubtype(byte subtype) {
-        this.subtype = subtype;
     }
 
     public long getModifier() {
