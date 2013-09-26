@@ -3,7 +3,6 @@ package org.glydar.protocol.codec;
 import io.netty.buffer.ByteBuf;
 
 import org.glydar.api.item.Equipment;
-import org.glydar.api.item.EquipmentSlot;
 import org.glydar.api.item.Item;
 import org.glydar.api.item.ItemUpgrade;
 
@@ -74,17 +73,36 @@ public final class ItemCodec {
     }
 
     public static Equipment readEquipment(ByteBuf buf) {
-        Equipment equipment = new Equipment();
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            Item item = ItemCodec.readItem(buf);
-            equipment.set(slot, item);
-        }
-        return equipment;
+        Equipment e = new Equipment();
+        e.setUnknown1(readItem(buf));
+        e.setNeck(readItem(buf));
+        e.setChest(readItem(buf));
+        e.setFeet(readItem(buf));
+        e.setHands(readItem(buf));
+        e.setShoulder(readItem(buf));
+        e.setWeaponLeft(readItem(buf));
+        e.setWeaponRight(readItem(buf));
+        e.setRingLeft(readItem(buf));
+        e.setRingRight(readItem(buf));
+        e.setLight(readItem(buf));
+        e.setSpecial(readItem(buf));
+        e.setPet(readItem(buf));
+        return e;
     }
 
-    public static void writeEquipment(ByteBuf buf, Equipment equipment) {
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            writeItem(buf, equipment.get(slot));
-        }
+    public static void writeEquipment(ByteBuf buf, Equipment e) {
+    	writeItem(buf, e.getUnknown1());
+    	writeItem(buf, e.getNeck());
+    	writeItem(buf, e.getChest());
+    	writeItem(buf, e.getFeet());
+    	writeItem(buf, e.getHands());
+    	writeItem(buf, e.getShoulder());
+    	writeItem(buf, e.getWeaponLeft());
+    	writeItem(buf, e.getWeaponRight());
+    	writeItem(buf, e.getRingLeft());
+    	writeItem(buf, e.getRingRight());
+    	writeItem(buf, e.getLight());
+    	writeItem(buf, e.getSpecial());
+    	writeItem(buf, e.getPet());
     }
 }
