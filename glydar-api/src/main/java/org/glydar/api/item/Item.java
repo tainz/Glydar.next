@@ -14,7 +14,7 @@ public class Item {
     private long          upgradeCount; // unsigned
 
     public Item(Item i) {
-        this.type = i.getType();
+        this.type = (byte) i.getType().ordinal();
         this.subtype = i.getSubtype();
         this.modifier = i.getModifier();
         this.minusModifier = i.getMinusModifier();
@@ -36,12 +36,12 @@ public class Item {
         }
     }
 
-    public byte getType() {
-        return type;
+    public ItemType getType() {
+        return ItemType.values()[type];
     }
 
-    public void setType(byte type) {
-        this.type = type;
+    public void setType(ItemType type) {
+        this.type = (byte) type.ordinal();
     }
 
     public byte getSubtype() {

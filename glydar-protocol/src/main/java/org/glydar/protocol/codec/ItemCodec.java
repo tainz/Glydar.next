@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import org.glydar.api.item.Equipment;
 import org.glydar.api.item.Item;
+import org.glydar.api.item.ItemType;
 import org.glydar.api.item.ItemUpgrade;
 
 public final class ItemCodec {
@@ -13,7 +14,7 @@ public final class ItemCodec {
 
     public static Item readItem(ByteBuf buf) {
         Item i = new Item();
-        i.setType(buf.readByte());
+        i.setType(ItemType.values()[buf.readByte()]);
         i.setSubtype(buf.readByte());
         buf.skipBytes(2);
         i.setModifier(buf.readUnsignedInt());
@@ -36,7 +37,7 @@ public final class ItemCodec {
     }
 
     public static void writeItem(ByteBuf buf, Item i) {
-        buf.writeByte(i.getType());
+        buf.writeByte((byte) i.getType().ordinal());
         buf.writeByte(i.getSubtype());
         buf.writeZero(2);
         buf.writeInt((int) i.getModifier());
