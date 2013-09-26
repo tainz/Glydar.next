@@ -15,8 +15,8 @@ public class EntityData {
     private LongVector3         position;
     private Orientation         orientation;
     private FloatVector3        velocity;
-    private FloatVector3        accel;
-    private FloatVector3        extraVel;
+    private FloatVector3        acceleration;
+    private FloatVector3        extraVelocity;
 
     private float               lookPitch;
     private long                physicsFlags;        // Uint
@@ -26,7 +26,7 @@ public class EntityData {
     private long                lastShootTime;       // Uint
     private long                hitCounter;          // Uint
     private long                lastHitTime;         // Uint
-    private Appearance          app;
+    private Appearance          appearance;
     private byte                flags1;
     private byte                flags2;
     private long                rollTime;            // Uint
@@ -41,8 +41,8 @@ public class EntityData {
 
     private FloatVector3        rayHit;
 
-    private float               HP;
-    private float               MP;
+    private float               hp;
+    private float               mp;
 
     private float               blockPower;
     private float               maxHPMultiplier;
@@ -85,10 +85,10 @@ public class EntityData {
         this.changes = changes;
         this.position = new LongVector3();
         this.velocity = new FloatVector3();
-        this.accel = new FloatVector3();
-        this.extraVel = new FloatVector3();
+        this.acceleration = new FloatVector3();
+        this.extraVelocity = new FloatVector3();
         this.rayHit = new FloatVector3();
-        this.app = new Appearance();
+        this.appearance = new Appearance();
         this.itemData = new Item();
         this.equipment = new Equipment();
         this.spawnPosition = new LongVector3();
@@ -100,8 +100,8 @@ public class EntityData {
         this.position = e.getPosition();
         this.orientation = e.getOrientation();
         this.velocity = e.getVelocity();
-        this.accel = e.getAccel();
-        this.extraVel = e.getExtraVel();
+        this.acceleration = e.getAcceleration();
+        this.extraVelocity = e.getExtraVelocity();
         this.lookPitch = e.getLookPitch();
         this.physicsFlags = e.getPhysicsFlags();
         this.hostileType = e.getHostileType();
@@ -110,7 +110,7 @@ public class EntityData {
         this.lastShootTime = e.getLastShootTime();
         this.hitCounter = e.getHitCounter();
         this.lastHitTime = e.getLastHitTime();
-        this.app = new Appearance(e.getApp());
+        this.appearance = new Appearance(e.getAppearance());
         this.flags1 = e.getFlags1();
         this.flags2 = e.getFlags2();
         this.rollTime = e.getRollTime();
@@ -123,8 +123,8 @@ public class EntityData {
         this.specialization = e.getSpecialization();
         this.chargedMP = e.getChargedMP();
         this.rayHit = e.getRayHit();
-        HP = e.getHP();
-        MP = e.getMP();
+        hp = e.getHp();
+        mp = e.getMp();
         this.blockPower = e.getBlockPower();
         this.maxHPMultiplier = e.getMaxHPMultiplier();
         this.shootSpeed = e.getShootSpeed();
@@ -189,20 +189,20 @@ public class EntityData {
         this.velocity = velocity;
     }
 
-    public FloatVector3 getAccel() {
-        return accel;
+    public FloatVector3 getAcceleration() {
+        return acceleration;
     }
 
-    public void setAccel(FloatVector3 accel) {
-        this.accel = accel;
+    public void setAcceleration(FloatVector3 accel) {
+        this.acceleration = accel;
     }
 
-    public FloatVector3 getExtraVel() {
-        return extraVel;
+    public FloatVector3 getExtraVelocity() {
+        return extraVelocity;
     }
 
-    public void setExtraVel(FloatVector3 extraVel) {
-        this.extraVel = extraVel;
+    public void setExtraVelocity(FloatVector3 extraVel) {
+        this.extraVelocity = extraVel;
     }
 
     public float getLookPitch() {
@@ -269,12 +269,12 @@ public class EntityData {
         this.lastHitTime = lastHitTime;
     }
 
-    public Appearance getApp() {
-        return app;
+    public Appearance getAppearance() {
+        return appearance;
     }
 
-    public void setApp(Appearance app) {
-        this.app = app;
+    public void setAppearance(Appearance app) {
+        this.appearance = app;
     }
 
     public byte getFlags1() {
@@ -373,20 +373,20 @@ public class EntityData {
         this.rayHit = rayHit;
     }
 
-    public float getHP() {
-        return HP;
+    public float getHp() {
+        return hp;
     }
 
-    public void setHP(float hP) {
-        HP = hP;
+    public void setHp(float hP) {
+        hp = hP;
     }
 
-    public float getMP() {
-        return MP;
+    public float getMp() {
+        return mp;
     }
 
-    public void setMP(float mP) {
-        MP = mP;
+    public void setMp(float mP) {
+        mp = mP;
     }
 
     public float getBlockPower() {

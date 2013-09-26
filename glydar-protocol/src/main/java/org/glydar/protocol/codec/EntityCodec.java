@@ -35,10 +35,10 @@ public final class EntityCodec {
             data.setVelocity(GeomCodec.readFloatVector3(buf));
         }
         if (changes.get(EntityChange.ACCELERATION)) {
-            data.setAccel(GeomCodec.readFloatVector3(buf));
+            data.setAcceleration(GeomCodec.readFloatVector3(buf));
         }
         if (changes.get(EntityChange.EXTRA_VELOCITY)) {
-            data.setExtraVel(GeomCodec.readFloatVector3(buf));
+            data.setExtraVelocity(GeomCodec.readFloatVector3(buf));
         }
         if (changes.get(EntityChange.LOOK_PITCH)) {
             data.setLookPitch(buf.readFloat());
@@ -65,7 +65,7 @@ public final class EntityCodec {
             data.setLastHitTime(buf.readUnsignedInt());
         }
         if (changes.get(EntityChange.APPEARANCE)) {
-            data.setApp(readAppearance(buf));
+            data.setAppearance(readAppearance(buf));
         }
         if (changes.get(EntityChange.FLAGS)) {
             data.setFlags1(buf.readByte());
@@ -112,10 +112,10 @@ public final class EntityCodec {
             data.setRayHit(GeomCodec.readFloatVector3(buf));
         }
         if (changes.get(EntityChange.HP)) {
-            data.setHP(buf.readFloat());
+            data.setHp(buf.readFloat());
         }
         if (changes.get(EntityChange.MP)) {
-            data.setMP(buf.readFloat());
+            data.setMp(buf.readFloat());
         }
         if (changes.get(EntityChange.BLOCK_POWER)) {
             data.setBlockPower(buf.readFloat());
@@ -209,10 +209,10 @@ public final class EntityCodec {
             GeomCodec.writeFloatVector3(buf, e.getVelocity());
         }
         if (changes.get(EntityChange.ACCELERATION)) {
-            GeomCodec.writeFloatVector3(buf, e.getAccel());
+            GeomCodec.writeFloatVector3(buf, e.getAcceleration());
         }
         if (changes.get(EntityChange.EXTRA_VELOCITY)) {
-            GeomCodec.writeFloatVector3(buf, e.getExtraVel());
+            GeomCodec.writeFloatVector3(buf, e.getExtraVelocity());
         }
         if (changes.get(EntityChange.LOOK_PITCH)) {
             buf.writeFloat(e.getLookPitch());
@@ -239,7 +239,7 @@ public final class EntityCodec {
             buf.writeInt((int) e.getLastHitTime());
         }
         if (changes.get(EntityChange.APPEARANCE)) {
-            writeAppearance(buf, e.getApp());
+            writeAppearance(buf, e.getAppearance());
         }
         if (changes.get(EntityChange.FLAGS)) {
             buf.writeByte(e.getFlags1());
@@ -286,10 +286,10 @@ public final class EntityCodec {
             GeomCodec.writeFloatVector3(buf, e.getRayHit());
         }
         if (changes.get(EntityChange.HP)) {
-            buf.writeFloat(e.getHP());
+            buf.writeFloat(e.getHp());
         }
         if (changes.get(EntityChange.MP)) {
-            buf.writeFloat(e.getMP());
+            buf.writeFloat(e.getMp());
         }
         if (changes.get(EntityChange.BLOCK_POWER)) {
             buf.writeFloat(e.getBlockPower());

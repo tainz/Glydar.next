@@ -37,7 +37,7 @@ public class Packet07Hit implements Packet {
         this.stunDuration = 0;
         this.unknown7 = 0;
         this.position = entity.getData().getPosition();
-        this.hitDirection = entity.getData().getExtraVel();
+        this.hitDirection = entity.getData().getExtraVelocity();
         this.skillHit = (byte) 0;
         this.type = (byte) 0;
         this.showLight = (byte) 0;
