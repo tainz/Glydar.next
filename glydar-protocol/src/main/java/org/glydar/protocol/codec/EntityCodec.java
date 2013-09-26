@@ -4,11 +4,11 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.BitSet;
 
+import org.glydar.api.actions.Particle;
 import org.glydar.api.entity.Appearance;
 import org.glydar.api.entity.EntityChange;
 import org.glydar.api.entity.EntityChanges;
 import org.glydar.api.entity.EntityData;
-import org.glydar.api.entity.Particle;
 import org.glydar.api.geom.LongVector3;
 
 import com.google.common.base.Charsets;

@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.glydar.api.actions.DamageAction;
 import org.glydar.api.actions.KillAction;
+import org.glydar.api.actions.Particle;
 import org.glydar.api.actions.PickupAction;
 import org.glydar.api.actions.SoundAction;
-import org.glydar.api.entity.Particle;
 import org.glydar.api.world.ChunkItems;
 import org.glydar.protocol.RemoteType;
 import org.glydar.protocol.packet.Packet07Hit;

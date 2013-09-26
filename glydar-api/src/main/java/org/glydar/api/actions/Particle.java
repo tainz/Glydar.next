@@ -1,4 +1,4 @@
-package org.glydar.api.entity;
+package org.glydar.api.actions;
 
 import org.glydar.api.geom.FloatVector3;
 import org.glydar.api.geom.LongVector3;
