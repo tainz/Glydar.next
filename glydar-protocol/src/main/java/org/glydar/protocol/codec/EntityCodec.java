@@ -10,7 +10,6 @@ import org.glydar.api.entity.EntityChanges;
 import org.glydar.api.entity.EntityData;
 import org.glydar.api.entity.Particle;
 import org.glydar.api.geom.LongVector3;
-import org.glydar.api.item.Item;
 
 import com.google.common.base.Charsets;
 
@@ -173,11 +172,7 @@ public final class EntityCodec {
             data.setItemData(ItemCodec.readItem(buf));
         }
         if (changes.get(EntityChange.EQUIPMENT)) {
-            Item[] equipment = data.getEquipment();
-            for (int i = 0; i < 13; i++) {
-                equipment[i] = ItemCodec.readItem(buf);
-            }
-            data.setEquipment(equipment);
+            data.setEquipment(ItemCodec.readEquipment(buf));
         }
         if (changes.get(EntityChange.NAME)) {
             data.setName(new String(buf.readBytes(16).array(), Charsets.US_ASCII).trim());
@@ -351,10 +346,7 @@ public final class EntityCodec {
             ItemCodec.writeItem(buf, e.getItemData());
         }
         if (changes.get(EntityChange.EQUIPMENT)) {
-            Item[] equipment = e.getEquipment();
-            for (int i = 0; i < 13; i++) {
-                ItemCodec.writeItem(buf, equipment[i]);
-            }
+            ItemCodec.writeEquipment(buf, e.getEquipment());
         }
         if (changes.get(EntityChange.NAME)) {
             byte[] ascii = e.getName().getBytes(Charsets.US_ASCII);

@@ -3,6 +3,7 @@ package org.glydar.api.entity;
 import org.glydar.api.geom.FloatVector3;
 import org.glydar.api.geom.LongVector3;
 import org.glydar.api.geom.Orientation;
+import org.glydar.api.item.Equipment;
 import org.glydar.api.item.Item;
 
 /* Structures and data discovered by mat^2 (http://github.com/matpow2) */
@@ -52,7 +53,7 @@ public class EntityData {
     private long                level;               // Uint
     private long                currentXP;           // Uint
     private Item                itemData;
-    private Item[]              equipment;
+    private Equipment           equipment;
 
     private long                iceBlockFour;        // Uint
     private long[]              skills;
@@ -89,10 +90,7 @@ public class EntityData {
         this.rayHit = new FloatVector3();
         this.app = new Appearance();
         this.itemData = new Item();
-        this.equipment = new Item[13];
-        for (int i = 0; i < 13; i++) {
-            equipment[i] = new Item();
-        }
+        this.equipment = new Equipment();
         this.spawnPosition = new LongVector3();
         this.skills = new long[11];
     }
@@ -136,10 +134,7 @@ public class EntityData {
         this.level = e.getLevel();
         this.currentXP = e.getCurrentXP();
         this.itemData = new Item(e.getItemData());
-        this.equipment = new Item[e.getEquipment().length];
-        for (int j = 0; j < e.getEquipment().length; j++) {
-            this.equipment[j] = new Item(e.getEquipment()[j]);
-        }
+        this.equipment = new Equipment(e.getEquipment());
         this.iceBlockFour = e.getIceBlockFour();
         this.skills = e.getSkills();
         this.name = e.getName();
@@ -466,11 +461,11 @@ public class EntityData {
         this.itemData = itemData;
     }
 
-    public Item[] getEquipment() {
+    public Equipment getEquipment() {
         return equipment;
     }
 
-    public void setEquipment(Item[] equipment) {
+    public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
     }
 

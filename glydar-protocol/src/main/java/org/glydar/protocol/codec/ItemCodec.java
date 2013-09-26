@@ -2,6 +2,8 @@ package org.glydar.protocol.codec;
 
 import io.netty.buffer.ByteBuf;
 
+import org.glydar.api.item.Equipment;
+import org.glydar.api.item.EquipmentSlot;
 import org.glydar.api.item.Item;
 import org.glydar.api.item.ItemUpgrade;
 
@@ -69,5 +71,20 @@ public final class ItemCodec {
         buf.writeByte(u.getzOffset());
         buf.writeByte(u.getMaterial());
         buf.writeInt((int) u.getLevel());
+    }
+
+    public static Equipment readEquipment(ByteBuf buf) {
+        Equipment equipment = new Equipment();
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            Item item = ItemCodec.readItem(buf);
+            equipment.set(slot, item);
+        }
+        return equipment;
+    }
+
+    public static void writeEquipment(ByteBuf buf, Equipment equipment) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            writeItem(buf, equipment.get(slot));
+        }
     }
 }

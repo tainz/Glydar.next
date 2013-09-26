@@ -38,6 +38,14 @@ public class Packet00EntityUpdate implements Packet {
         handler.handle(remote, this);
     }
 
+    public long getEntityId() {
+        return entityId;
+    }
+
+    public EntityData getData() {
+        return data;
+    }
+
     private class EntityUpdate implements BufWritable {
 
         @Override
