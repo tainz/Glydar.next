@@ -32,4 +32,8 @@ public class Packet04WorldUpdate implements Packet {
     public <T extends Remote> void dispatchTo(ProtocolHandler<T> handler, T remote) {
         handler.handle(remote, this);
     }
+
+    public WorldUpdates getData() {
+        return data;
+    }
 }

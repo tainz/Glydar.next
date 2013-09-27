@@ -6,7 +6,7 @@ import org.glydar.api.item.ItemSubtype.WeaponSubtype;
 
 public enum ItemType {
 
-    CRASH,
+    NONE,
 
     CONSUMABLE {
 

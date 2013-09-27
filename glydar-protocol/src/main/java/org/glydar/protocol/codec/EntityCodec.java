@@ -89,11 +89,11 @@ public final class EntityCodec {
         if (changes.get(EntityChange.SLOW_PATCH_TIME)) {
             data.setSlowPatchTime(buf.readFloat());
         }
-        if (changes.get(EntityChange.CLASS_TYPE)) {
-            data.setClassType(buf.readByte());
+        if (changes.get(EntityChange.ENTITY_CLASS)) {
+            data.setEntityClassId(buf.readByte());
         }
         if (changes.get(EntityChange.SPECIALIZATION)) {
-            data.setSpecialization(buf.readByte());
+            data.setSpecializationId(buf.readByte());
         }
         if (changes.get(EntityChange.CHARGED_MP)) {
             data.setChargedMP(buf.readFloat());
@@ -168,7 +168,7 @@ public final class EntityCodec {
         if (changes.get(EntityChange.NU_19)) {
             data.setNu19(buf.readByte());
         }
-        if (changes.get(EntityChange.ITEM_DATA)) {
+        if (changes.get(EntityChange.QUICK_ITEM)) {
             data.setQuickItem(ItemCodec.readItem(buf));
         }
         if (changes.get(EntityChange.EQUIPMENT)) {
@@ -263,11 +263,11 @@ public final class EntityCodec {
         if (changes.get(EntityChange.SLOW_PATCH_TIME)) {
             buf.writeFloat(e.getSlowPatchTime());
         }
-        if (changes.get(EntityChange.CLASS_TYPE)) {
-            buf.writeByte(e.getClassType());
+        if (changes.get(EntityChange.ENTITY_CLASS)) {
+            buf.writeByte(e.getEntityClassId());
         }
         if (changes.get(EntityChange.SPECIALIZATION)) {
-            buf.writeByte(e.getSpecialization());
+            buf.writeByte(e.getSpecializationId());
         }
         if (changes.get(EntityChange.CHARGED_MP)) {
             buf.writeFloat(e.getChargedMP());
@@ -342,7 +342,7 @@ public final class EntityCodec {
         if (changes.get(EntityChange.NU_19)) {
             buf.writeByte(e.getNu19());
         }
-        if (changes.get(EntityChange.ITEM_DATA)) {
+        if (changes.get(EntityChange.QUICK_ITEM)) {
             ItemCodec.writeItem(buf, e.getQuickItem());
         }
         if (changes.get(EntityChange.EQUIPMENT)) {

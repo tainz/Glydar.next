@@ -30,7 +30,7 @@ public class Item {
     }
 
     public Item() {
-        this(ItemType.CRASH, (byte) 0);
+        this(ItemType.NONE, (byte) 0);
     }
 
     public Item(byte typeId, byte subtypeId) {

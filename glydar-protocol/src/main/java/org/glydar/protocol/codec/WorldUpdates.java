@@ -186,6 +186,10 @@ public class WorldUpdates implements BufWritable {
             p.writeTo(receiver, buf);
         }
     }
+
+    public List<ChunkItems> getChunkItemsList() {
+        return chunkItemsList;
+    }
 }
 
 class Unknown1Data {

@@ -1,6 +1,5 @@
 package org.glydar.api.entity;
 
-
 public enum EntityChange {
 
     POSITION,
@@ -45,7 +44,7 @@ public enum EntityChange {
 
     SLOW_PATCH_TIME,
 
-    CLASS_TYPE,
+    ENTITY_CLASS,
 
     SPECIALIZATION,
 
@@ -89,7 +88,7 @@ public enum EntityChange {
 
     NU_19,
 
-    ITEM_DATA,
+    QUICK_ITEM,
 
     EQUIPMENT,
 

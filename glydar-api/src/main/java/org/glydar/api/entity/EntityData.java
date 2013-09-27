@@ -35,8 +35,8 @@ public class EntityData {
     private long                makeBlueTime;        // Uint
     private long                speedUpTime;         // Uint
     private float               slowPatchTime;
-    private byte                classType;
-    private byte                specialization;
+    private byte                entityClassId;
+    private byte                specializationId;
     private float               chargedMP;
 
     private FloatVector3        rayHit;
@@ -119,8 +119,8 @@ public class EntityData {
         this.makeBlueTime = e.getMakeBlueTime();
         this.speedUpTime = e.getSpeedUpTime();
         this.slowPatchTime = e.getSlowPatchTime();
-        this.classType = e.getClassType();
-        this.specialization = e.getSpecialization();
+        this.entityClassId = e.entityClassId;
+        this.specializationId = e.specializationId;
         this.chargedMP = e.getChargedMP();
         this.rayHit = e.getRayHit();
         hp = e.getHp();
@@ -363,21 +363,37 @@ public class EntityData {
         changes.set(EntityChange.SLOW_PATCH_TIME);
     }
 
-    public byte getClassType() {
-        return classType;
+    public EntityClass getEntityClass() {
+        return EntityClass.getById(entityClassId);
     }
 
-    public void setClassType(byte classType) {
-        this.classType = classType;
-        changes.set(EntityChange.CLASS_TYPE);
+    public byte getEntityClassId() {
+        return entityClassId;
     }
 
-    public byte getSpecialization() {
-        return specialization;
+    public void setEntityClass(EntityClass clazz) {
+        this.entityClassId = clazz.getId();
     }
 
-    public void setSpecialization(byte specialization) {
-        this.specialization = specialization;
+    public void setEntityClassId(byte clazzId) {
+        this.entityClassId = clazzId;
+        changes.set(EntityChange.ENTITY_CLASS);
+    }
+
+    public Specialization getSpecialization() {
+        return Specialization.getById(getEntityClass(), specializationId);
+    }
+
+    public byte getSpecializationId() {
+        return specializationId;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specializationId = specialization.getId();
+    }
+
+    public void setSpecializationId(byte specializationId) {
+        this.specializationId = specializationId;
         changes.set(EntityChange.SPECIALIZATION);
     }
 
@@ -495,7 +511,7 @@ public class EntityData {
 
     public void setQuickItem(Item itemData) {
         this.quickItem = itemData;
-        changes.set(EntityChange.ITEM_DATA);
+        changes.set(EntityChange.QUICK_ITEM);
     }
 
     public Equipment getEquipment() {

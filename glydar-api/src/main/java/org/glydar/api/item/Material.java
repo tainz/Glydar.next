@@ -2,6 +2,8 @@ package org.glydar.api.item;
 
 public enum Material {
 
+    NONE,
+
     IRON,
 
     WOOD,
@@ -15,8 +17,6 @@ public enum Material {
     UNKNOWN_6,
 
     BONE,
-
-    UNKNOWN_7,
 
     UNKNOWN_8,
 
