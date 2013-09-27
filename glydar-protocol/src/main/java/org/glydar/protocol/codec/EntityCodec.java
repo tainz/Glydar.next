@@ -10,6 +10,7 @@ import org.glydar.api.entity.EntityChange;
 import org.glydar.api.entity.EntityChanges;
 import org.glydar.api.entity.EntityData;
 import org.glydar.api.geom.LongVector3;
+import org.glydar.api.item.Consumable;
 
 import com.google.common.base.Charsets;
 
@@ -169,7 +170,7 @@ public final class EntityCodec {
             data.setNu19(buf.readByte());
         }
         if (changes.get(EntityChange.QUICK_ITEM)) {
-            data.setQuickItem(ItemCodec.readItem(buf));
+            data.setQuickItem((Consumable) ItemCodec.readItem(buf));
         }
         if (changes.get(EntityChange.EQUIPMENT)) {
             data.setEquipment(ItemCodec.readEquipment(buf));

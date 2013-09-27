@@ -40,7 +40,9 @@ public interface ItemSubtype {
 
         PUMPKIN_MUFFIN,
 
-        MUSHROOM;
+        MUSHROOM,
+        
+        UNSUPPORTED;
 
         @Override
         public byte getId() {
@@ -52,7 +54,7 @@ public interface ItemSubtype {
                 return values()[id];
             }
             catch (IndexOutOfBoundsException exc) {
-                return null;
+                return ConsumableSubtype.UNSUPPORTED;
             }
         }
     }
@@ -99,7 +101,9 @@ public interface ItemSubtype {
 
         PITCH_AXE,
 
-        TORCH;
+        TORCH,
+        
+        UNSUPPORTED;
 
         @Override
         public byte getId() {
@@ -111,7 +115,7 @@ public interface ItemSubtype {
                 return values()[id];
             }
             catch (IndexOutOfBoundsException exc) {
-                return null;
+                return WeaponSubtype.UNSUPPORTED;
             }
         }
     }

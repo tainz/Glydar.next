@@ -8,23 +8,11 @@ public enum ItemType {
 
     NONE,
 
-    CONSUMABLE {
-
-        @Override
-        public ConsumableSubtype getSubtypeById(byte id) {
-            return ConsumableSubtype.getById(id);
-        }
-    },
+    CONSUMABLE,
 
     FORMULA,
 
-    WEAPON {
-
-        @Override
-        public WeaponSubtype getSubtypeById(byte id) {
-            return WeaponSubtype.getById(id);
-        }
-    },
+    WEAPON,
 
     CHEST,
 
@@ -66,14 +54,12 @@ public enum ItemType {
 
     SPECIAL,
 
-    LAMP;
+    LAMP,
+    
+    UNSUPPORTED;
 
     public byte getId() {
         return (byte) ordinal();
-    }
-
-    public ItemSubtype getSubtypeById(byte id) {
-        return DefaultSubtype.NONE;
     }
 
     public static ItemType getById(byte id) {
@@ -81,7 +67,7 @@ public enum ItemType {
             return values()[id];
         }
         catch (IndexOutOfBoundsException exc) {
-            return null;
+            return ItemType.UNSUPPORTED;
         }
     }
 }

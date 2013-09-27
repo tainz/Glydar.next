@@ -2,16 +2,16 @@ package org.glydar.api.item;
 
 public class Item {
 
-    private final byte    typeId;
-    private final byte    subtypeId;
-    private long          modifier;     // Uint
-    private long          minusModifier; // Uint
-    private byte          rarity;
-    private byte          materialId;
-    private byte          flags;
-    private short         level;        // ushort
-    private ItemUpgrade[] upgrades;
-    private long          upgradeCount; // unsigned
+    private final byte    	typeId;
+    protected final byte    subtypeId;
+    private long          	modifier;     // Uint
+    private long          	minusModifier; // Uint
+    private byte          	rarity;
+    private byte          	materialId;
+    private byte         	 flags;
+    private short         	level;        // ushort
+    private ItemUpgrade[] 	upgrades;
+    private long          	upgradeCount; // unsigned
 
     public Item(Item i) {
         this.typeId = i.typeId;
@@ -46,6 +46,10 @@ public class Item {
     public Item(ItemType type, byte subtype) {
         this(type.getId(), subtype);
     }
+    
+    public Item(ItemType type, ItemSubtype sub) {
+        this(type.getId(), sub.getId());
+    }
 
     public byte getTypeId() {
         return typeId;
@@ -57,10 +61,6 @@ public class Item {
 
     public byte getSubtypeId() {
         return subtypeId;
-    }
-
-    public ItemSubtype getSubtype() {
-        return getType().getSubtypeById(subtypeId);
     }
 
     public long getModifier() {

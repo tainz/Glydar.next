@@ -3,6 +3,7 @@ package org.glydar.api.entity;
 import org.glydar.api.geom.FloatVector3;
 import org.glydar.api.geom.LongVector3;
 import org.glydar.api.geom.Orientation;
+import org.glydar.api.item.Consumable;
 import org.glydar.api.item.Equipment;
 import org.glydar.api.item.Item;
 
@@ -52,7 +53,7 @@ public class EntityData {
     private float               resistanceMultiplier;
     private long                level;               // Uint
     private long                currentXP;           // Uint
-    private Item                quickItem;
+    private Consumable          quickItem;
     private Equipment           equipment;
 
     private long                iceBlockFour;        // Uint
@@ -89,7 +90,7 @@ public class EntityData {
         this.extraVelocity = new FloatVector3();
         this.rayHit = new FloatVector3();
         this.appearance = new Appearance();
-        this.quickItem = new Item();
+        this.quickItem = new Consumable();
         this.equipment = new Equipment();
         this.spawnPosition = new LongVector3();
         this.skills = new long[11];
@@ -133,7 +134,7 @@ public class EntityData {
         this.resistanceMultiplier = e.getResistanceMultiplier();
         this.level = e.getLevel();
         this.currentXP = e.getCurrentXP();
-        this.quickItem = new Item(e.getQuickItem());
+        this.quickItem = new Consumable(e.getQuickItem());
         this.equipment = new Equipment(e.getEquipment());
         this.iceBlockFour = e.getIceBlockFour();
         this.skills = e.getSkills();
@@ -505,11 +506,11 @@ public class EntityData {
         changes.set(EntityChange.CURRENT_XP);
     }
 
-    public Item getQuickItem() {
+    public Consumable getQuickItem() {
         return quickItem;
     }
 
-    public void setQuickItem(Item itemData) {
+    public void setQuickItem(Consumable itemData) {
         this.quickItem = itemData;
         changes.set(EntityChange.QUICK_ITEM);
     }

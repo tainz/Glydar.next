@@ -23,8 +23,8 @@ public class Equipment {
         feet = new Item();
         hands = new Item();
         shoulder = new Item();
-        weaponLeft = new Item();
-        weaponRight = new Item();
+        weaponLeft = new Weapon();
+        weaponRight = new Weapon();
         ringLeft = new Item();
         ringRight = new Item();
         light = new Item();

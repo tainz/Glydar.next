@@ -2,9 +2,13 @@ package org.glydar.protocol.codec;
 
 import io.netty.buffer.ByteBuf;
 
+import org.glydar.api.item.Consumable;
+import org.glydar.api.item.Weapon;
 import org.glydar.api.item.Equipment;
 import org.glydar.api.item.Item;
 import org.glydar.api.item.ItemUpgrade;
+import org.glydar.api.item.ItemSubtype.ConsumableSubtype;
+import org.glydar.api.item.ItemSubtype.WeaponSubtype;
 
 public final class ItemCodec {
 
@@ -14,7 +18,17 @@ public final class ItemCodec {
     public static Item readItem(ByteBuf buf) {
         byte typeId = buf.readByte();
         byte subtypeId = buf.readByte();
-        Item i = new Item(typeId, subtypeId);
+        Item i;
+        switch (typeId){
+        	case 1:
+        		i = new Consumable(ConsumableSubtype.getById(subtypeId));
+        		break;
+        	case 3:
+        		i = new Weapon(WeaponSubtype.getById(subtypeId));
+        		break;
+        	default:
+        		i = new Item(typeId, subtypeId);
+        }
         buf.skipBytes(2);
         i.setModifier(buf.readUnsignedInt());
         i.setMinusModifier(buf.readUnsignedInt());
