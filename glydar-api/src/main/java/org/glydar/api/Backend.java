@@ -8,5 +8,7 @@ public interface Backend {
 
     String getVersion();
 
-    GlydarLogger getLogger();
+    GlydarLogger getLogger(Class<?> clazz);
+
+    GlydarLogger getLogger(Class<?> clazz, String prefix);
 }

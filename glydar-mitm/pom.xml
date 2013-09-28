@@ -11,7 +11,7 @@
 
 	<artifactId>glydar-mitm</artifactId>
 
-	<name>GlydarMITM</name>
+	<name>Glydar-MITM</name>
 
 	<properties>
 		<project.mainClass>org.glydar.mitm.GlydarMitmMain</project.mainClass>
@@ -20,7 +20,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.glydar</groupId>
-			<artifactId>glydar-protocol</artifactId>
+			<artifactId>glydar-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

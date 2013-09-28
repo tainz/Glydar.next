@@ -5,10 +5,10 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-import java.util.logging.Level;
-
 import org.glydar.api.Glydar;
-import org.glydar.protocol.driver.ProtocolInitializer;
+import org.glydar.api.logging.GlydarLogger;
+import org.glydar.core.protocol.driver.ProtocolInitializer;
+
 
 public class GlydarMitmMain {
 
@@ -21,8 +21,8 @@ public class GlydarMitmMain {
     private static NioEventLoopGroup workerGroup;
 
     public static void main(String[] args) {
-        Glydar.getLogger().getJdkLogger().setLevel(Level.INFO);
-        Glydar.getLogger().info("Starting {0} version {1}", Glydar.getName(), Glydar.getVersion());
+        GlydarLogger logger = Glydar.getLogger(GlydarMitmMain.class, "Boot");
+        logger.info("Starting {0} version {1}", Glydar.getName(), Glydar.getVersion());
 
         int mitmPort;
         switch (args.length) {
@@ -39,7 +39,7 @@ public class GlydarMitmMain {
             catch (NumberFormatException exc) {
             }
         default:
-            Glydar.getLogger().info("Invalid arguments");
+            logger.info("Invalid arguments");
             return;
         }
 
@@ -54,8 +54,8 @@ public class GlydarMitmMain {
         mitmBootstrap.childHandler(new ProtocolInitializer<Relay>(mitm));
         mitmBootstrap.bind(mitmPort);
 
-        Glydar.getLogger().info("Started on port {0}", mitmPort);
-        Glydar.getLogger().info("Relaying to port {0}", serverPort);
+        logger.info("Started on port {0}", mitmPort);
+        logger.info("Relaying to port {0}", serverPort);
     }
 
     public static void shutdown() {

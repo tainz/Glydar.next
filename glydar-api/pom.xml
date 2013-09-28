@@ -11,7 +11,7 @@
 
 	<artifactId>glydar-api</artifactId>
 
-	<name>GlydarAPI</name>
+	<name>Glydar-API</name>
 
 	<dependencies>
 		<dependency>

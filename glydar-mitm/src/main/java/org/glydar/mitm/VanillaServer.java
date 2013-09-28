@@ -2,8 +2,8 @@ package org.glydar.mitm;
 
 import io.netty.channel.Channel;
 
-import org.glydar.protocol.Packet;
-import org.glydar.protocol.Remote;
+import org.glydar.core.protocol.Packet;
+import org.glydar.core.protocol.Remote;
 
 public class VanillaServer implements Remote {
 

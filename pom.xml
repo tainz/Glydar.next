@@ -12,9 +12,9 @@
 
 	<modules>
 		<module>glydar-api</module>
-		<module>glydar-protocol</module>
-		<module>glydar-server</module>
+		<module>glydar-core</module>
 		<module>glydar-mitm</module>
+		<module>glydar-server</module>
 	</modules>
 
 	<properties>

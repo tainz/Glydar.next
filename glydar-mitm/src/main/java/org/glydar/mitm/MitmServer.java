@@ -4,27 +4,26 @@ import io.netty.channel.Channel;
 
 import java.util.Set;
 
-import org.glydar.api.Glydar;
-import org.glydar.api.logging.GlydarLogger;
-import org.glydar.protocol.Packet;
-import org.glydar.protocol.ProtocolHandler;
-import org.glydar.protocol.RemoteType;
-import org.glydar.protocol.packet.Packet00EntityUpdate;
-import org.glydar.protocol.packet.Packet02UpdateFinished;
-import org.glydar.protocol.packet.Packet04WorldUpdate;
-import org.glydar.protocol.packet.Packet05CurrentTime;
-import org.glydar.protocol.packet.Packet06Interaction;
-import org.glydar.protocol.packet.Packet07Hit;
-import org.glydar.protocol.packet.Packet08Stealth;
-import org.glydar.protocol.packet.Packet09Shoot;
-import org.glydar.protocol.packet.Packet10Chat;
-import org.glydar.protocol.packet.Packet11ChunkDiscovery;
-import org.glydar.protocol.packet.Packet12SectorDiscovery;
-import org.glydar.protocol.packet.Packet13MissionData;
-import org.glydar.protocol.packet.Packet15Seed;
-import org.glydar.protocol.packet.Packet16Join;
-import org.glydar.protocol.packet.Packet17VersionExchange;
-import org.glydar.protocol.packet.Packet18ServerFull;
+import org.glydar.core.logging.CoreGlydarLogger;
+import org.glydar.core.protocol.Packet;
+import org.glydar.core.protocol.ProtocolHandler;
+import org.glydar.core.protocol.RemoteType;
+import org.glydar.core.protocol.packet.Packet00EntityUpdate;
+import org.glydar.core.protocol.packet.Packet02UpdateFinished;
+import org.glydar.core.protocol.packet.Packet04WorldUpdate;
+import org.glydar.core.protocol.packet.Packet05CurrentTime;
+import org.glydar.core.protocol.packet.Packet06Interaction;
+import org.glydar.core.protocol.packet.Packet07Hit;
+import org.glydar.core.protocol.packet.Packet08Stealth;
+import org.glydar.core.protocol.packet.Packet09Shoot;
+import org.glydar.core.protocol.packet.Packet10Chat;
+import org.glydar.core.protocol.packet.Packet11ChunkDiscovery;
+import org.glydar.core.protocol.packet.Packet12SectorDiscovery;
+import org.glydar.core.protocol.packet.Packet13MissionData;
+import org.glydar.core.protocol.packet.Packet15Seed;
+import org.glydar.core.protocol.packet.Packet16Join;
+import org.glydar.core.protocol.packet.Packet17VersionExchange;
+import org.glydar.core.protocol.packet.Packet18ServerFull;
 
 import com.google.common.collect.Sets;
 
@@ -32,16 +31,16 @@ public class MitmServer implements ProtocolHandler<Relay> {
 
     private static final String LOGGER_PREFIX = "MITM Server";
 
-    private final GlydarLogger  logger;
+    private final CoreGlydarLogger   logger;
     private final Set<Relay>    relays;
 
     public MitmServer() {
-        this.logger = Glydar.getLogger().getChildLogger(this, LOGGER_PREFIX);
+        this.logger = CoreGlydarLogger.of(this, LOGGER_PREFIX);
         this.relays = Sets.newIdentityHashSet();
     }
 
     @Override
-    public GlydarLogger getLogger() {
+    public CoreGlydarLogger getLogger() {
         return logger;
     }
 

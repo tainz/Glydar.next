@@ -4,7 +4,6 @@ import java.util.ServiceLoader;
 
 import org.glydar.api.logging.GlydarLogger;
 
-import com.google.common.collect.Iterables;
 
 public final class Glydar {
 
@@ -20,15 +19,19 @@ public final class Glydar {
         return backend.getVersion();
     }
 
-    public static GlydarLogger getLogger() {
-        return backend.getLogger();
+    public static GlydarLogger getLogger(Class<?> clazz) {
+        return backend.getLogger(clazz);
+    }
+
+    public static GlydarLogger getLogger(Class<?> clazz, String prefix) {
+        return backend.getLogger(clazz, prefix);
     }
 
     private static final Backend backend;
 
     static {
         final ServiceLoader<Backend> loader = ServiceLoader.load(Backend.class);
-        backend = Iterables.getFirst(loader, null);
+        backend = loader.iterator().next();
     }
 
     private Glydar() {

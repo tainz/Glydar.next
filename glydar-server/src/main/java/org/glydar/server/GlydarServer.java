@@ -1,17 +1,13 @@
 package org.glydar.server;
 
-import org.glydar.api.Backend;
-import org.glydar.api.logging.GlydarLogger;
+import org.glydar.core.CoreBackend;
 
-public class GlydarServer implements Backend {
+public class GlydarServer extends CoreBackend {
 
     private static final String NAME    = "Glydar";
     private static final String VERSION = "dev";
 
-    private final GlydarLogger  logger;
-
     public GlydarServer() {
-        this.logger = GlydarLogger.of(this, NAME);
     }
 
     @Override
@@ -22,10 +18,5 @@ public class GlydarServer implements Backend {
     @Override
     public String getVersion() {
         return VERSION;
-    }
-
-    @Override
-    public GlydarLogger getLogger() {
-        return logger;
     }
 }
