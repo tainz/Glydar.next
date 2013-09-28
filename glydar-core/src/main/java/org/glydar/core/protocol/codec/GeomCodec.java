@@ -8,6 +8,7 @@ import org.glydar.api.model.geom.IntVector3;
 import org.glydar.api.model.geom.LongVector3;
 import org.glydar.api.model.geom.Orientation;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public final class GeomCodec {
 
     private GeomCodec() {

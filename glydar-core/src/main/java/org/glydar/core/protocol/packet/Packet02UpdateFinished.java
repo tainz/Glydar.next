@@ -8,6 +8,7 @@ import org.glydar.core.protocol.ProtocolHandler;
 import org.glydar.core.protocol.Remote;
 import org.glydar.core.protocol.RemoteType;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet02UpdateFinished implements Packet {
 
     @Override

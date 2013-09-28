@@ -10,6 +10,7 @@ import org.glydar.core.model.item.CoreEquipment;
 import org.glydar.core.model.item.CoreItem;
 import org.glydar.core.model.item.CoreWeapon;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public final class ItemCodec {
 
     private ItemCodec() {

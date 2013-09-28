@@ -10,6 +10,7 @@ import org.glydar.api.model.item.Item;
 import org.glydar.core.model.world.ChunkItem;
 import org.glydar.core.model.world.ChunkItems;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public final class WorldCodec {
 
     private WorldCodec() {

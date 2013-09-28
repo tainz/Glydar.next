@@ -3,6 +3,7 @@ package org.glydar.core.model.entity;
 import org.glydar.api.model.entity.Appearance;
 import org.glydar.api.model.geom.FloatVector3;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class CoreAppearance implements Appearance {
 
     private byte         notUsed1;

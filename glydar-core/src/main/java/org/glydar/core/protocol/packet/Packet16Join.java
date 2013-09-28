@@ -11,6 +11,7 @@ import org.glydar.core.protocol.RemoteType;
 
 import com.google.common.base.Preconditions;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet16Join implements Packet {
 
     private final long   id;

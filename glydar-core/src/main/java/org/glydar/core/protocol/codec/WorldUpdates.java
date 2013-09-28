@@ -17,6 +17,7 @@ import org.glydar.core.protocol.packet.Packet09Shoot;
 import org.glydar.core.protocol.packet.Packet13MissionData;
 import org.glydar.core.protocol.util.BufWritable;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class WorldUpdates implements BufWritable {
 
     private final List<Unknown1Data>        unknown1List;

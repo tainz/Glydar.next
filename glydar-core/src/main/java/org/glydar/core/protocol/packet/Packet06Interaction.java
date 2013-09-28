@@ -12,6 +12,7 @@ import org.glydar.core.protocol.RemoteType;
 import org.glydar.core.protocol.codec.GeomCodec;
 import org.glydar.core.protocol.codec.ItemCodec;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet06Interaction implements Packet {
 
     private final Item       item;

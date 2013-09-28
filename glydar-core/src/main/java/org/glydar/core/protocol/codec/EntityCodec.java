@@ -14,6 +14,7 @@ import org.glydar.core.model.entity.EntityChanges;
 
 import com.google.common.base.Charsets;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public final class EntityCodec {
 
     private EntityCodec() {

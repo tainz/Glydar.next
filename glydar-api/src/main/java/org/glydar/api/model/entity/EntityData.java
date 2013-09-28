@@ -6,8 +6,6 @@ import org.glydar.api.model.geom.Orientation;
 import org.glydar.api.model.item.Equipment;
 import org.glydar.api.model.item.Item;
 
-/* Structures and data discovered by mat^2 (http://github.com/matpow2) */
-
 public interface EntityData {
 
     LongVector3 getPosition();

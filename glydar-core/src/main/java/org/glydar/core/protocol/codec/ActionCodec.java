@@ -10,6 +10,7 @@ import org.glydar.core.model.actions.SoundAction;
 import org.glydar.core.model.actions.SoundAction.SoundType;
 import org.glydar.core.model.item.CoreItem;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public final class ActionCodec {
 
     private ActionCodec() {

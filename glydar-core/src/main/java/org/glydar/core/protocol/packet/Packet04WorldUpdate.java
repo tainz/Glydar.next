@@ -10,6 +10,7 @@ import org.glydar.core.protocol.RemoteType;
 import org.glydar.core.protocol.codec.WorldUpdates;
 import org.glydar.core.protocol.util.ZLibOperations;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet04WorldUpdate implements Packet {
 
     private final WorldUpdates data;

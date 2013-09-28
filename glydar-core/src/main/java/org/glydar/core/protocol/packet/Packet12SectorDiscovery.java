@@ -10,6 +10,7 @@ import org.glydar.core.protocol.Remote;
 import org.glydar.core.protocol.RemoteType;
 import org.glydar.core.protocol.codec.GeomCodec;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet12SectorDiscovery implements Packet {
 
     private final IntVector2 position;

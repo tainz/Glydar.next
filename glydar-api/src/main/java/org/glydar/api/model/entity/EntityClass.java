@@ -1,5 +1,6 @@
 package org.glydar.api.model.entity;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public enum EntityClass {
 
     WARRIOR(Specialization.BERSERKER, Specialization.GUARDIAN),

@@ -1,5 +1,6 @@
 package org.glydar.api.model.item;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public enum ItemType {
 
     NONE,

@@ -11,6 +11,7 @@ import org.glydar.core.protocol.RemoteType;
 
 import com.google.common.base.Charsets;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet10Chat implements Packet {
 
     private final long   senderId;

@@ -13,6 +13,7 @@ import org.glydar.core.protocol.codec.EntityCodec;
 import org.glydar.core.protocol.util.BufWritable;
 import org.glydar.core.protocol.util.ZLibOperations;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet00EntityUpdate implements Packet {
 
     private final long           entityId;

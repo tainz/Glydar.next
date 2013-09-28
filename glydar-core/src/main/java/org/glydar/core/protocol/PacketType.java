@@ -21,6 +21,7 @@ import org.glydar.core.protocol.packet.Packet16Join;
 import org.glydar.core.protocol.packet.Packet17VersionExchange;
 import org.glydar.core.protocol.packet.Packet18ServerFull;
 
+/* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public enum PacketType {
 
     ENTITY_UPDATE {
