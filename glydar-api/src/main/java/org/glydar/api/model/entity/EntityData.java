@@ -42,9 +42,9 @@ public interface EntityData {
 
     void setHostileType(byte hostileType);
 
-    long getEntityType();
+    EntityType getEntityType();
 
-    void setEntityType(long entityType);
+    void setEntityType(EntityType entityType);
 
     byte getCurrentMode();
 

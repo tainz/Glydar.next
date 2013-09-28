@@ -51,7 +51,7 @@ public final class EntityCodec {
             data.setHostileType(buf.readByte());
         }
         if (changes.get(EntityChange.ENTITY_TYPE)) {
-            data.setEntityType(buf.readUnsignedInt());
+            data.setEntityTypeId(buf.readUnsignedInt());
         }
         if (changes.get(EntityChange.CURRENT_MODE)) {
             data.setCurrentMode(buf.readByte());
@@ -225,7 +225,7 @@ public final class EntityCodec {
             buf.writeByte(e.getHostileType());
         }
         if (changes.get(EntityChange.ENTITY_TYPE)) {
-            buf.writeInt((int) e.getEntityType());
+            buf.writeInt((int) e.getEntityTypeId());
         }
         if (changes.get(EntityChange.CURRENT_MODE)) {
             buf.writeByte(e.getCurrentMode());

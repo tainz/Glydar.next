@@ -3,6 +3,7 @@ package org.glydar.core.model.entity;
 import org.glydar.api.model.entity.Appearance;
 import org.glydar.api.model.entity.EntityClass;
 import org.glydar.api.model.entity.EntityData;
+import org.glydar.api.model.entity.EntityType;
 import org.glydar.api.model.entity.Specialization;
 import org.glydar.api.model.geom.FloatVector3;
 import org.glydar.api.model.geom.LongVector3;
@@ -25,7 +26,7 @@ public class CoreEntityData implements EntityData {
     private float               lookPitch;
     private long                physicsFlags;        // Uint
     private byte                hostileType;
-    private long                entityType;          // Uint
+    private long                entityTypeId;        // Uint
     private byte                currentMode;
     private long                lastShootTime;       // Uint
     private long                hitCounter;          // Uint
@@ -191,14 +192,22 @@ public class CoreEntityData implements EntityData {
         changes.set(EntityChange.HOSTILE_TYPE);
     }
 
-    @Override
-    public long getEntityType() {
-        return entityType;
+    public long getEntityTypeId() {
+        return entityTypeId;
+    }
+
+    public void setEntityTypeId(long entityTypeId) {
+        this.entityTypeId = entityTypeId;
     }
 
     @Override
-    public void setEntityType(long entityType) {
-        this.entityType = entityType;
+    public EntityType getEntityType() {
+        return getEntityType(entityTypeId);
+    }
+
+    @Override
+    public void setEntityType(EntityType entityType) {
+        this.entityTypeId = getEntityTypeId(entityType);
         changes.set(EntityChange.ENTITY_TYPE);
     }
 
@@ -799,6 +808,14 @@ public class CoreEntityData implements EntityData {
     public void setNu19(byte nu19) {
         this.nu19 = nu19;
         changes.set(EntityChange.NU_19);
+    }
+
+    public static EntityType getEntityType(long id) {
+        return EntityType.values()[(int) id];
+    }
+
+    public static long getEntityTypeId(EntityType entityType) {
+        return (byte) entityType.ordinal();
     }
 
     public static EntityClass getEntityClass(byte id) {
