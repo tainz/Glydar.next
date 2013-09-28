@@ -2,7 +2,7 @@ package org.glydar.core.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
 
-import org.glydar.core.model.entity.Entity;
+import org.glydar.core.model.entity.CoreEntity;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.PacketType;
 import org.glydar.core.protocol.ProtocolHandler;
@@ -18,7 +18,7 @@ public class Packet16Join implements Packet {
 
     // private final EntityData data;
 
-    public Packet16Join(Entity entity) {
+    public Packet16Join(CoreEntity entity) {
         this.id = entity.getId();
         this.data = new byte[4456];
         // this.data = entity.getData();

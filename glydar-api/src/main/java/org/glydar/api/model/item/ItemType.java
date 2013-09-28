@@ -1,4 +1,4 @@
-package org.glydar.core.model.item;
+package org.glydar.api.model.item;
 
 public enum ItemType {
 
@@ -53,17 +53,4 @@ public enum ItemType {
     LAMP,
 
     UNSUPPORTED;
-
-    public byte getId() {
-        return (byte) ordinal();
-    }
-
-    public static ItemType getById(byte id) {
-        try {
-            return values()[id];
-        }
-        catch (IndexOutOfBoundsException exc) {
-            return ItemType.UNSUPPORTED;
-        }
-    }
 }

@@ -2,7 +2,7 @@ package org.glydar.core.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
 
-import org.glydar.core.model.entity.Entity;
+import org.glydar.core.model.entity.CoreEntity;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.PacketType;
 import org.glydar.core.protocol.ProtocolHandler;
@@ -21,7 +21,7 @@ public class Packet10Chat implements Packet {
         this.message = message;
     }
 
-    public Packet10Chat(Entity sender, String message) {
+    public Packet10Chat(CoreEntity sender, String message) {
         this.senderId = sender.getId();
         this.message = message;
     }

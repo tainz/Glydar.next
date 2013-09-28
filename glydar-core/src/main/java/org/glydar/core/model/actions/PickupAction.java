@@ -1,6 +1,6 @@
 package org.glydar.core.model.actions;
 
-import org.glydar.core.model.item.Item;
+import org.glydar.api.model.item.Item;
 
 public class PickupAction {
 

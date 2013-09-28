@@ -2,7 +2,7 @@ package org.glydar.core.protocol;
 
 import io.netty.channel.Channel;
 
-import org.glydar.core.logging.CoreGlydarLogger;
+import org.glydar.api.logging.GlydarLogger;
 import org.glydar.core.protocol.packet.Packet00EntityUpdate;
 import org.glydar.core.protocol.packet.Packet02UpdateFinished;
 import org.glydar.core.protocol.packet.Packet04WorldUpdate;
@@ -22,7 +22,7 @@ import org.glydar.core.protocol.packet.Packet18ServerFull;
 
 public interface ProtocolHandler<T extends Remote> {
 
-    CoreGlydarLogger getLogger();
+    GlydarLogger getLogger();
 
     RemoteType getRemoteType();
 

@@ -1,4 +1,4 @@
-package org.glydar.core.model.entity;
+package org.glydar.api.model.entity;
 
 public enum Specialization {
 

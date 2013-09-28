@@ -2,7 +2,8 @@ package org.glydar.core.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
 
-import org.glydar.core.model.entity.EntityData;
+import org.glydar.api.model.entity.EntityData;
+import org.glydar.core.model.entity.CoreEntityData;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.PacketType;
 import org.glydar.core.protocol.ProtocolHandler;
@@ -14,8 +15,8 @@ import org.glydar.core.protocol.util.ZLibOperations;
 
 public class Packet00EntityUpdate implements Packet {
 
-    private final long       entityId;
-    private final EntityData data;
+    private final long           entityId;
+    private final CoreEntityData data;
 
     public Packet00EntityUpdate(ByteBuf buf) {
         ByteBuf decompressed = ZLibOperations.decompress(buf);

@@ -4,13 +4,13 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.BitSet;
 
+import org.glydar.api.model.entity.Appearance;
 import org.glydar.api.model.geom.LongVector3;
 import org.glydar.core.model.actions.Particle;
-import org.glydar.core.model.entity.Appearance;
+import org.glydar.core.model.entity.CoreAppearance;
+import org.glydar.core.model.entity.CoreEntityData;
 import org.glydar.core.model.entity.EntityChange;
 import org.glydar.core.model.entity.EntityChanges;
-import org.glydar.core.model.entity.EntityData;
-import org.glydar.core.model.item.Consumable;
 
 import com.google.common.base.Charsets;
 
@@ -19,13 +19,13 @@ public final class EntityCodec {
     private EntityCodec() {
     }
 
-    public static EntityData readEntityData(ByteBuf buf) {
+    public static CoreEntityData readEntityData(ByteBuf buf) {
         byte[] bitSetBuf = new byte[8];
         buf.readBytes(bitSetBuf);
         BitSet bitSet = BitSet.valueOf(bitSetBuf);
         EntityChanges changes = new EntityChanges(bitSet);
 
-        EntityData data = new EntityData(changes);
+        CoreEntityData data = new CoreEntityData(changes);
         if (changes.get(EntityChange.POSITION)) {
             data.setPosition(GeomCodec.readLongVector3(buf));
         }
@@ -170,7 +170,7 @@ public final class EntityCodec {
             data.setNu19(buf.readByte());
         }
         if (changes.get(EntityChange.QUICK_ITEM)) {
-            data.setQuickItem((Consumable) ItemCodec.readItem(buf));
+            data.setQuickItem(ItemCodec.readItem(buf));
         }
         if (changes.get(EntityChange.EQUIPMENT)) {
             data.setEquipment(ItemCodec.readEquipment(buf));
@@ -192,7 +192,7 @@ public final class EntityCodec {
         return data;
     }
 
-    public static void writeEntityData(ByteBuf buf, EntityData e) {
+    public static void writeEntityData(ByteBuf buf, CoreEntityData e) {
         EntityChanges changes = e.getChanges();
 
         byte[] bitSetBytes = changes.getBitSet().toByteArray();
@@ -366,7 +366,7 @@ public final class EntityCodec {
     }
 
     public static Appearance readAppearance(ByteBuf buf) {
-        Appearance a = new Appearance();
+        Appearance a = new CoreAppearance();
         a.setNotUsed1(buf.readByte());
         a.setNotUsed2(buf.readByte());
         a.setHairR(buf.readByte());

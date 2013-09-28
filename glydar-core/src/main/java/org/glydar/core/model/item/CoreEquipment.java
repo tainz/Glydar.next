@@ -1,6 +1,9 @@
 package org.glydar.core.model.item;
 
-public class Equipment {
+import org.glydar.api.model.item.Equipment;
+import org.glydar.api.model.item.Item;
+
+public class CoreEquipment implements Equipment {
 
     private Item unknown1;
     private Item neck;
@@ -16,138 +19,148 @@ public class Equipment {
     private Item special;
     private Item pet;
 
-    public Equipment() {
-        unknown1 = new Item();
-        neck = new Item();
-        chest = new Item();
-        feet = new Item();
-        hands = new Item();
-        shoulder = new Item();
-        weaponLeft = new Weapon();
-        weaponRight = new Weapon();
-        ringLeft = new Item();
-        ringRight = new Item();
-        light = new Item();
-        special = new Item();
-        pet = new Item();
+    public CoreEquipment() {
+        unknown1 = new CoreItem();
+        neck = new CoreItem();
+        chest = new CoreItem();
+        feet = new CoreItem();
+        hands = new CoreItem();
+        shoulder = new CoreItem();
+        weaponLeft = new CoreWeapon();
+        weaponRight = new CoreWeapon();
+        ringLeft = new CoreItem();
+        ringRight = new CoreItem();
+        light = new CoreItem();
+        special = new CoreItem();
+        pet = new CoreItem();
     }
 
-    public Equipment(Equipment e) {
-        this.unknown1 = e.getUnknown1();
-        this.neck = e.getNeck();
-        this.chest = e.getChest();
-        this.feet = e.getFeet();
-        this.hands = e.getHands();
-        this.shoulder = e.getShoulder();
-        this.weaponLeft = e.getWeaponLeft();
-        this.weaponRight = e.getWeaponRight();
-        this.ringLeft = e.getRingLeft();
-        this.ringRight = e.getRingRight();
-        this.light = e.getLight();
-        this.special = e.getSpecial();
-        this.pet = e.getPet();
-    }
-
+    @Override
     public Item getUnknown1() {
         return unknown1;
     }
 
+    @Override
     public void setUnknown1(Item unknown1) {
         this.unknown1 = unknown1;
     }
 
+    @Override
     public Item getNeck() {
         return neck;
     }
 
+    @Override
     public void setNeck(Item neck) {
         this.neck = neck;
     }
 
+    @Override
     public Item getChest() {
         return chest;
     }
 
+    @Override
     public void setChest(Item chest) {
         this.chest = chest;
     }
 
+    @Override
     public Item getFeet() {
         return feet;
     }
 
+    @Override
     public void setFeet(Item feet) {
         this.feet = feet;
     }
 
+    @Override
     public Item getHands() {
         return hands;
     }
 
+    @Override
     public void setHands(Item hands) {
         this.hands = hands;
     }
 
+    @Override
     public Item getShoulder() {
         return shoulder;
     }
 
+    @Override
     public void setShoulder(Item shoulder) {
         this.shoulder = shoulder;
     }
 
+    @Override
     public Item getWeaponLeft() {
         return weaponLeft;
     }
 
+    @Override
     public void setWeaponLeft(Item weaponLeft) {
         this.weaponLeft = weaponLeft;
     }
 
+    @Override
     public Item getWeaponRight() {
         return weaponRight;
     }
 
+    @Override
     public void setWeaponRight(Item weaponRight) {
         this.weaponRight = weaponRight;
     }
 
+    @Override
     public Item getRingLeft() {
         return ringLeft;
     }
 
+    @Override
     public void setRingLeft(Item ringLeft) {
         this.ringLeft = ringLeft;
     }
 
+    @Override
     public Item getRingRight() {
         return ringRight;
     }
 
+    @Override
     public void setRingRight(Item ringRight) {
         this.ringRight = ringRight;
     }
 
+    @Override
     public Item getLight() {
         return light;
     }
 
+    @Override
     public void setLight(Item light) {
         this.light = light;
     }
 
+    @Override
     public Item getSpecial() {
         return special;
     }
 
+    @Override
     public void setSpecial(Item special) {
         this.special = special;
     }
 
+    @Override
     public Item getPet() {
         return pet;
     }
 
+    @Override
     public void setPet(Item pet) {
         this.pet = pet;
     }

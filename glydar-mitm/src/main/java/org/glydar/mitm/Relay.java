@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.glydar.core.logging.CoreGlydarLogger;
+import org.glydar.api.Glydar;
+import org.glydar.api.logging.GlydarLogger;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.ProtocolHandler;
 import org.glydar.core.protocol.Remote;
@@ -36,18 +37,18 @@ import org.glydar.core.protocol.packet.Packet18ServerFull;
 
 public class Relay implements ProtocolHandler<VanillaServer>, Remote {
 
-    private static final String    LOGGER_PREFIX = "MITM Relay ";
+    private static final String  LOGGER_PREFIX = "MITM Relay ";
 
-    private final CoreGlydarLogger logger;
-    private final MitmServer       mitmServer;
-    private final Channel          clientChannel;
-    private final EventLoopGroup   workerGroup;
-    private final List<Packet>     packetsQueue;
-    private VanillaServer          vanillaServer;
-    private long                   entityId;
+    private final GlydarLogger   logger;
+    private final MitmServer     mitmServer;
+    private final Channel        clientChannel;
+    private final EventLoopGroup workerGroup;
+    private final List<Packet>   packetsQueue;
+    private VanillaServer        vanillaServer;
+    private long                 entityId;
 
     public Relay(MitmServer mitmServer, Channel clientChannel) {
-        this.logger = CoreGlydarLogger.of(this, LOGGER_PREFIX + clientChannel.remoteAddress());
+        this.logger = Glydar.getLogger(getClass(), LOGGER_PREFIX + clientChannel.remoteAddress());
         this.mitmServer = mitmServer;
         this.clientChannel = clientChannel;
         this.workerGroup = new NioEventLoopGroup();
@@ -64,7 +65,7 @@ public class Relay implements ProtocolHandler<VanillaServer>, Remote {
     }
 
     @Override
-    public CoreGlydarLogger getLogger() {
+    public GlydarLogger getLogger() {
         return logger;
     }
 

@@ -2,13 +2,13 @@ package org.glydar.core.protocol.codec;
 
 import io.netty.buffer.ByteBuf;
 
-import org.glydar.core.model.item.Consumable;
-import org.glydar.core.model.item.Equipment;
-import org.glydar.core.model.item.Item;
-import org.glydar.core.model.item.ItemUpgrade;
-import org.glydar.core.model.item.Weapon;
-import org.glydar.core.model.item.ItemSubtype.ConsumableSubtype;
-import org.glydar.core.model.item.ItemSubtype.WeaponSubtype;
+import org.glydar.api.model.item.Equipment;
+import org.glydar.api.model.item.Item;
+import org.glydar.api.model.item.ItemUpgrade;
+import org.glydar.core.model.item.CoreConsumable;
+import org.glydar.core.model.item.CoreEquipment;
+import org.glydar.core.model.item.CoreItem;
+import org.glydar.core.model.item.CoreWeapon;
 
 public final class ItemCodec {
 
@@ -19,15 +19,15 @@ public final class ItemCodec {
         byte typeId = buf.readByte();
         byte subtypeId = buf.readByte();
         Item i;
-        switch (typeId){
-        	case 1:
-        		i = new Consumable(ConsumableSubtype.getById(subtypeId));
-        		break;
-        	case 3:
-        		i = new Weapon(WeaponSubtype.getById(subtypeId));
-        		break;
-        	default:
-        		i = new Item(typeId, subtypeId);
+        switch (typeId) {
+        case 1:
+            i = new CoreConsumable(subtypeId);
+            break;
+        case 3:
+            i = new CoreWeapon(subtypeId);
+            break;
+        default:
+            i = new CoreItem(typeId, subtypeId);
         }
         buf.skipBytes(2);
         i.setModifier(buf.readUnsignedInt());
@@ -87,7 +87,7 @@ public final class ItemCodec {
     }
 
     public static Equipment readEquipment(ByteBuf buf) {
-        Equipment e = new Equipment();
+        Equipment e = new CoreEquipment();
         e.setUnknown1(readItem(buf));
         e.setNeck(readItem(buf));
         e.setChest(readItem(buf));

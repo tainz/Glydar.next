@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import org.glydar.api.model.geom.FloatVector3;
 import org.glydar.api.model.geom.LongVector3;
-import org.glydar.core.model.entity.Entity;
+import org.glydar.core.model.entity.CoreEntity;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.PacketType;
 import org.glydar.core.protocol.ProtocolHandler;
@@ -28,7 +28,7 @@ public class Packet07Hit implements Packet {
     private final byte         showLight;
     private final byte         unknown13;
 
-    public Packet07Hit(Entity entity) {
+    public Packet07Hit(CoreEntity entity) {
         this.damagerId = entity.getId();
         this.targetId = entity.getId();
         this.damage = -100F;

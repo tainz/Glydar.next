@@ -1,4 +1,4 @@
-package org.glydar.core.model.item;
+package org.glydar.api.model.item;
 
 public class ItemUpgrade {
 
