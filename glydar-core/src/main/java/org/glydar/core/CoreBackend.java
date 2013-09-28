@@ -1,6 +1,10 @@
 package org.glydar.core;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -10,13 +14,27 @@ import org.glydar.api.logging.GlydarLogger;
 import org.glydar.core.logging.CoreGlydarLogger;
 import org.glydar.core.logging.CoreGlydarLoggerFormatter;
 
-
 public abstract class CoreBackend implements Backend {
 
+    private final Path             baseFolder;
+    private final Path             configFolder;
     private final CoreGlydarLogger logger;
 
     public CoreBackend() {
+        this.baseFolder = initBaseFolder();
+        this.configFolder = baseFolder.resolve("config");
         this.logger = initLogger();
+    }
+
+    private Path initBaseFolder() {
+        try {
+            URI sourceUri = getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
+            Path path = Paths.get(sourceUri).getParent();
+            return path;
+        }
+        catch (URISyntaxException exc) {
+            return Paths.get("");
+        }
     }
 
     private CoreGlydarLogger initLogger() {
@@ -40,6 +58,16 @@ public abstract class CoreBackend implements Backend {
         }
 
         return logger;
+    }
+
+    @Override
+    public Path getBaseFolder() {
+        return baseFolder;
+    }
+
+    @Override
+    public Path getConfigFolder() {
+        return configFolder;
     }
 
     @Override
