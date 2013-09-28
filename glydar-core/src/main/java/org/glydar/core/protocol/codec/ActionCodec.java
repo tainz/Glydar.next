@@ -3,12 +3,12 @@ package org.glydar.core.protocol.codec;
 import io.netty.buffer.ByteBuf;
 
 import org.glydar.api.model.geom.FloatVector3;
-import org.glydar.api.model.item.Item;
 import org.glydar.core.model.actions.DamageAction;
 import org.glydar.core.model.actions.KillAction;
 import org.glydar.core.model.actions.PickupAction;
 import org.glydar.core.model.actions.SoundAction;
 import org.glydar.core.model.actions.SoundAction.SoundType;
+import org.glydar.core.model.item.CoreItem;
 
 public final class ActionCodec {
 
@@ -50,7 +50,7 @@ public final class ActionCodec {
 
     public static PickupAction readPickupAction(ByteBuf buf) {
         long entityId = buf.readLong();
-        Item item = ItemCodec.readItem(buf);
+        CoreItem item = ItemCodec.readItem(buf);
         return new PickupAction(entityId, item);
     }
 

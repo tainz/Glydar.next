@@ -2,33 +2,23 @@ package org.glydar.api.model.entity;
 
 public enum EntityClass {
 
-    WARRIOR,
+    WARRIOR(Specialization.BERSERKER, Specialization.GUARDIAN),
 
-    RANGER,
+    RANGER(Specialization.SNIPER, Specialization.SCOUT),
 
-    MAGE,
+    MAGE(Specialization.FIRE, Specialization.WATER),
 
-    ROGUE;
+    ROGUE(Specialization.ASSASIN, Specialization.NINJA),
 
-    public byte getId() {
-        return (byte) (ordinal() + 1);
+    UNSUPPORTED;
+
+    private final Specialization[] specializations;
+
+    private EntityClass(Specialization... specializations) {
+        this.specializations = specializations;
     }
 
     public Specialization[] getSpecializations() {
-        Specialization[] specializations = new Specialization[Specialization.PER_ENTITY_CLASS];
-        for (byte i = 0; i < specializations.length; i++) {
-            specializations[i] = Specialization.getById(this, i);
-        }
-
         return specializations;
-    }
-
-    public static EntityClass getById(byte id) {
-        try {
-            return values()[id - 1];
-        }
-        catch (IndexOutOfBoundsException exc) {
-            return null;
-        }
     }
 }

@@ -2,33 +2,31 @@ package org.glydar.api.model.entity;
 
 public enum Specialization {
 
-    BERSERKER,
+    BERSERKER(EntityClass.WARRIOR),
 
-    GUARDIAN,
+    GUARDIAN(EntityClass.WARRIOR),
 
-    SNIPER,
+    SNIPER(EntityClass.RANGER),
 
-    SCOUT,
+    SCOUT(EntityClass.RANGER),
 
-    FIRE,
+    FIRE(EntityClass.MAGE),
 
-    WATER,
+    WATER(EntityClass.MAGE),
 
-    ASSASIN,
+    ASSASIN(EntityClass.ROGUE),
 
-    NINJA;
+    NINJA(EntityClass.ROGUE),
 
-    public static final int PER_ENTITY_CLASS = 2;
+    UNSUPPORTED(EntityClass.UNSUPPORTED);
 
-    public byte getId() {
-        return (byte) ((ordinal()) % PER_ENTITY_CLASS);
+    private final EntityClass entityClass;
+
+    private Specialization(EntityClass entityClass) {
+        this.entityClass = entityClass;
     }
 
     public EntityClass getEntityClass() {
-        return EntityClass.getById((byte) (ordinal() / PER_ENTITY_CLASS + 1));
-    }
-
-    public static Specialization getById(EntityClass clazz, byte id) {
-        return Specialization.values()[clazz.ordinal() * PER_ENTITY_CLASS + id];
+        return entityClass;
     }
 }

@@ -15,10 +15,10 @@ public final class ItemCodec {
     private ItemCodec() {
     }
 
-    public static Item readItem(ByteBuf buf) {
+    public static CoreItem readItem(ByteBuf buf) {
         byte typeId = buf.readByte();
         byte subtypeId = buf.readByte();
-        Item i;
+        CoreItem i;
         switch (typeId) {
         case 1:
             i = new CoreConsumable(subtypeId);
@@ -50,22 +50,23 @@ public final class ItemCodec {
     }
 
     public static void writeItem(ByteBuf buf, Item i) {
-        buf.writeByte(i.getTypeId());
-        buf.writeByte(i.getSubtypeId());
+        CoreItem i2 = (CoreItem) i;
+        buf.writeByte(i2.getTypeId());
+        buf.writeByte(i2.getSubtypeId());
         buf.writeZero(2);
-        buf.writeInt((int) i.getModifier());
-        buf.writeInt((int) i.getMinusModifier());
-        buf.writeByte(i.getRarity());
-        buf.writeByte(i.getMaterialId());
-        buf.writeByte(i.getFlags());
+        buf.writeInt((int) i2.getModifier());
+        buf.writeInt((int) i2.getMinusModifier());
+        buf.writeByte(i2.getRarity());
+        buf.writeByte(i2.getMaterialId());
+        buf.writeByte(i2.getFlags());
         buf.writeZero(1);
-        buf.writeShort(i.getLevel());
+        buf.writeShort(i2.getLevel());
         buf.writeZero(2);
-        ItemUpgrade[] upgrades = i.getUpgrades();
+        ItemUpgrade[] upgrades = i2.getUpgrades();
         for (int j = 0; j < upgrades.length; ++j) {
             writeItemUpgrade(buf, upgrades[j]);
         }
-        buf.writeInt((int) i.getUpgradeCount());
+        buf.writeInt((int) i2.getUpgradeCount());
     }
 
     public static ItemUpgrade readItemUpgrade(ByteBuf buf) {

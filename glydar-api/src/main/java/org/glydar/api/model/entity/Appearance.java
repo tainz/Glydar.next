@@ -4,168 +4,167 @@ import org.glydar.api.model.geom.FloatVector3;
 
 public interface Appearance {
 
-    public abstract byte getNotUsed1();
+    byte getNotUsed1();
 
-    public abstract void setNotUsed1(byte notUsed1);
+    void setNotUsed1(byte notUsed1);
 
-    public abstract byte getNotUsed2();
+    byte getNotUsed2();
 
-    public abstract void setNotUsed2(byte notUsed2);
+    void setNotUsed2(byte notUsed2);
 
-    public abstract byte getHairR();
+    byte getHairR();
 
-    public abstract void setHairR(byte hairR);
+    void setHairR(byte hairR);
 
-    public abstract byte getHairG();
+    byte getHairG();
 
-    public abstract void setHairG(byte hairG);
+    void setHairG(byte hairG);
 
-    public abstract byte getHairB();
+    byte getHairB();
 
-    public abstract void setHairB(byte hairB);
+    void setHairB(byte hairB);
 
-    public abstract byte getMovementFlags();
+    byte getMovementFlags();
 
-    public abstract void setMovementFlags(byte movementFlags);
+    void setMovementFlags(byte movementFlags);
 
-    public abstract byte getEntityFlags();
+    byte getEntityFlags();
 
-    public abstract void setEntityFlags(byte entityFlags);
+    void setEntityFlags(byte entityFlags);
 
-    public abstract float getScale();
+    float getScale();
 
-    public abstract void setScale(float scale);
+    void setScale(float scale);
 
-    public abstract float getBoundingRadius();
+    float getBoundingRadius();
 
-    public abstract void setBoundingRadius(float boundingRadius);
+    void setBoundingRadius(float boundingRadius);
 
-    public abstract float getBoundingHeight();
+    float getBoundingHeight();
 
-    public abstract void setBoundingHeight(float boundingHeight);
+    void setBoundingHeight(float boundingHeight);
 
-    public abstract int getHeadModel();
+    int getHeadModel();
 
-    public abstract void setHeadModel(int headModel);
+    void setHeadModel(int headModel);
 
-    public abstract int getHairModel();
+    int getHairModel();
 
-    public abstract void setHairModel(int hairModel);
+    void setHairModel(int hairModel);
 
-    public abstract int getHandModel();
+    int getHandModel();
 
-    public abstract void setHandModel(int handModel);
+    void setHandModel(int handModel);
 
-    public abstract int getFootModel();
+    int getFootModel();
 
-    public abstract void setFootModel(int footModel);
+    void setFootModel(int footModel);
 
-    public abstract int getBodyModel();
+    int getBodyModel();
 
-    public abstract void setBodyModel(int bodyModel);
+    void setBodyModel(int bodyModel);
 
-    public abstract int getBackModel();
+    int getBackModel();
 
-    public abstract void setBackModel(int backModel);
+    void setBackModel(int backModel);
 
-    public abstract int getShoulderModel();
+    int getShoulderModel();
 
-    public abstract void setShoulderModel(int shoulderModel);
+    void setShoulderModel(int shoulderModel);
 
-    public abstract int getWingModel();
+    int getWingModel();
 
-    public abstract void setWingModel(int wingModel);
+    void setWingModel(int wingModel);
 
-    public abstract float getHeadScale();
+    float getHeadScale();
 
-    public abstract void setHeadScale(float headScale);
+    void setHeadScale(float headScale);
 
-    public abstract float getHairScale();
+    float getHairScale();
 
-    public abstract void setHairScale(float hairScale);
+    void setHairScale(float hairScale);
 
-    public abstract float getHandScale();
+    float getHandScale();
 
-    public abstract void setHandScale(float handScale);
+    void setHandScale(float handScale);
 
-    public abstract float getFootScale();
+    float getFootScale();
 
-    public abstract void setFootScale(float footScale);
+    void setFootScale(float footScale);
 
-    public abstract float getBodyScale();
+    float getBodyScale();
 
-    public abstract void setBodyScale(float bodyScale);
+    void setBodyScale(float bodyScale);
 
-    public abstract float getBackScale();
+    float getBackScale();
 
-    public abstract void setBackScale(float backScale);
+    void setBackScale(float backScale);
 
-    public abstract float getUnknown();
+    float getUnknown();
 
-    public abstract void setUnknown(float unknown);
+    void setUnknown(float unknown);
 
-    public abstract float getWingScale();
+    float getWingScale();
 
-    public abstract void setWingScale(float wingScale);
+    void setWingScale(float wingScale);
 
-    public abstract float getBodyPitch();
+    float getBodyPitch();
 
-    public abstract void setBodyPitch(float bodyPitch);
+    void setBodyPitch(float bodyPitch);
 
-    public abstract float getArmPitch();
+    float getArmPitch();
 
-    public abstract void setArmPitch(float armPitch);
+    void setArmPitch(float armPitch);
 
-    public abstract float getArmRoll();
+    float getArmRoll();
 
-    public abstract void setArmRoll(float armRoll);
+    void setArmRoll(float armRoll);
 
-    public abstract float getArmYaw();
+    float getArmYaw();
 
-    public abstract void setArmYaw(float armYaw);
+    void setArmYaw(float armYaw);
 
-    public abstract float getFeetPitch();
+    float getFeetPitch();
 
-    public abstract void setFeetPitch(float feetPitch);
+    void setFeetPitch(float feetPitch);
 
-    public abstract float getWingPitch();
+    float getWingPitch();
 
-    public abstract void setWingPitch(float wingPitch);
+    void setWingPitch(float wingPitch);
 
-    public abstract float getBackPitch();
+    float getBackPitch();
 
-    public abstract void setBackPitch(float backPitch);
+    void setBackPitch(float backPitch);
 
-    public abstract FloatVector3 getBodyOffset();
+    FloatVector3 getBodyOffset();
 
-    public abstract void setBodyOffset(FloatVector3 bodyOffset);
+    void setBodyOffset(FloatVector3 bodyOffset);
 
-    public abstract FloatVector3 getHeadOffset();
+    FloatVector3 getHeadOffset();
 
-    public abstract void setHeadOffset(FloatVector3 headOffset);
+    void setHeadOffset(FloatVector3 headOffset);
 
-    public abstract FloatVector3 getHandOffset();
+    FloatVector3 getHandOffset();
 
-    public abstract void setHandOffset(FloatVector3 handOffset);
+    void setHandOffset(FloatVector3 handOffset);
 
-    public abstract FloatVector3 getFootOffset();
+    FloatVector3 getFootOffset();
 
-    public abstract void setFootOffset(FloatVector3 footOffset);
+    void setFootOffset(FloatVector3 footOffset);
 
-    public abstract FloatVector3 getBackOffset();
+    FloatVector3 getBackOffset();
 
-    public abstract void setBackOffset(FloatVector3 backOffset);
+    void setBackOffset(FloatVector3 backOffset);
 
-    public abstract FloatVector3 getWingOffset();
+    FloatVector3 getWingOffset();
 
-    public abstract void setWingOffset(FloatVector3 wingOffset);
+    void setWingOffset(FloatVector3 wingOffset);
 
-    public abstract float getShoulderScale();
+    float getShoulderScale();
 
-    public abstract void setShoulderScale(float shoulderScale);
+    void setShoulderScale(float shoulderScale);
 
-    public abstract float getWeaponScale();
+    float getWeaponScale();
 
-    public abstract void setWeaponScale(float weaponScale);
-
+    void setWeaponScale(float weaponScale);
 }

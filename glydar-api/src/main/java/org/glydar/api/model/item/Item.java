@@ -2,11 +2,7 @@ package org.glydar.api.model.item;
 
 public interface Item {
 
-    byte getTypeId();
-
     ItemType getType();
-
-    byte getSubtypeId();
 
     long getModifier();
 

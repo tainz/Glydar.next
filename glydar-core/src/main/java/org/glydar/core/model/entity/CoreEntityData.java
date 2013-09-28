@@ -345,46 +345,42 @@ public class CoreEntityData implements EntityData {
         changes.set(EntityChange.SLOW_PATCH_TIME);
     }
 
-    @Override
-    public EntityClass getEntityClass() {
-        return EntityClass.getById(entityClassId);
-    }
-
-    @Override
     public byte getEntityClassId() {
         return entityClassId;
     }
 
-    @Override
-    public void setEntityClass(EntityClass clazz) {
-        this.entityClassId = clazz.getId();
-    }
-
-    @Override
     public void setEntityClassId(byte clazzId) {
         this.entityClassId = clazzId;
         changes.set(EntityChange.ENTITY_CLASS);
     }
 
     @Override
-    public Specialization getSpecialization() {
-        return Specialization.getById(getEntityClass(), specializationId);
+    public EntityClass getEntityClass() {
+        return getEntityClass(entityClassId);
     }
 
     @Override
+    public void setEntityClass(EntityClass clazz) {
+        this.entityClassId = getEntityClassId(clazz);
+    }
+
     public byte getSpecializationId() {
         return specializationId;
     }
 
-    @Override
-    public void setSpecialization(Specialization specialization) {
-        this.specializationId = specialization.getId();
-    }
-
-    @Override
     public void setSpecializationId(byte specializationId) {
         this.specializationId = specializationId;
         changes.set(EntityChange.SPECIALIZATION);
+    }
+
+    @Override
+    public Specialization getSpecialization() {
+        return getSpecialization(getEntityClass(), specializationId);
+    }
+
+    @Override
+    public void setSpecialization(Specialization specialization) {
+        this.specializationId = getSpecializationId(specialization);
     }
 
     @Override
@@ -803,5 +799,32 @@ public class CoreEntityData implements EntityData {
     public void setNu19(byte nu19) {
         this.nu19 = nu19;
         changes.set(EntityChange.NU_19);
+    }
+
+    public static EntityClass getEntityClass(byte id) {
+        try {
+            return EntityClass.values()[id - 1];
+        }
+        catch (IndexOutOfBoundsException exc) {
+            return EntityClass.UNSUPPORTED;
+        }
+    }
+
+    public static byte getEntityClassId(EntityClass clazz) {
+        return (byte) (clazz.ordinal() + 1);
+    }
+
+    public static Specialization getSpecialization(EntityClass entityClass, byte id) {
+        try {
+            int classOffset = (entityClass.ordinal() - 1) * 2;
+            return Specialization.values()[classOffset + id];
+        }
+        catch (IndexOutOfBoundsException exc) {
+            return Specialization.UNSUPPORTED;
+        }
+    }
+
+    public static byte getSpecializationId(Specialization clazz) {
+        return (byte) ((clazz.ordinal() + 1) % 2);
     }
 }

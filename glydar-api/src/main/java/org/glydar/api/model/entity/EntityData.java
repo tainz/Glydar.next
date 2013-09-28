@@ -100,19 +100,11 @@ public interface EntityData {
 
     EntityClass getEntityClass();
 
-    byte getEntityClassId();
-
     void setEntityClass(EntityClass clazz);
-
-    void setEntityClassId(byte clazzId);
 
     Specialization getSpecialization();
 
-    byte getSpecializationId();
-
     void setSpecialization(Specialization specialization);
-
-    void setSpecializationId(byte specializationId);
 
     float getChargedMP();
 

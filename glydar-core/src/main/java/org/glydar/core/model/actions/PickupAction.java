@@ -1,13 +1,13 @@
 package org.glydar.core.model.actions;
 
-import org.glydar.api.model.item.Item;
+import org.glydar.core.model.item.CoreItem;
 
 public class PickupAction {
 
     private final long entityId;
-    private Item       item;
+    private CoreItem   item;
 
-    public PickupAction(long entityId, Item item) {
+    public PickupAction(long entityId, CoreItem item) {
         this.entityId = entityId;
         this.item = item;
     }
@@ -16,11 +16,11 @@ public class PickupAction {
         return entityId;
     }
 
-    public Item getItem() {
+    public CoreItem getItem() {
         return item;
     }
 
-    public void setItem(Item item) {
+    public void setItem(CoreItem item) {
         this.item = item;
     }
 }

@@ -32,7 +32,6 @@ public class CoreItem implements Item {
         }
     }
 
-    @Override
     public byte getTypeId() {
         return typeId;
     }
@@ -42,7 +41,6 @@ public class CoreItem implements Item {
         return getItemType(typeId);
     }
 
-    @Override
     public byte getSubtypeId() {
         return subtypeId;
     }
