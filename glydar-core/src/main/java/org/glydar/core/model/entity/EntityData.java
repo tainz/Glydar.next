@@ -1,8 +1,8 @@
 package org.glydar.core.model.entity;
 
-import org.glydar.core.model.geom.FloatVector3;
-import org.glydar.core.model.geom.LongVector3;
-import org.glydar.core.model.geom.Orientation;
+import org.glydar.api.model.geom.FloatVector3;
+import org.glydar.api.model.geom.LongVector3;
+import org.glydar.api.model.geom.Orientation;
 import org.glydar.core.model.item.Consumable;
 import org.glydar.core.model.item.Equipment;
 

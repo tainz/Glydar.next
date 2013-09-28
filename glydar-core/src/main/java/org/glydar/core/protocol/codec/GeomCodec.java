@@ -2,11 +2,11 @@ package org.glydar.core.protocol.codec;
 
 import io.netty.buffer.ByteBuf;
 
-import org.glydar.core.model.geom.FloatVector3;
-import org.glydar.core.model.geom.IntVector2;
-import org.glydar.core.model.geom.IntVector3;
-import org.glydar.core.model.geom.LongVector3;
-import org.glydar.core.model.geom.Orientation;
+import org.glydar.api.model.geom.FloatVector3;
+import org.glydar.api.model.geom.IntVector2;
+import org.glydar.api.model.geom.IntVector3;
+import org.glydar.api.model.geom.LongVector3;
+import org.glydar.api.model.geom.Orientation;
 
 public final class GeomCodec {
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.glydar.core.model.geom.IntVector2;
+import org.glydar.api.model.geom.IntVector2;
 
 public class ChunkItems {
 

@@ -2,7 +2,7 @@ package org.glydar.core.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
 
-import org.glydar.core.model.geom.IntVector2;
+import org.glydar.api.model.geom.IntVector2;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.PacketType;
 import org.glydar.core.protocol.ProtocolHandler;

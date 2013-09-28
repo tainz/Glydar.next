@@ -1,4 +1,4 @@
-package org.glydar.core.model.geom;
+package org.glydar.api.model.geom;
 
 import java.util.Arrays;
 

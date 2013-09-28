@@ -4,8 +4,8 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.List;
 
-import org.glydar.core.model.geom.IntVector2;
-import org.glydar.core.model.geom.LongVector3;
+import org.glydar.api.model.geom.IntVector2;
+import org.glydar.api.model.geom.LongVector3;
 import org.glydar.core.model.item.Item;
 import org.glydar.core.model.world.ChunkItem;
 import org.glydar.core.model.world.ChunkItems;

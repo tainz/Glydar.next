@@ -1,6 +1,6 @@
 package org.glydar.core.model.entity;
 
-import org.glydar.core.model.geom.FloatVector3;
+import org.glydar.api.model.geom.FloatVector3;
 
 public class Appearance {
 

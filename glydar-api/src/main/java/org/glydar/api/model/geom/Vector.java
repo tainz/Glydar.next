@@ -1,4 +1,4 @@
-package org.glydar.core.model.geom;
+package org.glydar.api.model.geom;
 
 public interface Vector<N extends Number, V extends Vector<N, V>> extends Comparable<V> {
 

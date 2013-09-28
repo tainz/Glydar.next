@@ -1,7 +1,7 @@
 package org.glydar.core.model.actions;
 
-import org.glydar.core.model.geom.FloatVector3;
-import org.glydar.core.model.geom.LongVector3;
+import org.glydar.api.model.geom.FloatVector3;
+import org.glydar.api.model.geom.LongVector3;
 
 public class Particle {
 
