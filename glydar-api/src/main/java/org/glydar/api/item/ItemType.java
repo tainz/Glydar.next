@@ -1,9 +1,5 @@
 package org.glydar.api.item;
 
-import org.glydar.api.item.ItemSubtype.ConsumableSubtype;
-import org.glydar.api.item.ItemSubtype.DefaultSubtype;
-import org.glydar.api.item.ItemSubtype.WeaponSubtype;
-
 public enum ItemType {
 
     NONE,
@@ -55,7 +51,7 @@ public enum ItemType {
     SPECIAL,
 
     LAMP,
-    
+
     UNSUPPORTED;
 
     public byte getId() {

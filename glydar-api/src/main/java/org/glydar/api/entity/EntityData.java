@@ -5,7 +5,6 @@ import org.glydar.api.geom.LongVector3;
 import org.glydar.api.geom.Orientation;
 import org.glydar.api.item.Consumable;
 import org.glydar.api.item.Equipment;
-import org.glydar.api.item.Item;
 
 /* Structures and data discovered by mat^2 (http://github.com/matpow2) */
 
