@@ -31,8 +31,8 @@ public class GlydarServerConfig {
     private static final String ADMINS_KEY = "admins";
     private static final List<String> ADMINS_DEFAULT = new ArrayList<>();
 
-    private static final String WORLDS_SECTION_KEY = "worldss";
-    private static final String DEFAULT_WORLD_KEY = "defaults";
+    private static final String WORLDS_SECTION_KEY = "worlds";
+    private static final String DEFAULT_WORLD_KEY = "default";
     private static final String WORLD_NAME_KEY = "worlds.default.name";
     private static final String WORLD_NAME_DEFAULT = "Default";
     private static final String WORLD_SEED_KEY = "worlds.default.seed";

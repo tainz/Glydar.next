@@ -16,6 +16,7 @@ public class GlydarServerMain {
 
     private static NioEventLoopGroup bossGroup;
     private static NioEventLoopGroup workerGroup;
+    private static boolean running;
 
     public static void main(String[] args) {
         Stopwatch watch = Stopwatch.createStarted();
@@ -34,15 +35,16 @@ public class GlydarServerMain {
         bootstrap.childHandler(new ProtocolInitializer<>(server));
         bootstrap.bind(server.getConfig().getPort());
 
-        server.getLogger().info("Server ready on port {0}", server.getConfig().getPort());
-        server.getLogger().info("This server is running {0} version {1}", server.getName(), server.getVersion());
-
         watch.stop();
-        server.getLogger().info("Server started in {0}ms", watch.elapsed(TimeUnit.MILLISECONDS));
+        server.getLogger().info("Server ready on port {0}, started in {0}ms", server.getConfig().getPort(),
+                watch.elapsed(TimeUnit.MILLISECONDS));
 
-        int secondBetweenTicks = 1000 / server.getConfig().getTPS();
-        while (true) {
-            if (System.currentTimeMillis() % secondBetweenTicks == 0) {
+        server.getConsoleReader().start();
+
+        int millisBetweenTicks = 1000 / server.getConfig().getTPS();
+        running = true;
+        while (running) {
+            if (System.currentTimeMillis() % millisBetweenTicks == 0) {
                 server.tick();
             }
             try {
@@ -57,5 +59,6 @@ public class GlydarServerMain {
     static void shutdown() {
         bossGroup.shutdownGracefully();
         workerGroup.shutdownGracefully();
+        running = false;
     }
 }

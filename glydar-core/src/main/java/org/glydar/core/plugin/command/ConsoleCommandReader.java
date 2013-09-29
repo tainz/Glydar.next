@@ -13,7 +13,7 @@ public class ConsoleCommandReader extends Thread {
     private final GlydarLogger         logger;
     private final ConsoleCommandSender sender;
 
-    ConsoleCommandReader(Backend backend) {
+    public ConsoleCommandReader(Backend backend) {
         this.backend = backend;
         this.logger = backend.getLogger(ConsoleCommandReader.class, "Message");
         this.sender = new ConsoleCommandSender(logger);
@@ -25,16 +25,19 @@ public class ConsoleCommandReader extends Thread {
     public void run() {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        try {
-            String cmdLine = bufferedReader.readLine();
-            sender.sendMessage("Executing command " + cmdLine);
-            backend.getCommandManager().execute(sender, cmdLine);
-        }
-        catch (IOException exc) {
-            logger.warning(exc, "Error while reading console command");
-        }
-        catch (NullPointerException e) {
-            // Catch NPE
+        while (true) {
+            try {
+                String cmdLine = bufferedReader.readLine();
+                if (cmdLine == null || cmdLine.isEmpty()) {
+                    continue;
+                }
+
+                sender.sendMessage("Executing command " + cmdLine);
+                backend.getCommandManager().execute(sender, cmdLine);
+            }
+            catch (IOException exc) {
+                logger.warning(exc, "Error while reading console command");
+            }
         }
     }
 }

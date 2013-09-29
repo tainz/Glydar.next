@@ -8,6 +8,7 @@ import org.glydar.api.plugin.PluginLoader;
 import org.glydar.api.plugin.command.CommandManager;
 import org.glydar.api.plugin.event.EventManager;
 import org.glydar.core.logging.CoreGlydarLogger;
+import org.glydar.core.plugin.command.ConsoleCommandReader;
 import org.glydar.core.plugin.command.CoreCommandManager;
 import org.glydar.core.plugin.event.CoreEventManager;
 
@@ -22,6 +23,7 @@ public abstract class CoreBackend implements Backend {
     private final CoreGlydarLogger logger;
     private final PluginLoader     pluginLoader;
     private final CommandManager   commandManager;
+    private final ConsoleCommandReader consoleReader;
     private final EventManager     eventManager;
 
     public CoreBackend(String name) {
@@ -37,6 +39,7 @@ public abstract class CoreBackend implements Backend {
 
         this.pluginLoader = new PluginLoader(this);
         this.commandManager = new CoreCommandManager(this);
+        this.consoleReader = new ConsoleCommandReader(this);
         this.eventManager = new CoreEventManager(this);
     }
 
@@ -91,6 +94,10 @@ public abstract class CoreBackend implements Backend {
     @Override
     public CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public ConsoleCommandReader getConsoleReader() {
+        return consoleReader;
     }
 
     @Override

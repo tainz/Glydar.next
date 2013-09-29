@@ -89,7 +89,7 @@ public class CorePlayer extends CoreEntity implements Player, Remote {
         PermissionAttachment.addAttachment(attachment);
     }
 
-    public void sendPacket(Packet... packets) {
+    public void sendPackets(Packet... packets) {
         for (Packet packet : packets) {
             channel.write(packet);
         }

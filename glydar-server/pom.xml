@@ -14,7 +14,7 @@
 	<name>Glydar-Server</name>
 
 	<properties>
-		<project.mainClass>org.glydar.server.GlydarServer</project.mainClass>
+		<project.mainClass>org.glydar.server.GlydarServerMain</project.mainClass>
 	</properties>
 
 	<dependencies>

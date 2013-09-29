@@ -12,6 +12,7 @@ import org.glydar.api.model.world.World;
 import org.glydar.core.CoreBackend;
 import org.glydar.core.model.entity.CorePlayer;
 import org.glydar.core.model.world.CoreWorld;
+import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.ProtocolHandler;
 import org.glydar.core.protocol.RemoteType;
 import org.glydar.core.protocol.exceptions.ServerOnlyPacketException;
@@ -96,6 +97,14 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
 
     @Override
     public void disconnect(CorePlayer player) {
+        getLogger().info("Player {0} left the server", player.getName());
+        player.closeConnection();
+    }
+
+    private void sendPacketsToAll(Packet... packets) {
+        for (Player player : players) {
+            ((CorePlayer) player).sendPackets(packets);
+        }
     }
 
     @Override
@@ -138,6 +147,7 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
 
     @Override
     public void handle(CorePlayer player, Packet10Chat packet) {
+        sendPacketsToAll(new Packet10Chat(player, packet.getMessage()));
     }
 
     @Override
@@ -166,12 +176,12 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     @Override
     public void handle(CorePlayer player, Packet17VersionExchange packet) {
         if (packet.getVersion() != ProtocolHandler.VERSION) {
-            player.sendPacket(new Packet17VersionExchange(ProtocolHandler.VERSION));
+            player.sendPackets(new Packet17VersionExchange(ProtocolHandler.VERSION));
             return;
         }
 
         if (players.size() >= config.getMaxPlayers()) {
-            player.sendPacket(new Packet18ServerFull());
+            player.sendPackets(new Packet18ServerFull());
             return;
         }
 
@@ -181,7 +191,7 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
         Packet16Join joinPacket = new Packet16Join(player);
         Packet15Seed seedPacket = new Packet15Seed(player.getWorld().getSeed());
         Packet10Chat chatPacket = new Packet10Chat("Server powered by Glydar 0.0.1-SNAPSHOT");
-        player.sendPacket(joinPacket, seedPacket, chatPacket);
+        player.sendPackets(joinPacket, seedPacket, chatPacket);
     }
 
     @Override
@@ -196,8 +206,11 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
         Packet10Chat chatPacket = new Packet10Chat("Stopping server, bye !");
         for (Player player : players) {
             CorePlayer corePlayer = ((CorePlayer) player);
-            corePlayer.sendPacket(chatPacket);
+            corePlayer.sendPackets(chatPacket);
             corePlayer.closeConnection();
         }
+
+        getConsoleReader().interrupt();
+        GlydarServerMain.shutdown();
     }
 }
