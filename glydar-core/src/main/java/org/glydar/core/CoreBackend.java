@@ -17,6 +17,7 @@ public abstract class CoreBackend implements Backend {
     private final String           version;
     private final Path             baseFolder;
     private final Path             configFolder;
+    private final Path             configFile;
     private final Path             pluginsFolder;
     private final CoreGlydarLogger logger;
     private final PluginLoader     pluginLoader;
@@ -30,6 +31,7 @@ public abstract class CoreBackend implements Backend {
         this.version = bootstrap.getVersion();
         this.baseFolder = bootstrap.getBaseFolder();
         this.configFolder = bootstrap.getConfigFolder();
+        this.configFile = bootstrap.getConfigFile();
         this.pluginsFolder = bootstrap.getPluginsFolder();
         this.logger = bootstrap.getLogger();
 
@@ -58,9 +60,17 @@ public abstract class CoreBackend implements Backend {
         return configFolder;
     }
 
+    public Path getConfigFile() {
+        return configFile;
+    }
+
     @Override
     public Path getPluginsFolder() {
         return pluginsFolder;
+    }
+
+    public GlydarLogger getLogger() {
+        return logger;
     }
 
     @Override

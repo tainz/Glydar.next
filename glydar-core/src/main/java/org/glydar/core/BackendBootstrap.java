@@ -21,7 +21,7 @@ import org.glydar.core.logging.CoreGlydarLogger;
 import org.glydar.core.logging.CoreGlydarLoggerFormatter;
 import org.glydar.core.util.Versioning;
 
-class BackendBootstrap implements I18nTarget {
+public class BackendBootstrap implements I18nTarget {
 
     private static final String BACKUP_SUFFIX       = ".bk";
     private static final String LOGS_FOLDER_NAME    = "logs";
