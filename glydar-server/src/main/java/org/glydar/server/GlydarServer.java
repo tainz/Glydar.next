@@ -100,6 +100,9 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
 
     @Override
     public void handle(CorePlayer player, Packet00EntityUpdate packet) {
+        if (player.getId() == packet.getEntityId()) {
+            player.getData().updateFrom(packet.getData());
+        }
     }
 
     @Override

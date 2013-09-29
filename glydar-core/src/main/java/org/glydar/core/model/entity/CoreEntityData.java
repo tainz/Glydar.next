@@ -100,10 +100,172 @@ public class CoreEntityData implements EntityData {
         this.skills = new long[11];
     }
 
+    public void updateFrom(CoreEntityData other) {
+        EntityChanges otherChanges = other.changes;
+
+        if (otherChanges.get(EntityChange.POSITION)) {
+            setPosition(other.position);
+        }
+        if (otherChanges.get(EntityChange.ORIENTATION)) {
+            setOrientation(other.orientation);
+        }
+        if (otherChanges.get(EntityChange.VELOCITY)) {
+            setVelocity(other.velocity);
+        }
+        if (otherChanges.get(EntityChange.ACCELERATION)) {
+            setAcceleration(other.acceleration);
+        }
+        if (otherChanges.get(EntityChange.EXTRA_VELOCITY)) {
+            setVelocity(other.velocity);
+        }
+        if (otherChanges.get(EntityChange.LOOK_PITCH)) {
+            setLookPitch(other.lookPitch);
+        }
+        if (otherChanges.get(EntityChange.PHYSICS_FLAGS)) {
+            setPhysicsFlags(other.physicsFlags);
+        }
+        if (otherChanges.get(EntityChange.HOSTILE_TYPE)) {
+            setHostileType(other.hostileType);
+        }
+        if (otherChanges.get(EntityChange.ENTITY_TYPE)) {
+            setEntityTypeId(other.entityTypeId);
+        }
+        if (otherChanges.get(EntityChange.CURRENT_MODE)) {
+            setCurrentMode(other.currentMode);
+        }
+        if (otherChanges.get(EntityChange.LAST_SHOOT_TIME)) {
+            setLastShootTime(other.lastShootTime);
+        }
+        if (otherChanges.get(EntityChange.HIT_COUNTER)) {
+            setHitCounter(other.hitCounter);
+        }
+        if (otherChanges.get(EntityChange.LAST_HIT_TIME)) {
+            setLastHitTime(other.lastHitTime);
+        }
+        if (otherChanges.get(EntityChange.APPEARANCE)) {
+            setAppearance(other.appearance);
+        }
+        if (otherChanges.get(EntityChange.FLAGS)) {
+            setFlags1(other.flags1);
+            setFlags2(other.flags2);
+        }
+        if (otherChanges.get(EntityChange.ROLL_TIME)) {
+            setRollTime(other.rollTime);
+        }
+        if (otherChanges.get(EntityChange.STUN_TIME)) {
+            setStunTime(other.stunTime);
+        }
+        if (otherChanges.get(EntityChange.SLOWED_TIME)) {
+            setSlowedTime(other.slowedTime);
+        }
+        if (otherChanges.get(EntityChange.MAKE_BLUE_TIME)) {
+            setMakeBlueTime(other.makeBlueTime);
+        }
+        if (otherChanges.get(EntityChange.SPEED_UP_TIME)) {
+            setSpeedUpTime(other.speedUpTime);
+        }
+        if (otherChanges.get(EntityChange.SLOW_PATCH_TIME)) {
+            setSlowPatchTime(other.slowPatchTime);
+        }
+        if (otherChanges.get(EntityChange.ENTITY_CLASS)) {
+            setEntityClassId(other.entityClassId);
+        }
+        if (otherChanges.get(EntityChange.SPECIALIZATION)) {
+            setSpecializationId(other.specializationId);
+        }
+        if (otherChanges.get(EntityChange.CHARGED_MP)) {
+            setChargedMP(other.chargedMP);
+        }
+        if (otherChanges.get(EntityChange.NU_1_2_3)) {
+            setNu1(other.nu1);
+            setNu2(other.nu2);
+            setNu3(other.nu3);
+        }
+        if (otherChanges.get(EntityChange.NU_4_5_6)) {
+            setNu4(other.nu4);
+            setNu5(other.nu5);
+            setNu6(other.nu6);
+        }
+        if (otherChanges.get(EntityChange.RAY_HIT)) {
+            setRayHit(other.rayHit);
+        }
+        if (otherChanges.get(EntityChange.HP)) {
+            setHp(other.hp);
+        }
+        if (otherChanges.get(EntityChange.MP)) {
+            setMp(other.mp);
+        }
+        if (otherChanges.get(EntityChange.BLOCK_POWER)) {
+            setBlockPower(other.blockPower);
+        }
+        if (otherChanges.get(EntityChange.MULTIPLIERS)) {
+            setMaxHPMultiplier(other.maxHPMultiplier);
+            setShootSpeed(other.shootSpeed);
+            setDamageMultiplier(other.damageMultiplier);
+            setArmorMultiplier(other.armorMultiplier);
+            setResistanceMultiplier(other.resistanceMultiplier);
+        }
+        if (otherChanges.get(EntityChange.NU_7)) {
+            setNu7(other.nu7);
+        }
+        if (otherChanges.get(EntityChange.NU_8)) {
+            setNu8(other.nu8);
+        }
+        if (otherChanges.get(EntityChange.LEVEL)) {
+            setLevel(other.level);
+        }
+        if (otherChanges.get(EntityChange.CURRENT_XP)) {
+            setCurrentXP(other.currentXP);
+        }
+        if (otherChanges.get(EntityChange.PARENT_OWNER)) {
+            setParentOwner(other.parentOwner);
+        }
+        if (otherChanges.get(EntityChange.NA_1_2)) {
+            setNa1(other.na1);
+            setNa2(other.na2);
+        }
+        if (otherChanges.get(EntityChange.NA_3)) {
+            setNa3(other.na3);
+        }
+        if (otherChanges.get(EntityChange.NA_4)) {
+            setNa4(other.na4);
+        }
+        if (otherChanges.get(EntityChange.NA_5_NU_11_12)) {
+            setNa5(other.na5);
+            setNu11(other.nu11);
+            setNu12(other.nu12);
+        }
+        if (otherChanges.get(EntityChange.SPAWN_POSITION)) {
+            setSpawnPosition(other.spawnPosition);
+        }
+        if (otherChanges.get(EntityChange.NU_20_21_22)) {
+            setNu20(other.nu20);
+            setNu21(other.nu21);
+            setNu22(other.nu22);
+        }
+        if (otherChanges.get(EntityChange.NU_19)) {
+            setNu19(other.nu19);
+        }
+        if (otherChanges.get(EntityChange.QUICK_ITEM)) {
+            setQuickItem(other.quickItem);
+        }
+        if (otherChanges.get(EntityChange.EQUIPMENT)) {
+            setEquipment(other.equipment);
+        }
+        if (otherChanges.get(EntityChange.NAME)) {
+            setName(other.name);
+        }
+        if (otherChanges.get(EntityChange.SKILLS)) {
+            setSkills(other.skills);
+        }
+        if (otherChanges.get(EntityChange.ICE_BLOCK_FOUR)) {
+            setIceBlockFour(other.iceBlockFour);
+        }
+    }
+
     public EntityChanges getChanges() {
         return changes;
     }
-
     @Override
     public LongVector3 getPosition() {
         return position;

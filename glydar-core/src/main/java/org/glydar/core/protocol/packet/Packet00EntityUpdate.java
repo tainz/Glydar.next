@@ -2,7 +2,6 @@ package org.glydar.core.protocol.packet;
 
 import io.netty.buffer.ByteBuf;
 
-import org.glydar.api.model.entity.EntityData;
 import org.glydar.core.model.entity.CoreEntityData;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.PacketType;
@@ -44,7 +43,7 @@ public class Packet00EntityUpdate implements Packet {
         return entityId;
     }
 
-    public EntityData getData() {
+    public CoreEntityData getData() {
         return data;
     }
 
