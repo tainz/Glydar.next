@@ -24,6 +24,10 @@ public final class Glydar {
         return backend.getVersion();
     }
 
+    public static BackendType getBackendType() {
+        return backend.getType();
+    }
+
     public static Path getBaseFolder() {
         return backend.getBaseFolder();
     }

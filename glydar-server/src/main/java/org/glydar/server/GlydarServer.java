@@ -1,5 +1,6 @@
 package org.glydar.server;
 
+import org.glydar.api.BackendType;
 import org.glydar.api.Server;
 import org.glydar.core.CoreBackend;
 
@@ -19,6 +20,11 @@ public class GlydarServer extends CoreBackend implements Server {
     @Override
     public String getVersion() {
         return VERSION;
+    }
+
+    @Override
+    public BackendType getType() {
+        return BackendType.SERVER;
     }
 
     @Override

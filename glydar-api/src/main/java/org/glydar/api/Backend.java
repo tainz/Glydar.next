@@ -13,6 +13,8 @@ public interface Backend {
 
     String getVersion();
 
+    BackendType getType();
+
     Path getBaseFolder();
 
     Path getConfigFolder();
