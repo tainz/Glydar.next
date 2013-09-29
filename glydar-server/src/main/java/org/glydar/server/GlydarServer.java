@@ -34,8 +34,6 @@ import org.glydar.core.protocol.packet.Packet18ServerFull;
 
 public class GlydarServer extends CoreBackend implements Server, ProtocolHandler<CorePlayer> {
 
-    private static final int         PROTOCOL_VERSION = 3;
-
     private static final String      NAME             = "Glydar";
 
     private final GlydarServerConfig config;
@@ -164,8 +162,8 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
 
     @Override
     public void handle(CorePlayer player, Packet17VersionExchange packet) {
-        if (packet.getVersion() != PROTOCOL_VERSION) {
-            player.sendPacket(new Packet17VersionExchange(PROTOCOL_VERSION));
+        if (packet.getVersion() != ProtocolHandler.VERSION) {
+            player.sendPacket(new Packet17VersionExchange(ProtocolHandler.VERSION));
             return;
         }
 

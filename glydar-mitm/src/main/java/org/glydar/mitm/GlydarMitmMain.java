@@ -15,6 +15,7 @@ public class GlydarMitmMain {
     private static int				 vanillaPort;
     private static MitmServer        mitmServer;
     private static GlydarMitm        glydarMitm;
+    private static VanillaServer     vanillaServer;
     private static NioEventLoopGroup bossGroup;
     private static NioEventLoopGroup workerGroup;
 
@@ -27,6 +28,9 @@ public class GlydarMitmMain {
         mitmPort = glydarMitm.getConfig().getMitmPort();
         vanillaPort = glydarMitm.getConfig().getVanillaPort();
 
+        vanillaServer = new VanillaServer();
+        if (glydarMitm.getConfig().isVanillaAutomatic()) vanillaServer.startServer(glydarMitm.getConfig().getVanillaPath());
+        
         mitmServer = new MitmServer();
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
@@ -54,5 +58,13 @@ public class GlydarMitmMain {
     
     public static int getVanillaPort() {
     	return vanillaPort;
+    }
+    
+    public static VanillaServer getVanillaServer() {
+    	return vanillaServer;
+    }
+    
+    public static GlydarMitm getGlydarMitm() {
+    	return glydarMitm;
     }
 }

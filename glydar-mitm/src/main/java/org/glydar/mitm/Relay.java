@@ -10,6 +10,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
@@ -35,17 +36,18 @@ import org.glydar.core.protocol.packet.Packet16Join;
 import org.glydar.core.protocol.packet.Packet17VersionExchange;
 import org.glydar.core.protocol.packet.Packet18ServerFull;
 
-public class Relay implements ProtocolHandler<VanillaServer>, Remote {
+public class Relay implements ProtocolHandler<VanillaServerConnection>, Remote {
 
     private static final String  LOGGER_PREFIX = "MITM Relay ";
 
-    private final GlydarLogger   logger;
-    private final MitmServer     mitmServer;
-    private final Channel        clientChannel;
-    private final EventLoopGroup workerGroup;
-    private final List<Packet>   packetsQueue;
-    private VanillaServer        vanillaServer;
-    private long                 entityId;
+    private final GlydarLogger   		logger;
+    private final MitmServer     		mitmServer;
+    private final Channel        		clientChannel;
+    private final EventLoopGroup 		workerGroup;
+    private final List<Packet>   		packetsQueue;
+    private VanillaServerConnection 	vanillaServer;
+    private long                 		entityId;
+    
 
     public Relay(MitmServer mitmServer, Channel clientChannel) {
         this.logger = Glydar.getLogger(getClass(), LOGGER_PREFIX + clientChannel.remoteAddress());
@@ -56,14 +58,18 @@ public class Relay implements ProtocolHandler<VanillaServer>, Remote {
         this.vanillaServer = null;
         this.entityId = -1;
 
-        Bootstrap serverRelayBootstrap = new Bootstrap();
+        createBootstrap();
+    }
+
+    private void createBootstrap() {
+    	Bootstrap serverRelayBootstrap = new Bootstrap();
         serverRelayBootstrap.group(workerGroup);
         serverRelayBootstrap.channel(NioSocketChannel.class);
         serverRelayBootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-        serverRelayBootstrap.handler(new ProtocolInitializer<VanillaServer>(this));
+        serverRelayBootstrap.handler(new ProtocolInitializer<VanillaServerConnection>(this));
         serverRelayBootstrap.connect("localhost", GlydarMitmMain.getVanillaPort());
     }
-
+    
     @Override
     public GlydarLogger getLogger() {
         return logger;
@@ -86,9 +92,9 @@ public class Relay implements ProtocolHandler<VanillaServer>, Remote {
     }
 
     @Override
-    public VanillaServer createRemote(Channel channel) {
+    public VanillaServerConnection createRemote(Channel channel) {
         logger.info("Connected to Cube World Server");
-        vanillaServer = new VanillaServer(channel);
+        vanillaServer = new VanillaServerConnection(channel);
 
         vanillaServer.send(packetsQueue.toArray(new Packet[packetsQueue.size()]));
         packetsQueue.clear();
@@ -96,8 +102,26 @@ public class Relay implements ProtocolHandler<VanillaServer>, Remote {
     }
 
     @Override
-    public void disconnect(VanillaServer remote) {
-        mitmServer.disconnect(this);
+    public void disconnect(VanillaServerConnection remote) {
+    	VanillaServer vs = GlydarMitmMain.getVanillaServer();
+    	if (!vs.getRestarting().getAndSet(true) || vs.getRestarted().get()) {
+    		vs.startServer(GlydarMitmMain.getGlydarMitm().getConfig().getVanillaPath());
+    	}
+        
+    	while (vs.getRestarted().get()){
+    		try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	}
+    	
+    	vanillaServer.closeConnection();
+    	createBootstrap();
+    	Packet17VersionExchange pve = new Packet17VersionExchange(ProtocolHandler.VERSION);
+    	send(pve);
+    	
+    	
     }
 
     public void send(Packet... packets) {
@@ -122,72 +146,72 @@ public class Relay implements ProtocolHandler<VanillaServer>, Remote {
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet00EntityUpdate packet) {
+    public void handle(VanillaServerConnection remote, Packet00EntityUpdate packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet02UpdateFinished packet) {
+    public void handle(VanillaServerConnection remote, Packet02UpdateFinished packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet04WorldUpdate packet) {
+    public void handle(VanillaServerConnection remote, Packet04WorldUpdate packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet05CurrentTime packet) {
+    public void handle(VanillaServerConnection remote, Packet05CurrentTime packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet06Interaction packet) {
+    public void handle(VanillaServerConnection remote, Packet06Interaction packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet07Hit packet) {
+    public void handle(VanillaServerConnection remote, Packet07Hit packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet08Stealth packet) {
+    public void handle(VanillaServerConnection remote, Packet08Stealth packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet09Shoot packet) {
+    public void handle(VanillaServerConnection remote, Packet09Shoot packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet10Chat packet) {
+    public void handle(VanillaServerConnection remote, Packet10Chat packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet11ChunkDiscovery packet) {
+    public void handle(VanillaServerConnection remote, Packet11ChunkDiscovery packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet12SectorDiscovery packet) {
+    public void handle(VanillaServerConnection remote, Packet12SectorDiscovery packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet13MissionData packet) {
+    public void handle(VanillaServerConnection remote, Packet13MissionData packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet15Seed packet) {
+    public void handle(VanillaServerConnection remote, Packet15Seed packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet16Join packet) {
+    public void handle(VanillaServerConnection remote, Packet16Join packet) {
         this.entityId = packet.getId();
         logger.info("Entity Id : {0}", entityId);
 
@@ -195,12 +219,12 @@ public class Relay implements ProtocolHandler<VanillaServer>, Remote {
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet17VersionExchange packet) {
+    public void handle(VanillaServerConnection remote, Packet17VersionExchange packet) {
         forward(packet);
     }
 
     @Override
-    public void handle(VanillaServer remote, Packet18ServerFull packet) {
+    public void handle(VanillaServerConnection remote, Packet18ServerFull packet) {
         forward(packet);
     }
 }

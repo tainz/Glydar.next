@@ -39,7 +39,7 @@ public class MitmServer implements ProtocolHandler<Relay> {
         this.logger = Glydar.getLogger(getClass(), LOGGER_PREFIX);
         this.relays = Sets.newIdentityHashSet();
     }
-
+    
     @Override
     public GlydarLogger getLogger() {
         return logger;
