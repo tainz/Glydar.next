@@ -15,33 +15,36 @@ import com.google.common.collect.Sets;
 
 public class GlydarServerConfig {
 
-    private static final String       DEBUG_KEY           = "settings.debug";
-    private static final boolean      DEBUG_DEFAULT       = false;
-    private static final String       PORT_KEY            = "settings.port";
-    private static final int          PORT_DEFAULT        = 12345;
-    private static final String       FPS_KEY             = "settings.fps";
-    private static final int          FPS_DEFAULT         = 50;
+    private static final String DEBUG_KEY = "settings.debug";
+    private static final String DEBUG_SYSTEM_KEY = "glydar.debug";
+    private static final boolean DEBUG_DEFAULT = false;
+    private static final String PORT_KEY = "settings.port";
+    private static final String PORT_SYSTEM_KEY = "glydar.port";
+    private static final int PORT_DEFAULT = 12345;
+    private static final String TPS_KEY = "settings.tps";
+    private static final int TPS_DEFAULT = 50;
+    private static final String TPS_SYSTEM_KEY = "glydar.tps";
 
-    private static final String       MAX_PLAYERS_KEY     = "server.max-players";
-    private static final int          MAX_PLAYERS_DEFAULT = 4;
+    private static final String MAX_PLAYERS_KEY = "server.max-players";
+    private static final int MAX_PLAYERS_DEFAULT = 4;
 
-    private static final String       ADMINS_KEY          = "admins";
-    private static final List<String> ADMINS_DEFAULT      = new ArrayList<>();
+    private static final String ADMINS_KEY = "admins";
+    private static final List<String> ADMINS_DEFAULT = new ArrayList<>();
 
-    private static final String       WORLDS_SECTION_KEY  = "worlds";
-    private static final String       DEFAULT_WORLD_KEY   = "default";
-    private static final String       WORLD_NAME_KEY      = "worlds.default.name";
-    private static final String       WORLD_NAME_DEFAULT  = "Default";
-    private static final String       WORLD_SEED_KEY      = "worlds.default.seed";
-    private static final int          WORLD_SEED_DEFAULT  = 111;
-    private static final String       WORLD_PVP_KEY       = "worlds.default.pvp";
-    private static final boolean      WORLD_PVP_DEFAULT   = false;
+    private static final String WORLDS_SECTION_KEY = "worldss";
+    private static final String DEFAULT_WORLD_KEY = "defaults";
+    private static final String WORLD_NAME_KEY = "worlds.default.name";
+    private static final String WORLD_NAME_DEFAULT = "Default";
+    private static final String WORLD_SEED_KEY = "worlds.default.seed";
+    private static final int WORLD_SEED_DEFAULT = 111;
+    private static final String WORLD_PVP_KEY = "worlds.default.pvp";
+    private static final boolean WORLD_PVP_DEFAULT = false;
 
-    private final GlydarServer        server;
-    private final YamlConfiguration   config;
-    private final boolean             debug;
-    private final int                 port;
-    private final int                 fps;
+    private final GlydarServer server;
+    private final YamlConfiguration config;
+    private final boolean debug;
+    private final int port;
+    private final int tps;
 
     public GlydarServerConfig(GlydarServer server) {
         this.server = server;
@@ -51,7 +54,7 @@ public class GlydarServerConfig {
 
         config.addDefault(DEBUG_KEY, DEBUG_DEFAULT);
         config.addDefault(PORT_KEY, PORT_DEFAULT);
-        config.addDefault(FPS_KEY, FPS_DEFAULT);
+        config.addDefault(TPS_KEY, TPS_DEFAULT);
         config.addDefault(MAX_PLAYERS_KEY, MAX_PLAYERS_DEFAULT);
         config.addDefault(ADMINS_KEY, ADMINS_DEFAULT);
         config.addDefault(WORLD_NAME_KEY, WORLD_NAME_DEFAULT);
@@ -60,7 +63,7 @@ public class GlydarServerConfig {
 
         save();
 
-        String debugProperty = System.getProperty("glydar.debug");
+        String debugProperty = System.getProperty(DEBUG_SYSTEM_KEY);
         if (debugProperty == null) {
             this.debug = config.getBoolean(DEBUG_KEY);
         }
@@ -68,7 +71,7 @@ public class GlydarServerConfig {
             this.debug = debugProperty.equals("true");
         }
 
-        String portProperty = System.getProperty("glydar.port");
+        String portProperty = System.getProperty(PORT_SYSTEM_KEY);
         if (portProperty == null) {
             this.port = config.getInt(PORT_KEY);
         }
@@ -76,12 +79,12 @@ public class GlydarServerConfig {
             this.port = Integer.parseInt(portProperty, config.getInt(PORT_KEY));
         }
 
-        String fpsProperty = System.getProperty("glydar.fps");
+        String fpsProperty = System.getProperty(TPS_SYSTEM_KEY);
         if (fpsProperty == null) {
-            this.fps = config.getInt(FPS_KEY);
+            this.tps = config.getInt(TPS_KEY);
         }
         else {
-            this.fps = tryParseInt(fpsProperty, config.getInt(FPS_KEY));
+            this.tps = tryParseInt(fpsProperty, config.getInt(TPS_KEY));
         }
     }
 
@@ -111,8 +114,8 @@ public class GlydarServerConfig {
         return port;
     }
 
-    public int getFPS() {
-        return fps;
+    public int getTPS() {
+        return tps;
     }
 
     public int getMaxPlayers() {

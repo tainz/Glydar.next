@@ -14,6 +14,9 @@ import com.google.common.base.Stopwatch;
 
 public class GlydarServerMain {
 
+    private static NioEventLoopGroup bossGroup;
+    private static NioEventLoopGroup workerGroup;
+
     public static void main(String[] args) {
         Stopwatch watch = Stopwatch.createStarted();
 
@@ -21,8 +24,8 @@ public class GlydarServerMain {
 
         server.getLogger().info("Starting server {0} version {1}", Glydar.getName(), Glydar.getVersion());
 
-        NioEventLoopGroup bossGroup = new NioEventLoopGroup();
-        NioEventLoopGroup workerGroup = new NioEventLoopGroup();
+        bossGroup = new NioEventLoopGroup();
+        workerGroup = new NioEventLoopGroup();
 
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup);
@@ -37,12 +40,22 @@ public class GlydarServerMain {
         watch.stop();
         server.getLogger().info("Server started in {0}ms", watch.elapsed(TimeUnit.MILLISECONDS));
 
+        int secondBetweenTicks = 1000 / server.getConfig().getTPS();
         while (true) {
+            if (System.currentTimeMillis() % secondBetweenTicks == 0) {
+                server.tick();
+            }
             try {
                 Thread.sleep(1);
             }
             catch (InterruptedException e) {
+                server.shutdown();
             }
         }
+    }
+
+    static void shutdown() {
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
     }
 }

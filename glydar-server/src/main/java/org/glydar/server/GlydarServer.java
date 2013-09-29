@@ -187,4 +187,16 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     public void handle(CorePlayer player, Packet18ServerFull packet) {
         throw new ServerOnlyPacketException(packet.getPacketType());
     }
+
+    public void tick() {
+    }
+
+    public void shutdown() {
+        Packet10Chat chatPacket = new Packet10Chat("Stopping server, bye !");
+        for (Player player : players) {
+            CorePlayer corePlayer = ((CorePlayer) player);
+            corePlayer.sendPacket(chatPacket);
+            corePlayer.closeConnection();
+        }
+    }
 }

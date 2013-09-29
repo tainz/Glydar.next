@@ -32,6 +32,6 @@ public class CoreWorld implements World {
     @Override
     public void setPvpAllowed(boolean pvpAllowed) {
         this.pvpAllowed = pvpAllowed;
-        // TODO: Update player false accordingly
+        // TODO: Update player accordingly
     }
 }

@@ -96,4 +96,8 @@ public class CorePlayer extends CoreEntity implements Player, Remote {
 
         channel.flush();
     }
+
+    public void closeConnection() {
+        channel.close();
+    }
 }
