@@ -9,11 +9,7 @@ public class GlydarServer extends CoreBackend implements Server {
     private static final String NAME = "Glydar";
 
     public GlydarServer() {
-    }
-
-    @Override
-    public String getName() {
-        return NAME;
+        super(NAME);
     }
 
     @Override

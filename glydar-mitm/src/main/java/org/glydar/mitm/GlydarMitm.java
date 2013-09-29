@@ -9,11 +9,7 @@ public class GlydarMitm extends CoreBackend {
     private static final String NAME = "Glydar MITM";
 
     public GlydarMitm() {
-    }
-
-    @Override
-    public String getName() {
-        return NAME;
+        super(NAME);
     }
 
     @Override

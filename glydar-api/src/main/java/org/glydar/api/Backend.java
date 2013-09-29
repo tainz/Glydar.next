@@ -19,6 +19,8 @@ public interface Backend {
 
     Path getConfigFolder();
 
+    Path getPluginsFolder();
+
     GlydarLogger getLogger(Class<?> clazz);
 
     GlydarLogger getLogger(Class<?> clazz, String prefix);

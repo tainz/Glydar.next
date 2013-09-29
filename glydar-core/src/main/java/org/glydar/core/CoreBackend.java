@@ -1,13 +1,6 @@
 package org.glydar.core;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
 
 import org.glydar.api.Backend;
 import org.glydar.api.logging.GlydarLogger;
@@ -15,63 +8,39 @@ import org.glydar.api.plugin.PluginLoader;
 import org.glydar.api.plugin.command.CommandManager;
 import org.glydar.api.plugin.event.EventManager;
 import org.glydar.core.logging.CoreGlydarLogger;
-import org.glydar.core.logging.CoreGlydarLoggerFormatter;
 import org.glydar.core.plugin.command.CoreCommandManager;
 import org.glydar.core.plugin.event.CoreEventManager;
-import org.glydar.core.util.Versioning;
 
 public abstract class CoreBackend implements Backend {
 
+    private final String           name;
     private final String           version;
     private final Path             baseFolder;
     private final Path             configFolder;
+    private final Path             pluginsFolder;
     private final CoreGlydarLogger logger;
     private final PluginLoader     pluginLoader;
     private final CommandManager   commandManager;
     private final EventManager     eventManager;
 
-    public CoreBackend() {
-        this.version = Versioning.getGlydarVersion();
-        this.baseFolder = initBaseFolder();
-        this.configFolder = baseFolder.resolve("config");
-        this.logger = initLogger();
+    public CoreBackend(String name) {
+        BackendBootstrap bootstrap = new BackendBootstrap(getClass(), name);
+
+        this.name = bootstrap.getName();
+        this.version = bootstrap.getVersion();
+        this.baseFolder = bootstrap.getBaseFolder();
+        this.configFolder = bootstrap.getConfigFolder();
+        this.pluginsFolder = bootstrap.getPluginsFolder();
+        this.logger = bootstrap.getLogger();
+
         this.pluginLoader = new PluginLoader(this);
         this.commandManager = new CoreCommandManager(this);
         this.eventManager = new CoreEventManager(this);
     }
 
-    private Path initBaseFolder() {
-        try {
-            URI sourceUri = getClass().getProtectionDomain().getCodeSource().getLocation().toURI();
-            Path path = Paths.get(sourceUri).getParent();
-            return path;
-        }
-        catch (URISyntaxException exc) {
-            return Paths.get("");
-        }
-    }
-
-    private CoreGlydarLogger initLogger() {
-        CoreGlydarLogger logger = CoreGlydarLogger.of(this, getName());
-        logger.getJdkLogger().setUseParentHandlers(false);
-
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setFormatter(new CoreGlydarLoggerFormatter(false));
-        consoleHandler.setLevel(Level.ALL);
-        logger.getJdkLogger().addHandler(consoleHandler);
-
-        try {
-            String folder = getClass().getProtectionDomain().getCodeSource().getLocation().getFile().toString();
-            FileHandler fileHandler = new FileHandler(folder + "/../logs");
-            fileHandler.setFormatter(new CoreGlydarLoggerFormatter(false));
-            fileHandler.setLevel(Level.ALL);
-            logger.getJdkLogger().addHandler(fileHandler);
-        }
-        catch (SecurityException | IOException exc) {
-            logger.warning(exc, "Unable to open log file");
-        }
-
-        return logger;
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -87,6 +56,11 @@ public abstract class CoreBackend implements Backend {
     @Override
     public Path getConfigFolder() {
         return configFolder;
+    }
+
+    @Override
+    public Path getPluginsFolder() {
+        return pluginsFolder;
     }
 
     @Override

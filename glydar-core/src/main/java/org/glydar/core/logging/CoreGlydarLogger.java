@@ -5,15 +5,10 @@ import java.util.logging.Logger;
 
 import org.glydar.api.logging.GlydarLogger;
 
-
 public class CoreGlydarLogger implements GlydarLogger {
 
     public static CoreGlydarLogger of(Class<?> clazz, String prefix) {
         return new CoreGlydarLogger(Logger.getLogger(clazz.getCanonicalName()), prefix);
-    }
-
-    public static CoreGlydarLogger of(Object instance, String prefix) {
-        return of(instance.getClass(), prefix);
     }
 
     private final Logger jdkLogger;
@@ -31,12 +26,6 @@ public class CoreGlydarLogger implements GlydarLogger {
 
     public CoreGlydarLogger getChildLogger(Class<?> clazz, String prefix) {
         CoreGlydarLogger childLogger = of(clazz, prefix);
-        childLogger.jdkLogger.setParent(jdkLogger);
-        return childLogger;
-    }
-
-    public CoreGlydarLogger getChildLogger(Object instance, String prefix) {
-        CoreGlydarLogger childLogger = of(instance, prefix);
         childLogger.jdkLogger.setParent(jdkLogger);
         return childLogger;
     }
