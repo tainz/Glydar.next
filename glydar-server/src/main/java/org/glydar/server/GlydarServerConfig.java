@@ -201,7 +201,7 @@ public class GlydarServerConfig {
         section.set(WORLD_PVP_KEY, worldConfig.isPvpAllowed());
     }
 
-    private class WorldConfig {
+    class WorldConfig {
 
         private final String  name;
         private final int     seed;
@@ -216,7 +216,7 @@ public class GlydarServerConfig {
         public WorldConfig(World world) {
             this.name = world.getName();
             this.seed = world.getSeed();
-            this.pvpAllowed = world.isPVPAllowed();
+            this.pvpAllowed = world.isPvpAllowed();
         }
 
         public String getName() {

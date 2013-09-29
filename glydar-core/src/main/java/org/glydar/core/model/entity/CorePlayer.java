@@ -10,8 +10,10 @@ import org.glydar.api.model.entity.Player;
 import org.glydar.api.plugin.permissions.Permission;
 import org.glydar.api.plugin.permissions.Permission.PermissionDefault;
 import org.glydar.api.plugin.permissions.PermissionAttachment;
+import org.glydar.core.protocol.Packet;
+import org.glydar.core.protocol.Remote;
 
-public class CorePlayer extends CoreEntity implements Player {
+public class CorePlayer extends CoreEntity implements Player, Remote {
 
     private final Channel channel;
     private boolean       admin;
@@ -85,5 +87,13 @@ public class CorePlayer extends CoreEntity implements Player {
 
     public void addAttachment(PermissionAttachment attachment) {
         PermissionAttachment.addAttachment(attachment);
+    }
+
+    public void sendPacket(Packet... packets) {
+        for (Packet packet : packets) {
+            channel.write(packet);
+        }
+
+        channel.flush();
     }
 }

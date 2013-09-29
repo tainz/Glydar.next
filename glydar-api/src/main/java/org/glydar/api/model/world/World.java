@@ -6,5 +6,7 @@ public interface World {
 
     int getSeed();
 
-    boolean isPVPAllowed();
+    boolean isPvpAllowed();
+
+    void setPvpAllowed(boolean pvpAllowed);
 }
