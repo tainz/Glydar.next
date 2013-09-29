@@ -18,9 +18,11 @@ import org.glydar.core.logging.CoreGlydarLogger;
 import org.glydar.core.logging.CoreGlydarLoggerFormatter;
 import org.glydar.core.plugin.command.CoreCommandManager;
 import org.glydar.core.plugin.event.CoreEventManager;
+import org.glydar.core.util.Versioning;
 
 public abstract class CoreBackend implements Backend {
 
+    private final String           version;
     private final Path             baseFolder;
     private final Path             configFolder;
     private final CoreGlydarLogger logger;
@@ -29,6 +31,7 @@ public abstract class CoreBackend implements Backend {
     private final EventManager     eventManager;
 
     public CoreBackend() {
+        this.version = Versioning.getGlydarVersion();
         this.baseFolder = initBaseFolder();
         this.configFolder = baseFolder.resolve("config");
         this.logger = initLogger();
@@ -69,6 +72,11 @@ public abstract class CoreBackend implements Backend {
         }
 
         return logger;
+    }
+
+    @Override
+    public String getVersion() {
+        return version;
     }
 
     @Override
