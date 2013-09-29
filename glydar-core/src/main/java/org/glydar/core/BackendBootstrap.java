@@ -27,11 +27,11 @@ public class BackendBootstrap implements I18nTarget {
     private static final String LOGS_FOLDER_NAME    = "logs";
     private static final String CONFIG_FOLDER_NAME  = "config";
     private static final String PLUGINS_FOLDER_NAME = "plugins";
-    private static final String CONFIG_FILE_NAME    = "glydar.yml";
 
     private final Class<?>      clazz;
     private final String        name;
     private final String        version;
+    private final String 		configFileName;
     private final Logger        logger;
     private Path                baseFolder;
     private Path                logsFolder;
@@ -45,7 +45,8 @@ public class BackendBootstrap implements I18nTarget {
         this.name = name;
         this.version = Versioning.getGlydarVersion();
         this.logger = Logger.getLogger(getClass().getCanonicalName());
-
+        this.configFileName = name.toLowerCase().trim().replaceAll(" ", "");
+        
         setupFolders();
         setupLogger();
         readConfig();
@@ -125,17 +126,17 @@ public class BackendBootstrap implements I18nTarget {
     }
 
     private void readConfig() {
-        this.configFile = baseFolder.resolve(CONFIG_FOLDER_NAME).resolve(CONFIG_FILE_NAME);
+        this.configFile = baseFolder.resolve(CONFIG_FOLDER_NAME).resolve(configFileName);
         if (!Files.isRegularFile(configFile)) {
             try {
                 if (Files.exists(configFile)) {
-                    Path backupPath = configFile.resolveSibling(CONFIG_FILE_NAME + BACKUP_SUFFIX);
+                    Path backupPath = configFile.resolveSibling(configFileName + BACKUP_SUFFIX);
                     Files.move(configFile, backupPath);
                 }
                 Files.createFile(configFile);
             }
             catch (Exception exc) {
-                logger.log(Level.WARNING, "Error while trying to create missing file " + CONFIG_FILE_NAME);
+                logger.log(Level.WARNING, "Error while trying to create missing file " + configFileName);
             }
         }
     }

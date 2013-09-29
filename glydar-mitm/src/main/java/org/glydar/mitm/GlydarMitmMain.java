@@ -11,11 +11,10 @@ import org.glydar.core.protocol.driver.ProtocolInitializer;
 
 public class GlydarMitmMain {
 
-    private static final int         DEFAULT_MITM_PORT   = 12346;
-    private static final int         DEFAULT_SERVER_PORT = 12345;
-
-    private static int               serverPort;
+    private static int               mitmPort;
+    private static int				 vanillaPort;
     private static MitmServer        mitmServer;
+    private static GlydarMitm        glydarMitm;
     private static NioEventLoopGroup bossGroup;
     private static NioEventLoopGroup workerGroup;
 
@@ -23,8 +22,10 @@ public class GlydarMitmMain {
         GlydarLogger logger = Glydar.getLogger(GlydarMitmMain.class, "Boot");
         logger.info("Starting {0} version {1}", Glydar.getName(), Glydar.getVersion());
 
-        int mitmPort = DEFAULT_MITM_PORT;
-        serverPort = DEFAULT_SERVER_PORT;
+        glydarMitm = (GlydarMitm) Glydar.getBackend();
+        
+        mitmPort = glydarMitm.getConfig().getMitmPort();
+        vanillaPort = glydarMitm.getConfig().getVanillaPort();
 
         mitmServer = new MitmServer();
         bossGroup = new NioEventLoopGroup();
@@ -38,7 +39,7 @@ public class GlydarMitmMain {
         mitmBootstrap.bind(mitmPort);
 
         logger.info("Started on port {0}", mitmPort);
-        logger.info("Relaying to port {0}", serverPort);
+        logger.info("Relaying to port {0}", vanillaPort);
     }
 
     public static void shutdown() {
@@ -47,7 +48,11 @@ public class GlydarMitmMain {
         bossGroup.shutdownGracefully();
     }
 
-    public static int getServerPort() {
-        return serverPort;
+    public static int getMitmPort() {
+        return mitmPort;
+    }
+    
+    public static int getVanillaPort() {
+    	return vanillaPort;
     }
 }

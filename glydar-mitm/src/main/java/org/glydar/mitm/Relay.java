@@ -61,7 +61,7 @@ public class Relay implements ProtocolHandler<VanillaServer>, Remote {
         serverRelayBootstrap.channel(NioSocketChannel.class);
         serverRelayBootstrap.option(ChannelOption.SO_KEEPALIVE, true);
         serverRelayBootstrap.handler(new ProtocolInitializer<VanillaServer>(this));
-        serverRelayBootstrap.connect("localhost", GlydarMitmMain.getServerPort());
+        serverRelayBootstrap.connect("localhost", GlydarMitmMain.getVanillaPort());
     }
 
     @Override

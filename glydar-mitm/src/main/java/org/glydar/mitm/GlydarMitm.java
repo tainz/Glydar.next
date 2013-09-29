@@ -7,9 +7,12 @@ import org.glydar.core.CoreBackend;
 public class GlydarMitm extends CoreBackend {
 
     private static final String NAME = "Glydar MITM";
+    
+    private final MitmServerConfig config;
 
     public GlydarMitm() {
         super(NAME);
+        this.config = new MitmServerConfig(this);
     }
 
     @Override
@@ -20,5 +23,9 @@ public class GlydarMitm extends CoreBackend {
     @Override
     public Server getServer() {
         throw new UnsupportedOperationException();
+    }
+    
+    public MitmServerConfig getConfig() {
+    	return config;
     }
 }

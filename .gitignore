@@ -2,3 +2,5 @@
 /glydar-*/.settings
 /glydar-*/.classpath
 /glydar-*/.project
+.project
+.settings
