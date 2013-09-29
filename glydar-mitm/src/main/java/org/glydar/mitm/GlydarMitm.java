@@ -1,5 +1,6 @@
 package org.glydar.mitm;
 
+import org.glydar.api.Server;
 import org.glydar.core.CoreBackend;
 
 public class GlydarMitm extends CoreBackend {
@@ -18,5 +19,10 @@ public class GlydarMitm extends CoreBackend {
     @Override
     public String getVersion() {
         return VERSION;
+    }
+
+    @Override
+    public Server getServer() {
+        throw new UnsupportedOperationException();
     }
 }

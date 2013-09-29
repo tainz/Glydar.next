@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.glydar.api.Backend;
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.api.plugin.Plugin;
 import org.glydar.api.plugin.command.Command;
@@ -24,6 +25,7 @@ import com.google.common.base.Preconditions;
  */
 public class CoreCommandManager implements CommandManager {
 
+    private static final String                       LOGGER_PREFIX            = "Command Manager";
     private static final String                       PERMISSION_ERROR         = "Sorry, you do not have permission for this command.";
     private static final String                       INVALID_COMMAND          = "Invalid command entered! Type /help for help!";
     private static final String                       ERROR_OCCURRED           = "An error occurred! Please contact the server administrators.";
@@ -32,8 +34,8 @@ public class CoreCommandManager implements CommandManager {
     private final GlydarLogger                        logger;
     private final Map<CommandName, RegisteredCommand> commands;
 
-    public CoreCommandManager(GlydarLogger logger) {
-        this.logger = logger;
+    public CoreCommandManager(Backend backend) {
+        this.logger = backend.getLogger(getClass(), LOGGER_PREFIX);
         this.commands = new HashMap<>();
     }
 

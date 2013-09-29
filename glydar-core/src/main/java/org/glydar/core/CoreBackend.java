@@ -11,19 +11,30 @@ import java.util.logging.Level;
 
 import org.glydar.api.Backend;
 import org.glydar.api.logging.GlydarLogger;
+import org.glydar.api.plugin.PluginLoader;
+import org.glydar.api.plugin.command.CommandManager;
+import org.glydar.api.plugin.event.EventManager;
 import org.glydar.core.logging.CoreGlydarLogger;
 import org.glydar.core.logging.CoreGlydarLoggerFormatter;
+import org.glydar.core.plugin.command.CoreCommandManager;
+import org.glydar.core.plugin.event.CoreEventManager;
 
 public abstract class CoreBackend implements Backend {
 
     private final Path             baseFolder;
     private final Path             configFolder;
     private final CoreGlydarLogger logger;
+    private final PluginLoader     pluginLoader;
+    private final CommandManager   commandManager;
+    private final EventManager     eventManager;
 
     public CoreBackend() {
         this.baseFolder = initBaseFolder();
         this.configFolder = baseFolder.resolve("config");
         this.logger = initLogger();
+        this.pluginLoader = new PluginLoader(this);
+        this.commandManager = new CoreCommandManager(this);
+        this.eventManager = new CoreEventManager(this);
     }
 
     private Path initBaseFolder() {
@@ -78,5 +89,20 @@ public abstract class CoreBackend implements Backend {
     @Override
     public GlydarLogger getLogger(Class<?> clazz, String prefix) {
         return logger.getChildLogger(clazz, prefix);
+    }
+
+    @Override
+    public PluginLoader getPluginLoader() {
+        return pluginLoader;
+    }
+
+    @Override
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    @Override
+    public EventManager getEventManager() {
+        return eventManager;
     }
 }

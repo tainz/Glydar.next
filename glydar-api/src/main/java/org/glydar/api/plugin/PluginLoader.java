@@ -17,15 +17,23 @@ import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.glydar.api.Backend;
 import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
 
 public class PluginLoader {
 
-    private final GlydarLogger     logger        = Glydar.getLogger(PluginLoader.class, "Plugin Loader");
-    private final List<Plugin>     loadedPlugins = new ArrayList<Plugin>();
-    private final List<Plugin>     pending       = new ArrayList<Plugin>();
-    private final Map<String, URL> jarMap        = new HashMap<String, URL>();
+    private final GlydarLogger     logger;
+    private final List<Plugin>     loadedPlugins;
+    private final List<Plugin>     pending;
+    private final Map<String, URL> jarMap;
+
+    public PluginLoader(Backend backend) {
+        this.logger = backend.getLogger(PluginLoader.class, "Plugin Loader");
+        this.loadedPlugins = new ArrayList<Plugin>();
+        this.pending = new ArrayList<Plugin>();
+        this.jarMap = new HashMap<String, URL>();
+    }
 
     public void loadPlugins() {
         File pluginDir = Glydar.getBaseFolder().resolve("plugins").toFile();

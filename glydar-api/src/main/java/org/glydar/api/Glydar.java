@@ -4,6 +4,9 @@ import java.nio.file.Path;
 import java.util.ServiceLoader;
 
 import org.glydar.api.logging.GlydarLogger;
+import org.glydar.api.plugin.PluginLoader;
+import org.glydar.api.plugin.command.CommandManager;
+import org.glydar.api.plugin.event.EventManager;
 
 public final class Glydar {
 
@@ -35,6 +38,22 @@ public final class Glydar {
 
     public static GlydarLogger getLogger(Class<?> clazz, String prefix) {
         return backend.getLogger(clazz, prefix);
+    }
+
+    public static PluginLoader getPluginLoader() {
+        return backend.getPluginLoader();
+    }
+
+    public static CommandManager getCommandManager() {
+        return backend.getCommandManager();
+    }
+
+    public static EventManager getEventManager() {
+        return backend.getEventManager();
+    }
+
+    public static Server getServer() {
+        return backend.getServer();
     }
 
     static {

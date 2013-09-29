@@ -5,6 +5,7 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.glydar.api.Backend;
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.api.plugin.Plugin;
 import org.glydar.api.plugin.event.Event;
@@ -19,12 +20,14 @@ import com.google.common.base.Predicate;
 
 public class CoreEventManager implements EventManager {
 
+    private static final String                                   LOGGER_PREFIX = "Event Manager";
+
     private final GlydarLogger                                    logger;
     private final Map<Class<? extends Event>, RegisteredHandlers> map;
     private int                                                   handlerIndex;
 
-    public CoreEventManager(GlydarLogger logger) {
-        this.logger = logger;
+    public CoreEventManager(Backend backend) {
+        this.logger = backend.getLogger(getClass(), LOGGER_PREFIX);
         this.map = new HashMap<>();
         this.handlerIndex = 0;
     }
