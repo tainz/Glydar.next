@@ -28,7 +28,7 @@ public interface ProtocolHandler<T extends Remote> {
 
     RemoteType getRemoteType();
 
-    T createRemote(Channel channel);
+    T createRemote(Channel channel, Object data);
 
     void disconnect(T remote);
 

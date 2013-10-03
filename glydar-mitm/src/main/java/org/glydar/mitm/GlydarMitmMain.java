@@ -41,7 +41,7 @@ public class GlydarMitmMain {
         mitmBootstrap.group(bossGroup, workerGroup);
         mitmBootstrap.channel(NioServerSocketChannel.class);
         mitmBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-        mitmBootstrap.childHandler(new ProtocolInitializer<Relay>(mitmServer));
+        mitmBootstrap.childHandler(new ProtocolInitializer<>(mitmServer));
         mitmBootstrap.bind(mitmPort);
 
         logger.info("Started on port {0}", mitmPort);

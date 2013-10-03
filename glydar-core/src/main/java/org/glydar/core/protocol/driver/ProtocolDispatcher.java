@@ -13,10 +13,12 @@ import org.glydar.core.protocol.exceptions.ProtocolHandlerException;
 public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHandler<Packet> {
 
     private final ProtocolHandler<T> handler;
+    private final Object data;
     private T                        remote;
 
-    public ProtocolDispatcher(ProtocolHandler<T> handler) {
+    public ProtocolDispatcher(ProtocolHandler<T> handler, Object data) {
         this.handler = handler;
+        this.data = data;
         this.remote = null;
     }
 
@@ -26,7 +28,7 @@ public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHa
             throw new RuntimeException("Tried to create a remote when one already existed");
         }
 
-        this.remote = handler.createRemote(context.channel());
+        this.remote = handler.createRemote(context.channel(), data);
     }
 
     @Override

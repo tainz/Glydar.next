@@ -33,14 +33,17 @@ public class VanillaServer {
                 logger.severe("Error reading Vanilla Server input stream: " + e);
             }
         }
+
         restarting.set(false);
         restarted.set(true);
     }
 
     public void startServer(String path) {
-        if (!processExists()) {
+        if (processExists()) {
             logger.severe("Tried to start the Vanilla Server while it was still running.");
+            return;
         }
+
         try {
             serverProcess = Runtime.getRuntime().exec(path);
             isReady();
@@ -52,12 +55,13 @@ public class VanillaServer {
     }
 
     public boolean processExists() {
-        return serverProcess == null ? false : true;
+        return serverProcess != null;
     }
 
     public void shutDownGracefully() {
-        if (processExists())
+        if (processExists()) {
             serverProcess.destroy();
+        }
     }
 
     public AtomicBoolean getRestarting() {

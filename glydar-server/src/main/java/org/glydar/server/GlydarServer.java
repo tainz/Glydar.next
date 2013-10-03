@@ -91,7 +91,7 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     }
 
     @Override
-    public CorePlayer createRemote(Channel channel) {
+    public CorePlayer createRemote(Channel channel, Object data) {
         return new CorePlayer(channel);
     }
 

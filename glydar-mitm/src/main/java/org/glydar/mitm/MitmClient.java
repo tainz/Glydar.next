@@ -2,12 +2,11 @@ package org.glydar.mitm;
 
 import io.netty.channel.Channel;
 
-import java.util.Set;
-
 import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.ProtocolHandler;
+import org.glydar.core.protocol.Remote;
 import org.glydar.core.protocol.RemoteType;
 import org.glydar.core.protocol.packet.Packet00EntityUpdate;
 import org.glydar.core.protocol.packet.Packet02UpdateFinished;
@@ -26,20 +25,14 @@ import org.glydar.core.protocol.packet.Packet16Join;
 import org.glydar.core.protocol.packet.Packet17VersionExchange;
 import org.glydar.core.protocol.packet.Packet18ServerFull;
 
-import com.google.common.collect.Sets;
+public class MitmClient implements ProtocolHandler<Relay>, Remote {
 
-public class MitmServer implements ProtocolHandler<Relay> {
+    private static final String LOGGER_PREFIX = "MITM Client";
 
-    private static final String LOGGER_PREFIX = "MITM Server";
+    private final GlydarLogger logger;
 
-    private final GlydarLogger  logger;
-    private final MitmClient mitmClient;
-    private final Set<Relay> relays;
-
-    public MitmServer() {
+    public MitmClient() {
         this.logger = Glydar.getLogger(getClass(), LOGGER_PREFIX);
-        this.mitmClient = new MitmClient();
-        this.relays = Sets.newIdentityHashSet();
     }
     
     @Override
@@ -49,34 +42,41 @@ public class MitmServer implements ProtocolHandler<Relay> {
 
     @Override
     public RemoteType getRemoteType() {
-        return RemoteType.CLIENT;
+        return RemoteType.SERVER;
     }
 
     @Override
     public Relay createRemote(Channel channel, Object data) {
-        logger.info("Connection from {0}", channel.remoteAddress());
-
-        Relay relay = new Relay(channel);
-        relays.add(relay);
-        relay.connectToServer(mitmClient);
+        logger.info("Connected to Cube World Server");
+        Relay relay = (Relay) data;
+        relay.setServerChannel(channel);
         return relay;
-    }
-
-    public void shutdownGracefully() {
-        for (Relay relay : relays) {
-            relay.shutdownGracefully();
-        }
-        relays.clear();
     }
 
     @Override
     public void disconnect(Relay relay) {
-        relay.shutdownGracefully();
-        relays.remove(relay);
+        VanillaServer vs = GlydarMitmMain.getVanillaServer();
+        if (!vs.getRestarting().getAndSet(true) || vs.getRestarted().get()) {
+            vs.startServer(GlydarMitmMain.getGlydarMitm().getConfig().getVanillaPath());
+        }
+
+        while (vs.getRestarted().get()) {
+            try {
+                Thread.sleep(1);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        relay.closeServerConnection();
+        relay.connectToServer(this);
+        Packet17VersionExchange versionPacket = new Packet17VersionExchange(ProtocolHandler.VERSION);
+        relay.sendToServer(versionPacket);
     }
 
     private void forward(Relay relay, Packet... packets) {
-        relay.sendToServer(packets);
+        relay.sendToClient(packets);
     }
 
     @Override
@@ -146,7 +146,7 @@ public class MitmServer implements ProtocolHandler<Relay> {
 
     @Override
     public void handle(Relay relay, Packet16Join packet) {
-        forward(relay, packet);
+        forward(relay, packet, new Packet10Chat("Using Glydar MITM"));
     }
 
     @Override
