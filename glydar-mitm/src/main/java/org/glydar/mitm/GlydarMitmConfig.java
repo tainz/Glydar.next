@@ -10,33 +10,36 @@ import org.glydar.api.plugin.configuration.file.YamlConfiguration;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 
-public class MitmServerConfig {
+public class GlydarMitmConfig {
 
-	private static final String       VANILLA_AUTOMATIC_KEY         = "settings.automatic-vanilla";
-    private static final boolean      VANILLA_AUTOMATIC_DEFAULT 	= true;
-    private static final String       VANILLA_PATH_KEY         		= "settings.vanilla-path";
-    private static final String       VANILLA_PATH_DEFAULT        	= "server.exe";
-    private static final String       MITM_PORT_KEY             	= "settings.mitm-port";
-    private static final int          MITM_PORT_DEFAULT         	= 12345;
-    private static final String       VANILLA_PORT_KEY             	= "settings.vanilla-port";
-    private static final int          VANILLA_PORT_DEFAULT         	= 12346;
-    private static final String       DEBUG_KEY           			= "settings.debug";
-    private static final boolean      DEBUG_DEFAULT       			= false;
+    private static final String VANILLA_AUTOMATIC_KEY = "settings.automatic-vanilla";
+    private static final boolean VANILLA_AUTOMATIC_DEFAULT = true;
+    private static final String VANILLA_PATH_KEY = "settings.vanilla-path";
+    private static final String VANILLA_PATH_DEFAULT = "server.exe";
+    private static final String MITM_PORT_KEY = "settings.mitm-port";
+    private static final String MITM_PORT_SYSTEM_KEY = "settings.mitm-port";
+    private static final int MITM_PORT_DEFAULT = 12345;
+    private static final String VANILLA_PORT_KEY = "settings.vanilla-port";
+    private static final String VANILLA_PORT_SYSTEM_KEY = "glydar.port.vanilla";
+    private static final int VANILLA_PORT_DEFAULT = 12346;
+    private static final String DEBUG_KEY = "settings.debug";
+    private static final String DEBUG_SYSTEM_KEY = "glydar.debug";
+    private static final boolean DEBUG_DEFAULT = false;
     
 
-    private static final String       MAX_PLAYERS_KEY     			= "mitm.max-players";
-    private static final int          MAX_PLAYERS_DEFAULT 			= 4;
+    private static final String MAX_PLAYERS_KEY = "mitm.max-players";
+    private static final int MAX_PLAYERS_DEFAULT = 4;
 
-    private static final String       ADMINS_KEY          			= "mitm.admins";
-    private static final List<String> ADMINS_DEFAULT      			= new ArrayList<>();
+    private static final String ADMINS_KEY = "mitm.admins";
+    private static final List<String> ADMINS_DEFAULT = new ArrayList<>();
 
-    private final GlydarMitm 		  server;
+    private final GlydarMitm server;
     private final YamlConfiguration   config;
     private final boolean             debug;
     private final int                 vanillaPort;
     private final int                 mitmPort;
 
-    public MitmServerConfig(GlydarMitm server) {
+    public GlydarMitmConfig(GlydarMitm server) {
         this.server = server;
         this.config = YamlConfiguration.loadConfiguration(server.getConfigFile().toFile());
 
@@ -52,7 +55,7 @@ public class MitmServerConfig {
 
         save();
 
-        String debugProperty = System.getProperty("glydar.debug");
+        String debugProperty = System.getProperty(DEBUG_SYSTEM_KEY);
         if (debugProperty == null) {
             this.debug = config.getBoolean(DEBUG_KEY);
         }
@@ -60,7 +63,7 @@ public class MitmServerConfig {
             this.debug = debugProperty.equals("true");
         }
         
-        String mitmPortProperty = System.getProperty("port.mitm");
+        String mitmPortProperty = System.getProperty(MITM_PORT_SYSTEM_KEY);
         if (mitmPortProperty == null) {
             this.mitmPort = config.getInt(MITM_PORT_KEY);
         }
@@ -68,7 +71,7 @@ public class MitmServerConfig {
             this.mitmPort = tryParseInt(mitmPortProperty, config.getInt(MITM_PORT_KEY));
         }
 
-        String vanillaPortProperty = System.getProperty("port.vanilla");
+        String vanillaPortProperty = System.getProperty(VANILLA_PORT_SYSTEM_KEY);
         if (vanillaPortProperty == null) {
             this.vanillaPort = config.getInt(VANILLA_PORT_KEY);
         }
@@ -122,26 +125,26 @@ public class MitmServerConfig {
     }
     
     public int getVanillaPort() {
-    	return vanillaPort;
+        return vanillaPort;
     }
     
     public int getMitmPort() {
-    	return mitmPort;
+        return mitmPort;
     }
     
     public boolean isVanillaAutomatic() {
-    	return config.getBoolean(VANILLA_AUTOMATIC_KEY);
+        return config.getBoolean(VANILLA_AUTOMATIC_KEY);
     }
     
     public String getVanillaPath() {
-    	return config.getString(VANILLA_PATH_KEY);
+        return config.getString(VANILLA_PATH_KEY);
     }
     
     public boolean isDebug() {
-    	return debug;
+        return debug;
     }
     
     public int getMaxPlayers() {
-    	return config.getInt(MAX_PLAYERS_KEY);
+        return config.getInt(MAX_PLAYERS_KEY);
     }
 }

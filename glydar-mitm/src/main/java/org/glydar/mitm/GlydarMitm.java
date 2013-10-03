@@ -8,11 +8,11 @@ public class GlydarMitm extends CoreBackend {
 
     private static final String NAME = "Glydar MITM";
     
-    private final MitmServerConfig config;
+    private final GlydarMitmConfig config;
 
     public GlydarMitm() {
         super(NAME);
-        this.config = new MitmServerConfig(this);
+        this.config = new GlydarMitmConfig(this);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class GlydarMitm extends CoreBackend {
         throw new UnsupportedOperationException();
     }
     
-    public MitmServerConfig getConfig() {
+    public GlydarMitmConfig getConfig() {
     	return config;
     }
 }

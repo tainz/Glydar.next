@@ -10,7 +10,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
@@ -40,18 +39,16 @@ public class Relay implements ProtocolHandler<VanillaServerConnection>, Remote {
 
     private static final String  LOGGER_PREFIX = "MITM Relay ";
 
-    private final GlydarLogger   		logger;
-    private final MitmServer     		mitmServer;
-    private final Channel        		clientChannel;
-    private final EventLoopGroup 		workerGroup;
-    private final List<Packet>   		packetsQueue;
-    private VanillaServerConnection 	vanillaServer;
-    private long                 		entityId;
+    private final GlydarLogger logger;
+    private final Channel clientChannel;
+    private final EventLoopGroup workerGroup;
+    private final List<Packet> packetsQueue;
+    private VanillaServerConnection vanillaServer;
+    private long entityId;
     
 
     public Relay(MitmServer mitmServer, Channel clientChannel) {
         this.logger = Glydar.getLogger(getClass(), LOGGER_PREFIX + clientChannel.remoteAddress());
-        this.mitmServer = mitmServer;
         this.clientChannel = clientChannel;
         this.workerGroup = new NioEventLoopGroup();
         this.packetsQueue = new ArrayList<>();
@@ -62,7 +59,7 @@ public class Relay implements ProtocolHandler<VanillaServerConnection>, Remote {
     }
 
     private void createBootstrap() {
-    	Bootstrap serverRelayBootstrap = new Bootstrap();
+        Bootstrap serverRelayBootstrap = new Bootstrap();
         serverRelayBootstrap.group(workerGroup);
         serverRelayBootstrap.channel(NioSocketChannel.class);
         serverRelayBootstrap.option(ChannelOption.SO_KEEPALIVE, true);
@@ -103,25 +100,25 @@ public class Relay implements ProtocolHandler<VanillaServerConnection>, Remote {
 
     @Override
     public void disconnect(VanillaServerConnection remote) {
-    	VanillaServer vs = GlydarMitmMain.getVanillaServer();
-    	if (!vs.getRestarting().getAndSet(true) || vs.getRestarted().get()) {
-    		vs.startServer(GlydarMitmMain.getGlydarMitm().getConfig().getVanillaPath());
-    	}
+        VanillaServer vs = GlydarMitmMain.getVanillaServer();
+        if (!vs.getRestarting().getAndSet(true) || vs.getRestarted().get()) {
+            vs.startServer(GlydarMitmMain.getGlydarMitm().getConfig().getVanillaPath());
+        }
+
+        while (vs.getRestarted().get()) {
+            try {
+                Thread.sleep(1);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        vanillaServer.closeConnection();
+        createBootstrap();
+        Packet17VersionExchange pve = new Packet17VersionExchange(ProtocolHandler.VERSION);
+        send(pve);
         
-    	while (vs.getRestarted().get()){
-    		try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-    	}
-    	
-    	vanillaServer.closeConnection();
-    	createBootstrap();
-    	Packet17VersionExchange pve = new Packet17VersionExchange(ProtocolHandler.VERSION);
-    	send(pve);
-    	
-    	
     }
 
     public void send(Packet... packets) {

@@ -12,7 +12,7 @@ import org.glydar.core.protocol.driver.ProtocolInitializer;
 public class GlydarMitmMain {
 
     private static int               mitmPort;
-    private static int				 vanillaPort;
+    private static int vanillaPort;
     private static MitmServer        mitmServer;
     private static GlydarMitm        glydarMitm;
     private static VanillaServer     vanillaServer;
@@ -29,7 +29,9 @@ public class GlydarMitmMain {
         vanillaPort = glydarMitm.getConfig().getVanillaPort();
 
         vanillaServer = new VanillaServer();
-        if (glydarMitm.getConfig().isVanillaAutomatic()) vanillaServer.startServer(glydarMitm.getConfig().getVanillaPath());
+        if (glydarMitm.getConfig().isVanillaAutomatic()) {
+            vanillaServer.startServer(glydarMitm.getConfig().getVanillaPath());
+        }
         
         mitmServer = new MitmServer();
         bossGroup = new NioEventLoopGroup();
@@ -57,14 +59,14 @@ public class GlydarMitmMain {
     }
     
     public static int getVanillaPort() {
-    	return vanillaPort;
+        return vanillaPort;
     }
     
     public static VanillaServer getVanillaServer() {
-    	return vanillaServer;
+        return vanillaServer;
     }
     
     public static GlydarMitm getGlydarMitm() {
-    	return glydarMitm;
+        return glydarMitm;
     }
 }
