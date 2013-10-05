@@ -6,7 +6,6 @@ import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.ProtocolHandler;
-import org.glydar.core.protocol.Remote;
 import org.glydar.core.protocol.RemoteType;
 import org.glydar.core.protocol.packet.Packet00EntityUpdate;
 import org.glydar.core.protocol.packet.Packet02UpdateFinished;
@@ -25,14 +24,16 @@ import org.glydar.core.protocol.packet.Packet16Join;
 import org.glydar.core.protocol.packet.Packet17VersionExchange;
 import org.glydar.core.protocol.packet.Packet18ServerFull;
 
-public class MitmClient implements ProtocolHandler<Relay>, Remote {
+public class MitmClient implements ProtocolHandler<Relay> {
 
     private static final String LOGGER_PREFIX = "MITM Client";
 
     private final GlydarLogger logger;
+    private final MitmServer server;
 
-    public MitmClient() {
+    public MitmClient(MitmServer server) {
         this.logger = Glydar.getLogger(getClass(), LOGGER_PREFIX);
+        this.server = server;
     }
     
     @Override
@@ -47,32 +48,38 @@ public class MitmClient implements ProtocolHandler<Relay>, Remote {
 
     @Override
     public Relay createRemote(Channel channel, Object data) {
-        logger.info("Connected to Cube World Server");
         Relay relay = (Relay) data;
         relay.setServerChannel(channel);
+        logger.info("Relayed to Cube World Server");
         return relay;
     }
 
     @Override
     public void disconnect(Relay relay) {
-        VanillaServer vs = GlydarMitmMain.getVanillaServer();
-        if (!vs.getRestarting().getAndSet(true) || vs.getRestarted().get()) {
-            vs.startServer(GlydarMitmMain.getGlydarMitm().getConfig().getVanillaPath());
-        }
-
-        while (vs.getRestarted().get()) {
-            try {
-                Thread.sleep(1);
+        VanillaServer vanillaServer = GlydarMitm.getInstance().getVanillaServer();
+        if (vanillaServer != null) {
+            if (!vanillaServer.getRestarting().getAndSet(true) || vanillaServer.getRestarted().get()) {
+                vanillaServer.startServer();
             }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
 
-        relay.closeServerConnection();
-        relay.connectToServer(this);
-        Packet17VersionExchange versionPacket = new Packet17VersionExchange(ProtocolHandler.VERSION);
-        relay.sendToServer(versionPacket);
+            while (vanillaServer.getRestarted().get()) {
+                try {
+                    Thread.sleep(1);
+                }
+                catch (InterruptedException exc) {
+                    exc.printStackTrace();
+                }
+            }
+
+            relay.closeServerConnection();
+            relay.connectToServer(this);
+            Packet17VersionExchange versionPacket = new Packet17VersionExchange(ProtocolHandler.VERSION);
+            relay.sendToServer(versionPacket);
+        }
+        else {
+            relay.sendToClient(new Packet10Chat("Connection to vanilla server lost, disconnecting ..."));
+            server.disconnect(relay);
+        }
     }
 
     private void forward(Relay relay, Packet... packets) {

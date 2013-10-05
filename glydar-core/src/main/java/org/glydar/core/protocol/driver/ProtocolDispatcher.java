@@ -28,24 +28,28 @@ public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHa
             throw new RuntimeException("Tried to create a remote when one already existed");
         }
 
+        handler.getLogger().info("{0} connected", context.channel().remoteAddress());
         this.remote = handler.createRemote(context.channel(), data);
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext context) {
+        if (remote == null) {
+            throw new RuntimeException("Tried to disconnect remote before it has been created");
+        }
+
+        handler.getLogger().info("{0} disconnected", context.channel().remoteAddress());
+        handler.disconnect(remote);
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext context, Packet packet) throws Exception {
         try {
-            channelRead1(context, packet);
-        }
-        catch (IOException exc) {
-            throw new IOException(exc);
+            packet.dispatchTo(handler, remote);
         }
         catch (Exception exc) {
             throw new ProtocolHandlerException(exc, packet);
         }
-    }
-
-    private void channelRead1(ChannelHandlerContext context, Packet packet) throws Exception {
-        packet.dispatchTo(handler, remote);
     }
 
     @Override
@@ -63,7 +67,6 @@ public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHa
         if (cause instanceof IOException) {
             if (remote != null) {
                 handler.getLogger().info("{0} lost connection !", context.channel().remoteAddress());
-                handler.disconnect(remote);
             }
         }
         else if (cause instanceof ProtocolHandlerException) {

@@ -10,14 +10,17 @@ import org.glydar.api.logging.GlydarLogger;
 
 public class VanillaServer {
 
+    private static final String LOGGER_PREFIX = "Vanilla Process";
     private final GlydarLogger logger;
+    private final String path;
     private final AtomicBoolean restarting;
     private final AtomicBoolean restarted;
 
     private Process serverProcess;
 
-    protected VanillaServer() {
-        this.logger = Glydar.getLogger(getClass());
+    protected VanillaServer(GlydarMitmConfig config) {
+        this.logger = Glydar.getLogger(getClass(), LOGGER_PREFIX);
+        this.path = config.getVanillaPath();
         this.restarting = new AtomicBoolean(false);
         this.restarted = new AtomicBoolean(false);
     }
@@ -38,7 +41,7 @@ public class VanillaServer {
         restarted.set(true);
     }
 
-    public void startServer(String path) {
+    public void startServer() {
         if (processExists()) {
             logger.severe("Tried to start the Vanilla Server while it was still running.");
             return;

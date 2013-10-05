@@ -19,6 +19,9 @@ public class GlydarMitmConfig {
     private static final String MITM_PORT_KEY = "settings.mitm-port";
     private static final String MITM_PORT_SYSTEM_KEY = "settings.mitm-port";
     private static final int MITM_PORT_DEFAULT = 12345;
+    private static final String VANILLA_HOST_KEY = "settings.vanilla-host";
+    private static final String VANILLA_HOST_SYSTEM_KEY = "glydar.host.vanilla";
+    private static final String VANILLA_HOST_DEFAULT = "localhost";
     private static final String VANILLA_PORT_KEY = "settings.vanilla-port";
     private static final String VANILLA_PORT_SYSTEM_KEY = "glydar.port.vanilla";
     private static final int VANILLA_PORT_DEFAULT = 12346;
@@ -36,6 +39,7 @@ public class GlydarMitmConfig {
     private final GlydarMitm server;
     private final YamlConfiguration   config;
     private final boolean             debug;
+    private final String vanillaHost;
     private final int                 vanillaPort;
     private final int                 mitmPort;
 
@@ -48,6 +52,7 @@ public class GlydarMitmConfig {
         config.addDefault(VANILLA_AUTOMATIC_KEY, VANILLA_AUTOMATIC_DEFAULT);
         config.addDefault(VANILLA_PATH_KEY, VANILLA_PATH_DEFAULT);
         config.addDefault(MITM_PORT_KEY, MITM_PORT_DEFAULT);
+        config.addDefault(VANILLA_HOST_KEY, VANILLA_HOST_DEFAULT);
         config.addDefault(VANILLA_PORT_KEY, VANILLA_PORT_DEFAULT);
         config.addDefault(DEBUG_KEY, DEBUG_DEFAULT);
         config.addDefault(MAX_PLAYERS_KEY, MAX_PLAYERS_DEFAULT);
@@ -69,6 +74,14 @@ public class GlydarMitmConfig {
         }
         else {
             this.mitmPort = tryParseInt(mitmPortProperty, config.getInt(MITM_PORT_KEY));
+        }
+
+        String vanillaHostProperty = System.getProperty(VANILLA_HOST_SYSTEM_KEY);
+        if (vanillaHostProperty == null) {
+            this.vanillaHost = config.getString(VANILLA_HOST_KEY);
+        }
+        else {
+            this.vanillaHost = vanillaHostProperty;
         }
 
         String vanillaPortProperty = System.getProperty(VANILLA_PORT_SYSTEM_KEY);
@@ -122,6 +135,10 @@ public class GlydarMitmConfig {
         }
 
         return removed;
+    }
+
+    public String getVanillaHost() {
+        return vanillaHost;
     }
     
     public int getVanillaPort() {

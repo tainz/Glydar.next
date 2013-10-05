@@ -26,20 +26,16 @@ import org.glydar.core.protocol.packet.Packet16Join;
 import org.glydar.core.protocol.packet.Packet17VersionExchange;
 import org.glydar.core.protocol.packet.Packet18ServerFull;
 
-import com.google.common.collect.Sets;
-
 public class MitmServer implements ProtocolHandler<Relay> {
 
     private static final String LOGGER_PREFIX = "MITM Server";
 
     private final GlydarLogger  logger;
     private final MitmClient mitmClient;
-    private final Set<Relay> relays;
 
     public MitmServer() {
         this.logger = Glydar.getLogger(getClass(), LOGGER_PREFIX);
-        this.mitmClient = new MitmClient();
-        this.relays = Sets.newIdentityHashSet();
+        this.mitmClient = new MitmClient(this);
     }
     
     @Override
@@ -57,12 +53,13 @@ public class MitmServer implements ProtocolHandler<Relay> {
         logger.info("Connection from {0}", channel.remoteAddress());
 
         Relay relay = new Relay(channel);
-        relays.add(relay);
+        GlydarMitm.getInstance().getRelays().add(relay);
         relay.connectToServer(mitmClient);
         return relay;
     }
 
     public void shutdownGracefully() {
+        Set<Relay> relays = GlydarMitm.getInstance().getRelays();
         for (Relay relay : relays) {
             relay.shutdownGracefully();
         }
@@ -71,6 +68,7 @@ public class MitmServer implements ProtocolHandler<Relay> {
 
     @Override
     public void disconnect(Relay relay) {
+        Set<Relay> relays = GlydarMitm.getInstance().getRelays();
         relay.shutdownGracefully();
         relays.remove(relay);
     }

@@ -47,12 +47,14 @@ public class Relay implements Remote {
     }
 
     public void connectToServer(MitmClient mitmClient) {
+        GlydarMitm mitm = GlydarMitm.getInstance();
+
         Bootstrap serverRelayBootstrap = new Bootstrap();
         serverRelayBootstrap.group(serverWorkerGroup);
         serverRelayBootstrap.channel(NioSocketChannel.class);
         serverRelayBootstrap.option(ChannelOption.SO_KEEPALIVE, true);
         serverRelayBootstrap.handler(new ProtocolInitializer<Relay>(mitmClient, this));
-        serverRelayBootstrap.connect("localhost", GlydarMitmMain.getVanillaPort());
+        serverRelayBootstrap.connect(mitm.getConfig().getVanillaHost(), mitm.getConfig().getVanillaPort());
     }
 
     public void sendToServer(Packet... packets) {
@@ -68,6 +70,10 @@ public class Relay implements Remote {
     }
 
     public void closeServerConnection() {
+        if (serverChannel == null) {
+            return;
+        }
+
         serverChannel.close();
         serverChannel = null;
     }
