@@ -21,12 +21,14 @@ public class Relay implements Remote {
     private final EventLoopGroup serverWorkerGroup;
     private final List<Packet> serverPacketsQueue;
     private Channel serverChannel;
+    private long entityId;
 
     public Relay(Channel clientChannel) {
         this.clientChannel = clientChannel;
         this.serverWorkerGroup = new NioEventLoopGroup();
         this.serverPacketsQueue = new ArrayList<>();
         this.serverChannel = null;
+        this.entityId = -1;
     }
 
     public void sendToClient(Packet... packets) {
@@ -46,14 +48,14 @@ public class Relay implements Remote {
         serverPacketsQueue.clear();
     }
 
-    public void connectToServer(MitmClient mitmClient) {
+    public void connectToServer() {
         GlydarMitm mitm = GlydarMitm.getInstance();
 
         Bootstrap serverRelayBootstrap = new Bootstrap();
         serverRelayBootstrap.group(serverWorkerGroup);
         serverRelayBootstrap.channel(NioSocketChannel.class);
         serverRelayBootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-        serverRelayBootstrap.handler(new ProtocolInitializer<Relay>(mitmClient, this));
+        serverRelayBootstrap.handler(new ProtocolInitializer<Relay>(GlydarMitm.getInstance().getMitmClient(), this));
         serverRelayBootstrap.connect(mitm.getConfig().getVanillaHost(), mitm.getConfig().getVanillaPort());
     }
 
@@ -82,5 +84,21 @@ public class Relay implements Remote {
         closeServerConnection();
         clientChannel.close();
         serverWorkerGroup.shutdownGracefully();
+    }
+
+    public boolean hasJoined() {
+        return entityId >= 0;
+    }
+
+    public long getEntityId() {
+        if (entityId < 0) {
+            throw new IllegalStateException("Player has not joined yet");
+        }
+
+        return entityId;
+    }
+
+    public void setEntityId(long entityId) {
+        this.entityId = entityId;
     }
 }

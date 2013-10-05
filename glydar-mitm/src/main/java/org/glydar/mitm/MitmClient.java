@@ -2,7 +2,6 @@ package org.glydar.mitm;
 
 import io.netty.channel.Channel;
 
-import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.ProtocolHandler;
@@ -29,11 +28,9 @@ public class MitmClient implements ProtocolHandler<Relay> {
     private static final String LOGGER_PREFIX = "MITM Client";
 
     private final GlydarLogger logger;
-    private final MitmServer server;
 
-    public MitmClient(MitmServer server) {
-        this.logger = Glydar.getLogger(getClass(), LOGGER_PREFIX);
-        this.server = server;
+    public MitmClient(GlydarMitm mitm) {
+        this.logger = mitm.getLogger(getClass(), LOGGER_PREFIX);
     }
     
     @Override
@@ -58,27 +55,20 @@ public class MitmClient implements ProtocolHandler<Relay> {
     public void disconnect(Relay relay) {
         VanillaServer vanillaServer = GlydarMitm.getInstance().getVanillaServer();
         if (vanillaServer != null) {
-            if (!vanillaServer.getRestarting().getAndSet(true) || vanillaServer.getRestarted().get()) {
-                vanillaServer.startServer();
-            }
-
-            while (vanillaServer.getRestarted().get()) {
-                try {
-                    Thread.sleep(1);
-                }
-                catch (InterruptedException exc) {
-                    exc.printStackTrace();
-                }
-            }
-
             relay.closeServerConnection();
-            relay.connectToServer(this);
-            Packet17VersionExchange versionPacket = new Packet17VersionExchange(ProtocolHandler.VERSION);
-            relay.sendToServer(versionPacket);
+            relay.sendToClient(new Packet10Chat("Connection to vanilla server lost"), new Packet10Chat(
+                    "Trying to restart"));
+            relay.sendToServer(new Packet17VersionExchange(ProtocolHandler.VERSION));
+
+            if (vanillaServer.getRestarting().getAndSet(true)) {
+                return;
+            }
+
+            vanillaServer.restart();
         }
         else {
-            relay.sendToClient(new Packet10Chat("Connection to vanilla server lost, disconnecting ..."));
-            server.disconnect(relay);
+            relay.sendToClient(new Packet10Chat("Connection to vanilla server lost"));
+            GlydarMitm.getInstance().getMitmServer().disconnect(relay);
         }
     }
 
@@ -153,7 +143,11 @@ public class MitmClient implements ProtocolHandler<Relay> {
 
     @Override
     public void handle(Relay relay, Packet16Join packet) {
-        forward(relay, packet, new Packet10Chat("Using Glydar MITM"));
+        if (!relay.hasJoined()) {
+            forward(relay, packet, new Packet10Chat("Using Glydar MITM"));
+        }
+
+        relay.setEntityId(packet.getId());
     }
 
     @Override

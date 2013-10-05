@@ -4,7 +4,6 @@ import io.netty.channel.Channel;
 
 import java.util.Set;
 
-import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.ProtocolHandler;
@@ -31,11 +30,9 @@ public class MitmServer implements ProtocolHandler<Relay> {
     private static final String LOGGER_PREFIX = "MITM Server";
 
     private final GlydarLogger  logger;
-    private final MitmClient mitmClient;
 
-    public MitmServer() {
-        this.logger = Glydar.getLogger(getClass(), LOGGER_PREFIX);
-        this.mitmClient = new MitmClient(this);
+    public MitmServer(GlydarMitm mitm) {
+        this.logger = mitm.getLogger(getClass(), LOGGER_PREFIX);
     }
     
     @Override
@@ -54,7 +51,7 @@ public class MitmServer implements ProtocolHandler<Relay> {
 
         Relay relay = new Relay(channel);
         GlydarMitm.getInstance().getRelays().add(relay);
-        relay.connectToServer(mitmClient);
+        relay.connectToServer();
         return relay;
     }
 

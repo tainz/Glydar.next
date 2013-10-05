@@ -14,16 +14,19 @@ public class GlydarMitm extends CoreBackend {
     private static final String NAME = "Glydar MITM";
     
     private final GlydarMitmConfig config;
+    private final MitmServer mitmServer;
+    private final MitmClient mitmClient;
     private final VanillaServer vanillaServer;
     private final Set<Relay> relays;
 
     public GlydarMitm() {
         super(NAME);
         this.config = new GlydarMitmConfig(this);
+        this.mitmServer = new MitmServer(this);
+        this.mitmClient = new MitmClient(this);
 
         if (config.isVanillaAutomatic()) {
-            vanillaServer = new VanillaServer(config);
-            vanillaServer.startServer();
+            vanillaServer = new VanillaServer(this);
         }
         else {
             vanillaServer = null;
@@ -44,6 +47,14 @@ public class GlydarMitm extends CoreBackend {
     
     public GlydarMitmConfig getConfig() {
     	return config;
+    }
+
+    public MitmServer getMitmServer() {
+        return mitmServer;
+    }
+
+    public MitmClient getMitmClient() {
+        return mitmClient;
     }
 
     public VanillaServer getVanillaServer() {

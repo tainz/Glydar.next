@@ -11,7 +11,6 @@ import org.glydar.core.protocol.driver.ProtocolInitializer;
 
 public class GlydarMitmMain {
 
-    private static MitmServer mitmServer;
     private static NioEventLoopGroup bossGroup;
     private static NioEventLoopGroup workerGroup;
 
@@ -19,12 +18,11 @@ public class GlydarMitmMain {
         GlydarLogger logger = Glydar.getLogger(GlydarMitmMain.class, "Boot");
         logger.info("Starting {0} version {1}", Glydar.getName(), Glydar.getVersion());
 
-        GlydarMitm glydarMitm = (GlydarMitm) Glydar.getBackend();
-        
-        int mitmPort = glydarMitm.getConfig().getMitmPort();
-        int vanillaPort = glydarMitm.getConfig().getVanillaPort();
+        GlydarMitm mitm = (GlydarMitm) Glydar.getBackend();
 
-        mitmServer = new MitmServer();
+        mitm.getVanillaServer().start();
+
+        int mitmPort = mitm.getConfig().getMitmPort();
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
 
@@ -32,14 +30,16 @@ public class GlydarMitmMain {
         mitmBootstrap.group(bossGroup, workerGroup);
         mitmBootstrap.channel(NioServerSocketChannel.class);
         mitmBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-        mitmBootstrap.childHandler(new ProtocolInitializer<>(mitmServer));
+        mitmBootstrap.childHandler(new ProtocolInitializer<>(mitm.getMitmServer()));
         mitmBootstrap.bind(mitmPort);
 
         logger.info("Started on port {0}", mitmPort);
-        logger.info("Relaying to port {0}", vanillaPort);
+        logger.info("Relaying to port {0} {1}", mitm.getConfig().getVanillaHost(), mitm.getConfig().getVanillaPort());
     }
 
     public static void shutdown() {
+        MitmServer mitmServer = GlydarMitm.getInstance().getMitmServer();
+
         mitmServer.shutdownGracefully();
         workerGroup.shutdownGracefully();
         bossGroup.shutdownGracefully();
