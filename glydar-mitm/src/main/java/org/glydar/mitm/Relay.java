@@ -8,6 +8,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.glydar.core.model.entity.CoreEntityData;
@@ -39,6 +40,10 @@ public class Relay implements Remote {
     }
 
     public void sendToClient(Packet... packets) {
+        sendToClient(Arrays.asList(packets));
+    }
+
+    public void sendToClient(Iterable<Packet> packets) {
         for (Packet packet : packets) {
             clientChannel.write(packet);
         }
@@ -67,6 +72,10 @@ public class Relay implements Remote {
     }
 
     public void sendToServer(Packet... packets) {
+        sendToServer(Arrays.asList(packets));
+    }
+
+    public void sendToServer(Iterable<Packet> packets) {
         if (serverChannel == null) {
             for (Packet packet : packets) {
                 // Packet 0 will be sent in one row when the server is up
