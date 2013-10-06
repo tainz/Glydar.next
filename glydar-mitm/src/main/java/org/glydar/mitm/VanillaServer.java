@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.core.protocol.packet.Packet10Chat;
@@ -55,7 +59,9 @@ public class VanillaServer implements Runnable {
                     }
 
                     if (line.contains("Waiting") && restarting) {
-                        for (Relay relay : GlydarMitm.getInstance().getRelays()) {
+                        List<Relay> relays = new ArrayList<>(GlydarMitm.getInstance().getRelays());
+                        Collections.sort(relays, new ByEntityId());
+                        for (Relay relay : relays) {
                             restarting = false;
                             relay.sendToClient(new Packet10Chat("Reconnecting ..."));
                             relay.connectToServer();
@@ -106,5 +112,13 @@ public class VanillaServer implements Runnable {
             process.destroy();
             process = null;
         }
+    }
+}
+
+class ByEntityId implements Comparator<Relay> {
+
+    @Override
+    public int compare(Relay relay1, Relay relay2) {
+        return (int) relay1.getEntityId() - (int) relay2.getEntityId();
     }
 }

@@ -8,12 +8,16 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import org.glydar.core.model.entity.CoreEntityData;
+import org.glydar.core.model.entity.EntityChanges;
 import org.glydar.core.protocol.Packet;
+import org.glydar.core.protocol.ProtocolHandler;
 import org.glydar.core.protocol.Remote;
 import org.glydar.core.protocol.driver.ProtocolInitializer;
+import org.glydar.core.protocol.packet.Packet00EntityUpdate;
+import org.glydar.core.protocol.packet.Packet17VersionExchange;
 
 public class Relay implements Remote {
 
@@ -21,7 +25,9 @@ public class Relay implements Remote {
     private final EventLoopGroup serverWorkerGroup;
     private final List<Packet> serverPacketsQueue;
     private Channel serverChannel;
+
     private long entityId;
+    private final CoreEntityData entityData;
 
     public Relay(Channel clientChannel) {
         this.clientChannel = clientChannel;
@@ -29,6 +35,7 @@ public class Relay implements Remote {
         this.serverPacketsQueue = new ArrayList<>();
         this.serverChannel = null;
         this.entityId = -1;
+        this.entityData = new CoreEntityData(new EntityChanges());
     }
 
     public void sendToClient(Packet... packets) {
@@ -61,7 +68,12 @@ public class Relay implements Remote {
 
     public void sendToServer(Packet... packets) {
         if (serverChannel == null) {
-            Collections.addAll(serverPacketsQueue, packets);
+            for (Packet packet : packets) {
+                // Packet 0 will be sent in one row when the server is up
+                if (!(packet instanceof Packet00EntityUpdate)) {
+                    serverPacketsQueue.add(packet);
+                }
+            }
         }
         else {
             for (Packet packet : packets) {
@@ -100,5 +112,15 @@ public class Relay implements Remote {
 
     public void setEntityId(long entityId) {
         this.entityId = entityId;
+    }
+
+    public CoreEntityData getEntityData() {
+        return entityData;
+    }
+
+    public void prepareReconnection() {
+        closeServerConnection();
+        serverPacketsQueue.add(new Packet17VersionExchange(ProtocolHandler.VERSION));
+        serverPacketsQueue.add(new Packet00EntityUpdate(entityId, entityData));
     }
 }

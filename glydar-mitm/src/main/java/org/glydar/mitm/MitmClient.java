@@ -55,10 +55,10 @@ public class MitmClient implements ProtocolHandler<Relay> {
     public void disconnect(Relay relay) {
         VanillaServer vanillaServer = GlydarMitm.getInstance().getVanillaServer();
         if (vanillaServer != null) {
-            relay.closeServerConnection();
-            relay.sendToClient(new Packet10Chat("Connection to vanilla server lost"), new Packet10Chat(
-                    "Trying to restart"));
-            relay.sendToServer(new Packet17VersionExchange(ProtocolHandler.VERSION));
+            relay.prepareReconnection();
+            Packet chatPacket1 = new Packet10Chat("Connection to vanilla server lost");
+            Packet chatPacket2 = new Packet10Chat("Trying to restart");
+            relay.sendToClient(chatPacket1, chatPacket2);
         }
         else {
             relay.sendToClient(new Packet10Chat("Connection to vanilla server lost"));
@@ -76,6 +76,8 @@ public class MitmClient implements ProtocolHandler<Relay> {
 
     @Override
     public void handle(Relay relay, Packet00EntityUpdate packet) {
+        relay.getEntityData().updateFrom(packet.getData());
+
         forward(relay, packet);
     }
 

@@ -24,6 +24,11 @@ public class Packet00EntityUpdate implements Packet {
         this.data = EntityCodec.readEntityData(decompressed);
     }
 
+    public Packet00EntityUpdate(long entityId, CoreEntityData data) {
+        this.entityId = entityId;
+        this.data = data;
+    }
+
     @Override
     public PacketType getPacketType() {
         return PacketType.ENTITY_UPDATE;
