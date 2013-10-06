@@ -39,6 +39,7 @@ public class GlydarServerMain {
         server.getLogger().info("Server ready on port {0}, started in {0}ms", server.getConfig().getPort(),
                 watch.elapsed(TimeUnit.MILLISECONDS));
 
+        server.getPluginManager().load();
         server.getConsoleReader().start();
 
         int millisBetweenTicks = 1000 / server.getConfig().getTPS();
