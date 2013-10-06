@@ -19,7 +19,9 @@ public class GlydarMitmMain {
         GlydarLogger logger = mitm.getLogger();
         logger.info("Starting {0} version {1}", Glydar.getName(), Glydar.getVersion());
 
-        mitm.getVanillaServer().start();
+        if (mitm.getVanillaServer() != null) {
+            mitm.getVanillaServer().start();
+        }
 
         int mitmPort = mitm.getConfig().getMitmPort();
         bossGroup = new NioEventLoopGroup();

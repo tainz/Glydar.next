@@ -13,9 +13,9 @@ import com.google.common.collect.Sets;
 public class GlydarMitmConfig {
 
     private static final String VANILLA_AUTOMATIC_KEY = "settings.automatic-vanilla";
-    private static final boolean VANILLA_AUTOMATIC_DEFAULT = true;
+    private static final boolean VANILLA_AUTOMATIC_DEFAULT = false;
     private static final String VANILLA_PATH_KEY = "settings.vanilla-path";
-    private static final String VANILLA_PATH_DEFAULT = "server.exe";
+    private static final String VANILLA_PATH_DEFAULT = "vanilla/Server.exe";
     private static final String MITM_PORT_KEY = "settings.mitm-port";
     private static final String MITM_PORT_SYSTEM_KEY = "settings.mitm-port";
     private static final int MITM_PORT_DEFAULT = 12345;
