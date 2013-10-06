@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.glydar.api.Backend;
+import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
 
 public class ConsoleCommandReader extends Thread {
@@ -30,6 +31,10 @@ public class ConsoleCommandReader extends Thread {
                 String cmdLine = bufferedReader.readLine();
                 if (cmdLine == null || cmdLine.isEmpty()) {
                     continue;
+                }
+
+                if (cmdLine.equalsIgnoreCase("stop")) {
+                    Glydar.getBackend().shutdown();
                 }
 
                 sender.sendMessage("Executing command " + cmdLine);

@@ -64,6 +64,19 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
         return BackendType.SERVER;
     }
 
+    @Override
+    public void shutdown() {
+        Packet10Chat chatPacket = new Packet10Chat("Stopping server, bye !");
+        for (Player player : players) {
+            CorePlayer corePlayer = ((CorePlayer) player);
+            corePlayer.sendPackets(chatPacket);
+            corePlayer.closeConnection();
+        }
+
+        getConsoleReader().interrupt();
+        GlydarServerMain.shutdown();
+    }
+
     public GlydarServerConfig getConfig() {
         return config;
     }
@@ -200,17 +213,5 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     }
 
     public void tick() {
-    }
-
-    public void shutdown() {
-        Packet10Chat chatPacket = new Packet10Chat("Stopping server, bye !");
-        for (Player player : players) {
-            CorePlayer corePlayer = ((CorePlayer) player);
-            corePlayer.sendPackets(chatPacket);
-            corePlayer.closeConnection();
-        }
-
-        getConsoleReader().interrupt();
-        GlydarServerMain.shutdown();
     }
 }

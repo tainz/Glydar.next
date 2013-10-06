@@ -32,4 +32,6 @@ public interface Backend {
     EventManager getEventManager();
 
     Server getServer();
+
+    void shutdown();
 }

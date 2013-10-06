@@ -44,11 +44,15 @@ public class GlydarMitm extends CoreBackend {
     public Server getServer() {
         throw new UnsupportedOperationException();
     }
-    
-    public GlydarMitmConfig getConfig() {
-    	return config;
+
+    @Override
+    public void shutdown() {
+        GlydarMitmMain.shutdown();
     }
 
+    public GlydarMitmConfig getConfig() {
+        return config;
+    }
     public MitmServer getMitmServer() {
         return mitmServer;
     }

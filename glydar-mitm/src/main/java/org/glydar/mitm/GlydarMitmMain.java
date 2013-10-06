@@ -34,6 +34,8 @@ public class GlydarMitmMain {
         mitmBootstrap.childHandler(new ProtocolInitializer<>(mitm.getMitmServer()));
         mitmBootstrap.bind(mitmPort);
 
+        mitm.getConsoleReader().start();
+
         logger.info("Started on port {0}", mitmPort);
         logger.info("Relaying to {0} {1}", mitm.getConfig().getVanillaHost(), mitm.getConfig().getVanillaPort());
     }
