@@ -141,8 +141,14 @@ public class MitmClient implements ProtocolHandler<Relay> {
 
     @Override
     public void handle(Relay relay, Packet16Join packet) {
+        if (relay.hasJoined()) {
+            forward(relay, new Packet10Chat("Reconnected"));
+        }
+        else {
+            forward(relay, packet, new Packet10Chat("Using Glydar MITM"));
+        }
+
         relay.setEntityId(packet.getId());
-        forward(relay, packet, new Packet10Chat("Using Glydar MITM"));
     }
 
     @Override
