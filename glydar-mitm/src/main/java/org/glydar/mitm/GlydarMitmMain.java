@@ -15,10 +15,9 @@ public class GlydarMitmMain {
     private static NioEventLoopGroup workerGroup;
 
     public static void main(String[] args) {
-        GlydarLogger logger = Glydar.getLogger(GlydarMitmMain.class, "Boot");
+        GlydarMitm mitm = GlydarMitm.getInstance();
+        GlydarLogger logger = mitm.getLogger();
         logger.info("Starting {0} version {1}", Glydar.getName(), Glydar.getVersion());
-
-        GlydarMitm mitm = (GlydarMitm) Glydar.getBackend();
 
         mitm.getVanillaServer().start();
 
@@ -34,14 +33,18 @@ public class GlydarMitmMain {
         mitmBootstrap.bind(mitmPort);
 
         logger.info("Started on port {0}", mitmPort);
-        logger.info("Relaying to port {0} {1}", mitm.getConfig().getVanillaHost(), mitm.getConfig().getVanillaPort());
+        logger.info("Relaying to {0} {1}", mitm.getConfig().getVanillaHost(), mitm.getConfig().getVanillaPort());
     }
 
     public static void shutdown() {
-        MitmServer mitmServer = GlydarMitm.getInstance().getMitmServer();
+        GlydarMitm mitm = GlydarMitm.getInstance();
+        mitm.getLogger().info("Shutting down");
 
-        mitmServer.shutdownGracefully();
+        for (Relay relay : mitm.getRelays()) {
+            relay.shutdownGracefully();
+        }
         workerGroup.shutdownGracefully();
         bossGroup.shutdownGracefully();
+        mitm.getVanillaServer().shutdownGracefully();
     }
 }

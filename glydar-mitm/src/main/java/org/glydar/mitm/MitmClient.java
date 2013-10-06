@@ -59,12 +59,6 @@ public class MitmClient implements ProtocolHandler<Relay> {
             relay.sendToClient(new Packet10Chat("Connection to vanilla server lost"), new Packet10Chat(
                     "Trying to restart"));
             relay.sendToServer(new Packet17VersionExchange(ProtocolHandler.VERSION));
-
-            if (vanillaServer.getRestarting().getAndSet(true)) {
-                return;
-            }
-
-            vanillaServer.restart();
         }
         else {
             relay.sendToClient(new Packet10Chat("Connection to vanilla server lost"));
@@ -73,6 +67,10 @@ public class MitmClient implements ProtocolHandler<Relay> {
     }
 
     private void forward(Relay relay, Packet... packets) {
+        for (Packet packet : packets) {
+            logger.fine("Relaying packet {0}", packet.getPacketType());
+        }
+
         relay.sendToClient(packets);
     }
 
@@ -143,11 +141,8 @@ public class MitmClient implements ProtocolHandler<Relay> {
 
     @Override
     public void handle(Relay relay, Packet16Join packet) {
-        if (!relay.hasJoined()) {
-            forward(relay, packet, new Packet10Chat("Using Glydar MITM"));
-        }
-
         relay.setEntityId(packet.getId());
+        forward(relay, packet, new Packet10Chat("Using Glydar MITM"));
     }
 
     @Override

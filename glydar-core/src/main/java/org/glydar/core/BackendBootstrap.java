@@ -106,6 +106,7 @@ public class BackendBootstrap implements I18nTarget {
             logger.log(Level.WARNING, "Unable to set console logger handler to utf8 encoding", exc);
         }
         consoleHandler.setFormatter(formatter);
+        consoleHandler.setLevel(Level.ALL);
         serverLogger.getJdkLogger().addHandler(consoleHandler);
 
         try {
@@ -118,6 +119,7 @@ public class BackendBootstrap implements I18nTarget {
                 logger.log(Level.WARNING, "Unable to set file logger handler to utf8 encoding", exc);
             }
             fileHandler.setFormatter(formatter);
+            fileHandler.setLevel(Level.ALL);
             serverLogger.getJdkLogger().addHandler(fileHandler);
         }
         catch (SecurityException | IOException exc) {

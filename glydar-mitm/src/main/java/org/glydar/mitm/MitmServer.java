@@ -55,14 +55,6 @@ public class MitmServer implements ProtocolHandler<Relay> {
         return relay;
     }
 
-    public void shutdownGracefully() {
-        Set<Relay> relays = GlydarMitm.getInstance().getRelays();
-        for (Relay relay : relays) {
-            relay.shutdownGracefully();
-        }
-        relays.clear();
-    }
-
     @Override
     public void disconnect(Relay relay) {
         Set<Relay> relays = GlydarMitm.getInstance().getRelays();
@@ -71,6 +63,10 @@ public class MitmServer implements ProtocolHandler<Relay> {
     }
 
     private void forward(Relay relay, Packet... packets) {
+        for (Packet packet : packets) {
+            logger.fine("Relaying packet {0}", packet.getPacketType());
+        }
+
         relay.sendToServer(packets);
     }
 
