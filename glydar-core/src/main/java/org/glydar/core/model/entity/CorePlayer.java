@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.List;
 
+import org.glydar.api.Glydar;
 import org.glydar.api.model.entity.Player;
 import org.glydar.api.plugin.permissions.Permission;
 import org.glydar.api.plugin.permissions.Permission.PermissionDefault;
@@ -17,8 +18,10 @@ public class CorePlayer extends CoreEntity implements Player, Remote {
 
     private final Channel channel;
     private boolean       admin;
+    private boolean		  connected = false;
 
     public CorePlayer(Channel channel) {
+    	super();
         this.channel = channel;
     }
 
@@ -96,8 +99,20 @@ public class CorePlayer extends CoreEntity implements Player, Remote {
 
         channel.flush();
     }
-
-    public void closeConnection() {
-        channel.close();
+    
+    public boolean isConnected () {
+    	return connected;
     }
+    
+    public void setConnected() {
+    	connected = true;
+    }
+
+    @Override
+    public void remove(){
+    	super.remove();
+    	connected = false;
+    	channel.close();
+    }
+    
 }

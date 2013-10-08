@@ -3,14 +3,17 @@ package org.glydar.server;
 import io.netty.channel.Channel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.glydar.api.BackendType;
 import org.glydar.api.Server;
+import org.glydar.api.model.entity.Entity;
 import org.glydar.api.model.entity.Player;
 import org.glydar.api.model.world.World;
 import org.glydar.core.CoreBackend;
 import org.glydar.core.model.entity.CorePlayer;
+import org.glydar.core.model.entity.CoreEntity;
 import org.glydar.core.model.world.CoreWorld;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.ProtocolHandler;
@@ -33,20 +36,25 @@ import org.glydar.core.protocol.packet.Packet16Join;
 import org.glydar.core.protocol.packet.Packet17VersionExchange;
 import org.glydar.core.protocol.packet.Packet18ServerFull;
 
+import com.google.common.collect.Lists;
+
 public class GlydarServer extends CoreBackend implements Server, ProtocolHandler<CorePlayer> {
 
-    private static final String      NAME             = "Glydar";
+    private static final String      		NAME             = "Glydar";
+    //TODO: Better place to  put this?
+    private static final String		 		VERSION		  = "0.0.1-SNAPSHOT";
+    private static final String				JOIN_MESSAGE	  = "Server powered by Glydar " + VERSION;
 
-    private final GlydarServerConfig config;
-    private final List<World>        worlds;
-    private final List<Player>       players;
+    private final GlydarServerConfig 		config;
+    private final List<World>        		worlds;
+    private final HashMap<Integer,Entity>   connectedEntities;
 
     public GlydarServer() {
         super(NAME);
 
         this.config = new GlydarServerConfig(this);
         this.worlds = new ArrayList<>();
-        this.players = new ArrayList<>();
+        this.connectedEntities = new HashMap<>();
 
         setUpWorlds();
     }
@@ -67,10 +75,10 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     @Override
     public void shutdown() {
         Packet10Chat chatPacket = new Packet10Chat("Stopping server, bye !");
-        for (Player player : players) {
+        for (Player player : getPlayers()) {
             CorePlayer corePlayer = ((CorePlayer) player);
             corePlayer.sendPackets(chatPacket);
-            corePlayer.closeConnection();
+            corePlayer.remove();
         }
 
         getConsoleReader().interrupt();
@@ -86,10 +94,32 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     }
 
     public List<World> getWorlds() {
-        return worlds;
+        return Lists.newArrayList(worlds);
     }
+    
+    public Entity getEntityById(int id) {
+    	return connectedEntities.get(id);
+    }
+    
+    public void unregisterEntity(int id){
+    	connectedEntities.remove(id);
+    }
+    
+	public void registerEntity(Entity e) {
+		connectedEntities.put(((CoreEntity) e).getId(), e);
+	}
 
+    public List<Entity> getEntities() {
+    	return Lists.newArrayList(connectedEntities.values());
+    }
+    
     public List<Player> getPlayers() {
+        List<Player> players = new ArrayList<Player>();
+        for (Entity e : connectedEntities.values()){
+        	if (e instanceof Player){
+        		players.add((Player) e);
+        	}
+        }
         return players;
     }
 
@@ -111,17 +141,22 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     @Override
     public void disconnect(CorePlayer player) {
         getLogger().info("Player {0} left the server", player.getName());
-        player.closeConnection();
+        player.remove();
     }
 
     private void sendPacketsToAll(Packet... packets) {
-        for (Player player : players) {
+        for (Player player : getPlayers()) {
             ((CorePlayer) player).sendPackets(packets);
         }
     }
 
     @Override
     public void handle(CorePlayer player, Packet00EntityUpdate packet) {
+    	if (!player.isConnected()){
+    		player.setConnected();
+    		
+    	}
+    	
         if (player.getId() == packet.getEntityId()) {
             player.getData().updateFrom(packet.getData());
         }
@@ -193,17 +228,17 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
             return;
         }
 
-        if (players.size() >= config.getMaxPlayers()) {
+        if (getPlayers().size() >= config.getMaxPlayers()) {
             player.sendPackets(new Packet18ServerFull());
             return;
         }
 
         // TODO: Figure out in which world to put the player
-        player.initWorld((CoreWorld) getDefaultWorld());
+        player.joinWorld((CoreWorld) getDefaultWorld());
 
         Packet16Join joinPacket = new Packet16Join(player);
         Packet15Seed seedPacket = new Packet15Seed(player.getWorld().getSeed());
-        Packet10Chat chatPacket = new Packet10Chat("Server powered by Glydar 0.0.1-SNAPSHOT");
+        Packet10Chat chatPacket = new Packet10Chat(JOIN_MESSAGE);
         player.sendPackets(joinPacket, seedPacket, chatPacket);
     }
 
@@ -213,5 +248,9 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     }
 
     public void tick() {
+    	for (World w : worlds){
+    		((CoreWorld) w).tick();
+    	}
     }
+
 }
