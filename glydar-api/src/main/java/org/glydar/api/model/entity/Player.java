@@ -9,4 +9,5 @@ public interface Player extends Entity, CommandSender {
     boolean isAdmin();
 
     void setAdmin(boolean admin);
+
 }

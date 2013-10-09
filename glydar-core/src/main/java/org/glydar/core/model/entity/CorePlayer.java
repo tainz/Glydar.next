@@ -11,8 +11,10 @@ import org.glydar.api.model.entity.Player;
 import org.glydar.api.plugin.permissions.Permission;
 import org.glydar.api.plugin.permissions.Permission.PermissionDefault;
 import org.glydar.api.plugin.permissions.PermissionAttachment;
+import org.glydar.core.model.world.CoreWorld;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.Remote;
+import org.glydar.core.protocol.packet.Packet15Seed;
 
 public class CorePlayer extends CoreEntity implements Player, Remote {
 
@@ -109,10 +111,16 @@ public class CorePlayer extends CoreEntity implements Player, Remote {
     }
 
     @Override
-    public void remove(){
+    public void remove() {
     	super.remove();
     	connected = false;
     	channel.close();
+    }
+    
+    @Override
+    public void joinWorld(CoreWorld world) {
+    	super.joinWorld(world);
+    	sendPackets(new Packet15Seed(world.getSeed()));
     }
     
 }

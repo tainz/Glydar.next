@@ -47,14 +47,14 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
 
     private final GlydarServerConfig 		config;
     private final List<World>        		worlds;
-    private final HashMap<Integer,Entity>   connectedEntities;
+    private final HashMap<Long,Entity>   entities;
 
     public GlydarServer() {
         super(NAME);
 
         this.config = new GlydarServerConfig(this);
         this.worlds = new ArrayList<>();
-        this.connectedEntities = new HashMap<>();
+        this.entities = new HashMap<>();
 
         setUpWorlds();
     }
@@ -97,25 +97,25 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
         return Lists.newArrayList(worlds);
     }
     
-    public Entity getEntityById(int id) {
-    	return connectedEntities.get(id);
+    public Entity getEntityById(long id) {
+    	return entities.get(id);
     }
     
-    public void unregisterEntity(int id){
-    	connectedEntities.remove(id);
+    public void unregisterEntity(long id){
+    	entities.remove(id);
     }
     
 	public void registerEntity(Entity e) {
-		connectedEntities.put(((CoreEntity) e).getId(), e);
+		entities.put(((CoreEntity) e).getId(), e);
 	}
 
     public List<Entity> getEntities() {
-    	return Lists.newArrayList(connectedEntities.values());
+    	return Lists.newArrayList(entities.values());
     }
     
     public List<Player> getPlayers() {
         List<Player> players = new ArrayList<Player>();
-        for (Entity e : connectedEntities.values()){
+        for (Entity e : entities.values()){
         	if (e instanceof Player){
         		players.add((Player) e);
         	}

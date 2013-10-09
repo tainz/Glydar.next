@@ -8,6 +8,11 @@ import org.glydar.api.model.entity.Entity;
 import org.glydar.api.model.entity.Player;
 import org.glydar.api.model.world.World;
 import org.glydar.core.model.entity.CoreEntity;
+import org.glydar.core.model.entity.CoreEntityData;
+import org.glydar.core.model.entity.CorePlayer;
+import org.glydar.core.protocol.Packet;
+import org.glydar.core.protocol.packet.Packet00EntityUpdate;
+import org.glydar.core.protocol.packet.Packet02UpdateFinished;
 
 import com.google.common.collect.Lists;
 
@@ -16,7 +21,7 @@ public class CoreWorld implements World {
     private final String name;
     private final int    seed;
     private boolean      pvpAllowed;
-    private HashMap<Integer, Entity> entities;
+    private HashMap<Long, Entity> entities;
 
     public CoreWorld(String name, int seed) {
         this.name = name;
@@ -39,11 +44,11 @@ public class CoreWorld implements World {
     	return players;
     }
     
-    public Entity getEntityById(int id) {
+    public Entity getEntityById(long id) {
     	return entities.get(id);
     }
     
-    public void unregisterEntity(int id){
+    public void unregisterEntity(long id){
     	entities.remove(id);
     }
     
@@ -72,8 +77,17 @@ public class CoreWorld implements World {
         // TODO: Update player accordingly
     }
     
+    public void sendPacketsToWorld(Packet... packets) {
+        for (Player p : getPlayers()){
+        	((CorePlayer) p).sendPackets(packets);
+        }
+    }
+    
     public void tick() {
-    	
+    	for (Player p :getPlayers()){
+    		sendPacketsToWorld(new Packet00EntityUpdate(p.getId(), (CoreEntityData) p.getData()));
+    	}
+    	sendPacketsToWorld(new Packet02UpdateFinished());
     }
     
 }

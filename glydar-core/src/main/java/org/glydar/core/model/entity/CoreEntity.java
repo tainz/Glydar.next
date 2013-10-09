@@ -6,9 +6,9 @@ import org.glydar.core.model.world.CoreWorld;
 
 public abstract class CoreEntity implements Entity {
 
-    private static int             NEXT_ENTITY_ID = 2;
+    private static long             NEXT_ENTITY_ID = 2;
 
-    protected final int              id;
+    protected final long              id;
     protected final CoreEntityData data;
     protected CoreWorld              world;
 
@@ -17,7 +17,7 @@ public abstract class CoreEntity implements Entity {
         this.data = new CoreEntityData(new EntityChanges());
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
