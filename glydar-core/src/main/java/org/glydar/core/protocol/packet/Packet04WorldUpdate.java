@@ -18,6 +18,10 @@ public class Packet04WorldUpdate implements Packet {
     public Packet04WorldUpdate(ByteBuf buf) {
         data = new WorldUpdates(ZLibOperations.decompress(buf));
     }
+    
+    public Packet04WorldUpdate(WorldUpdates worldData) {
+        data = worldData;
+    }
 
     @Override
     public PacketType getPacketType() {

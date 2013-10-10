@@ -12,6 +12,7 @@ import org.glydar.api.model.entity.Entity;
 import org.glydar.api.model.entity.Player;
 import org.glydar.api.model.world.World;
 import org.glydar.core.CoreBackend;
+import org.glydar.core.model.actions.KillAction;
 import org.glydar.core.model.entity.CorePlayer;
 import org.glydar.core.model.entity.CoreEntity;
 import org.glydar.core.model.world.CoreWorld;
@@ -154,7 +155,9 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     public void handle(CorePlayer player, Packet00EntityUpdate packet) {
     	if (!player.isConnected()){
     		player.setConnected();
-    		
+    		registerEntity(player);
+    		player.getWorld().registerEntity(player);
+    		//INSERT JOIN EVENT!
     	}
     	
         if (player.getId() == packet.getEntityId()) {
@@ -183,6 +186,16 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
 
     @Override
     public void handle(CorePlayer player, Packet07Hit packet) {
+    	player.getWorld().getUpdateData().pushHit(packet);
+    	
+    	Entity target = getEntityById(packet.getTargetId());
+    	if (target.getData().getHp() - packet.getDamage() <= 0){
+    		player.getWorld().getUpdateData().pushKill(new KillAction(packet.getDamagerId(), packet.getTargetId()));
+    	}
+    	
+    	if (!(target instanceof Player)){
+    		target.getData().setHp(target.getData().getHp() - packet.getDamage());
+    	}
     }
 
     @Override
@@ -191,6 +204,7 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
 
     @Override
     public void handle(CorePlayer player, Packet09Shoot packet) {
+    	player.getWorld().getUpdateData().pushShoot(packet);
     }
 
     @Override
@@ -235,6 +249,7 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
 
         // TODO: Figure out in which world to put the player
         player.joinWorld((CoreWorld) getDefaultWorld());
+        ((CoreWorld) getDefaultWorld()).unregisterEntity(player.getId());
 
         Packet16Join joinPacket = new Packet16Join(player);
         Packet15Seed seedPacket = new Packet15Seed(player.getWorld().getSeed());

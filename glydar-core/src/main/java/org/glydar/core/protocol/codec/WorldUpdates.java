@@ -20,6 +20,8 @@ import org.glydar.core.protocol.util.BufWritable;
 /* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class WorldUpdates implements BufWritable {
 
+	private boolean							changes;
+	
     private final List<Unknown1Data>        unknown1List;
     private final List<Packet07Hit>         hitPackets;
     private final List<Particle>            particles;
@@ -35,6 +37,7 @@ public class WorldUpdates implements BufWritable {
     private final List<Packet13MissionData> missions;
 
     public WorldUpdates() {
+    	changes = false;
         this.unknown1List = new ArrayList<>();
         this.hitPackets = new ArrayList<>();
         this.particles = new ArrayList<>();
@@ -53,7 +56,7 @@ public class WorldUpdates implements BufWritable {
     public WorldUpdates(ByteBuf buf) {
         this();
         int length;
-
+        
         length = buf.readInt();
         for (int i = 0; i < length; i++) {
             unknown1List.add(new Unknown1Data(buf));
@@ -186,8 +189,45 @@ public class WorldUpdates implements BufWritable {
         for (Packet13MissionData p : missions) {
             p.writeTo(receiver, buf);
         }
+        
+        changes = false;
+    }
+    
+    public void flush() {
+    	unknown1List.clear();
+        hitPackets.clear();
+        particles.clear();
+        soundActions.clear();
+        shootPackets.clear();
+        unknown6List.clear();
+        chunkItemsList.clear();
+        unknown8List.clear();
+        pickupActions.clear();
+        killActions.clear();
+        damageActions.clear();
+        unknown12List.clear();
+        missions.clear();
     }
 
+    public boolean hasChanges() {
+    	return changes;
+    }
+    
+    public void pushShoot(Packet09Shoot shootPacket) {
+		shootPackets.add(shootPacket);
+		changes = true;
+	}
+
+	public void pushKill(KillAction killAction) {
+		killActions.add(killAction);
+		changes = true;
+	}
+
+	public void pushHit(Packet07Hit hitPacket) {
+		hitPackets.add(hitPacket);
+		changes = true;
+	}
+    
     public List<ChunkItems> getChunkItemsList() {
         return chunkItemsList;
     }
