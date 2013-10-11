@@ -9,12 +9,22 @@ import java.util.List;
 import org.glydar.api.BackendType;
 import org.glydar.api.Server;
 import org.glydar.api.model.entity.Entity;
+import org.glydar.api.model.entity.EntityData;
 import org.glydar.api.model.entity.Player;
 import org.glydar.api.model.world.World;
+import org.glydar.api.plugin.event.EventPriority;
+import org.glydar.api.plugin.event.events.EntityAccelerationUpdateEvent;
+import org.glydar.api.plugin.event.events.EntityExtraVelocityUpdateEvent;
+import org.glydar.api.plugin.event.events.EntityFlagsUpdateEvent;
+import org.glydar.api.plugin.event.events.EntityOrientationUpdateEvent;
+import org.glydar.api.plugin.event.events.EntityPositionUpdateEvent;
+import org.glydar.api.plugin.event.events.EntityVelocityUpdateEvent;
 import org.glydar.core.CoreBackend;
 import org.glydar.core.model.actions.KillAction;
 import org.glydar.core.model.entity.CorePlayer;
 import org.glydar.core.model.entity.CoreEntity;
+import org.glydar.core.model.entity.EntityChange;
+import org.glydar.core.model.entity.EntityChanges;
 import org.glydar.core.model.world.CoreWorld;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.ProtocolHandler;
@@ -58,6 +68,7 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
         this.entities = new HashMap<>();
 
         setUpWorlds();
+        registerListeners();
     }
 
     void setUpWorlds() {
@@ -66,6 +77,11 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
             world.setPvpAllowed(worldConfig.isPvpAllowed());
             worlds.add(world);
         }
+    }
+    
+    private void registerListeners() {
+    	//Not sure if passing null will break anything?
+    	getEventManager().register(null, EntityFlagsUpdateEvent.class, new DefaultPVPListener(), EventPriority.LOWEST);
     }
 
     @Override
@@ -160,6 +176,161 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     		//INSERT JOIN EVENT!
     	}
     	
+    	//TODO: FINISH EVENTS
+    	EntityData data = packet.getData();
+    	EntityChanges otherChanges = packet.getData().getChanges();
+    	if (otherChanges.get(EntityChange.POSITION)) {
+            EntityPositionUpdateEvent event = getEventManager().callEvent(new EntityPositionUpdateEvent(player ,data.getPosition()));
+            data.setPosition(event.getPosition());
+        }
+        if (otherChanges.get(EntityChange.ORIENTATION)) {
+        	EntityOrientationUpdateEvent event = getEventManager().callEvent(new EntityOrientationUpdateEvent(player ,data.getOrientation()));
+            data.setOrientation(event.getOrientation());
+        }
+        if (otherChanges.get(EntityChange.VELOCITY)) {
+        	EntityVelocityUpdateEvent event = getEventManager().callEvent(new EntityVelocityUpdateEvent(player ,data.getVelocity()));
+            data.setVelocity(event.getVelocity());
+        }
+        if (otherChanges.get(EntityChange.ACCELERATION)) {
+        	EntityAccelerationUpdateEvent event = getEventManager().callEvent(new EntityAccelerationUpdateEvent(player ,data.getAcceleration()));
+            data.setAcceleration(event.getAcceleration());
+        }
+        if (otherChanges.get(EntityChange.EXTRA_VELOCITY)) {
+        	EntityExtraVelocityUpdateEvent event = getEventManager().callEvent(new EntityExtraVelocityUpdateEvent(player ,data.getExtraVelocity()));
+            data.setExtraVelocity(event.getExtraVelocity());
+        }
+        if (otherChanges.get(EntityChange.LOOK_PITCH)) {
+            
+        }
+        if (otherChanges.get(EntityChange.PHYSICS_FLAGS)) {
+            
+        }
+        if (otherChanges.get(EntityChange.HOSTILE_TYPE)) {
+            
+        }
+        if (otherChanges.get(EntityChange.ENTITY_TYPE)) {
+            
+        }
+        if (otherChanges.get(EntityChange.CURRENT_MODE)) {
+            
+        }
+        if (otherChanges.get(EntityChange.LAST_SHOOT_TIME)) {
+            
+        }
+        if (otherChanges.get(EntityChange.HIT_COUNTER)) {
+            
+        }
+        if (otherChanges.get(EntityChange.LAST_HIT_TIME)) {
+            
+        }
+        if (otherChanges.get(EntityChange.APPEARANCE)) {
+            
+        }
+        if (otherChanges.get(EntityChange.FLAGS)) {
+        	EntityFlagsUpdateEvent event = getEventManager().callEvent(new EntityFlagsUpdateEvent(player ,data.getFlags1(), data.getFlags2()));
+            data.setFlags1(event.getFlags1());
+            data.setFlags2(event.getFlags2());
+        }
+        if (otherChanges.get(EntityChange.ROLL_TIME)) {
+            
+        }
+        if (otherChanges.get(EntityChange.STUN_TIME)) {
+            
+        }
+        if (otherChanges.get(EntityChange.SLOWED_TIME)) {
+            
+        }
+        if (otherChanges.get(EntityChange.MAKE_BLUE_TIME)) {
+            
+        }
+        if (otherChanges.get(EntityChange.SPEED_UP_TIME)) {
+            
+        }
+        if (otherChanges.get(EntityChange.SLOW_PATCH_TIME)) {
+            
+        }
+        if (otherChanges.get(EntityChange.ENTITY_CLASS)) {
+            
+        }
+        if (otherChanges.get(EntityChange.SPECIALIZATION)) {
+            
+        }
+        if (otherChanges.get(EntityChange.CHARGED_MP)) {
+            
+        }
+        if (otherChanges.get(EntityChange.NU_1_2_3)) {
+            
+        }
+        if (otherChanges.get(EntityChange.NU_4_5_6)) {
+            
+        }
+        if (otherChanges.get(EntityChange.RAY_HIT)) {
+           
+        }
+        if (otherChanges.get(EntityChange.HP)) {
+         
+        }
+        if (otherChanges.get(EntityChange.MP)) {
+            
+        }
+        if (otherChanges.get(EntityChange.BLOCK_POWER)) {
+            
+        }
+        if (otherChanges.get(EntityChange.MULTIPLIERS)) {
+            
+        }
+        if (otherChanges.get(EntityChange.NU_7)) {
+           
+        }
+        if (otherChanges.get(EntityChange.NU_8)) {
+           
+        }
+        if (otherChanges.get(EntityChange.LEVEL)) {
+            
+        }
+        if (otherChanges.get(EntityChange.CURRENT_XP)) {
+            
+        }
+        if (otherChanges.get(EntityChange.PARENT_OWNER)) {
+           
+        }
+        if (otherChanges.get(EntityChange.NA_1_2)) {
+            
+        }
+        if (otherChanges.get(EntityChange.NA_3)) {
+           
+        }
+        if (otherChanges.get(EntityChange.NA_4)) {
+           
+        }
+        if (otherChanges.get(EntityChange.NA_5_NU_11_12)) {
+            
+        }
+        if (otherChanges.get(EntityChange.SPAWN_POSITION)) {
+            
+        }
+        if (otherChanges.get(EntityChange.NU_20_21_22)) {
+            
+        }
+        if (otherChanges.get(EntityChange.NU_19)) {
+           
+        }
+        if (otherChanges.get(EntityChange.QUICK_ITEM)) {
+           
+        }
+        if (otherChanges.get(EntityChange.EQUIPMENT)) {
+            
+        }
+        if (otherChanges.get(EntityChange.NAME)) {
+            
+        }
+        if (otherChanges.get(EntityChange.SKILLS)) {
+            
+        }
+        if (otherChanges.get(EntityChange.ICE_BLOCK_FOUR)) {
+            
+        }
+    	
         if (player.getId() == packet.getEntityId()) {
             player.getData().updateFrom(packet.getData());
         }
@@ -248,8 +419,7 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
         }
 
         // TODO: Figure out in which world to put the player
-        player.joinWorld((CoreWorld) getDefaultWorld());
-        ((CoreWorld) getDefaultWorld()).unregisterEntity(player.getId());
+        ((CorePlayer)player).initWorld((CoreWorld) getDefaultWorld());
 
         Packet16Join joinPacket = new Packet16Join(player);
         Packet15Seed seedPacket = new Packet15Seed(player.getWorld().getSeed());

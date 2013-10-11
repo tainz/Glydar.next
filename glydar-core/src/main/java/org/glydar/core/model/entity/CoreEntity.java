@@ -38,6 +38,9 @@ public abstract class CoreEntity implements Entity {
         this.world = world;
         world.registerEntity(this);
         
+        if (world.isPvpAllowed()){
+        	data.setFlags1((byte) 32);
+        }
     }
     
     public void remove(){

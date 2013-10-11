@@ -123,4 +123,8 @@ public class CorePlayer extends CoreEntity implements Player, Remote {
     	sendPackets(new Packet15Seed(world.getSeed()));
     }
     
+    public void initWorld(CoreWorld w) {
+    	world = w;
+    }
+    
 }

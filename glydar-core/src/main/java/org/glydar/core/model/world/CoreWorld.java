@@ -82,7 +82,9 @@ public class CoreWorld implements World {
     @Override
     public void setPvpAllowed(boolean pvpAllowed) {
         this.pvpAllowed = pvpAllowed;
-        // TODO: Update player accordingly
+        for (Player p : getPlayers()){
+        	p.getData().setFlags1((byte) 32);
+        }
     }
     
     public void sendPacketsToWorld(Packet... packets) {
