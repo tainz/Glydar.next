@@ -15,12 +15,13 @@ import org.glydar.core.protocol.codec.WorldUpdates;
 import org.glydar.core.protocol.packet.Packet00EntityUpdate;
 import org.glydar.core.protocol.packet.Packet02UpdateFinished;
 import org.glydar.core.protocol.packet.Packet04WorldUpdate;
+import org.glydar.core.util.IdPool;
 
 import com.google.common.collect.Lists;
 
 public class CoreWorld implements World {
 
-    private static long NEXT_WORLD_ID = 2;
+    private static final IdPool ID_POOL = new IdPool();
 
     private final long id;
     private final String name;
@@ -30,7 +31,7 @@ public class CoreWorld implements World {
     private final WorldUpdates updateData;
 
     public CoreWorld(String name, int seed) {
-        this.id = NEXT_WORLD_ID++;
+        this.id = ID_POOL.pop();
         this.name = name;
         this.seed = seed;
         this.pvpAllowed = false;

@@ -3,17 +3,18 @@ package org.glydar.core.model.entity;
 import org.glydar.api.Glydar;
 import org.glydar.api.model.entity.Entity;
 import org.glydar.core.model.world.CoreWorld;
+import org.glydar.core.util.IdPool;
 
 public abstract class CoreEntity implements Entity {
 
-    private static long NEXT_ENTITY_ID = 2;
+    private static final IdPool ID_POOL = new IdPool();
 
     protected final long id;
     protected final CoreEntityData data;
     protected CoreWorld world;
 
     public CoreEntity() {
-        this.id = NEXT_ENTITY_ID++;
+        this.id = ID_POOL.pop();
         this.data = new CoreEntityData(new EntityChanges());
     }
 
