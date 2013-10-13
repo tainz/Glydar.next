@@ -19,7 +19,6 @@ public class JavaPlugin implements Plugin {
         this.descriptor = descriptor;
     }
 
-    @Override
     public final JavaPluginClassLoader getClassLoader() {
         return classLoader;
     }

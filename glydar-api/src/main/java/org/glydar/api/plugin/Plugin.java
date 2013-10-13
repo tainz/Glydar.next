@@ -4,8 +4,6 @@ import org.glydar.api.logging.GlydarLogger;
 
 public interface Plugin {
 
-    ClassLoader getClassLoader();
-
     PluginDescriptor getDescriptor();
 
     GlydarLogger getLogger();

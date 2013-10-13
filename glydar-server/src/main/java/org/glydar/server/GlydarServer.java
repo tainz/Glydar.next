@@ -19,6 +19,7 @@ import org.glydar.api.plugin.event.events.EntityFlagsUpdateEvent;
 import org.glydar.api.plugin.event.events.EntityOrientationUpdateEvent;
 import org.glydar.api.plugin.event.events.EntityPositionUpdateEvent;
 import org.glydar.api.plugin.event.events.EntityVelocityUpdateEvent;
+import org.glydar.core.BackendPlugin;
 import org.glydar.core.CoreBackend;
 import org.glydar.core.model.actions.KillAction;
 import org.glydar.core.model.entity.CoreEntity;
@@ -80,8 +81,8 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     }
 
     private void registerListeners() {
-        // Not sure if passing null will break anything?
-        getEventManager().register(null, EntityFlagsUpdateEvent.class, new DefaultPVPListener(), EventPriority.LOWEST);
+        getEventManager().register(new BackendPlugin(this), EntityFlagsUpdateEvent.class, new DefaultPVPListener(),
+                EventPriority.LOWEST);
     }
 
     @Override
