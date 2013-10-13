@@ -105,8 +105,9 @@ public class CorePlayer extends CoreEntity implements Player, Remote {
         return connected;
     }
 
-    public void setConnected() {
+    public void connect(CoreWorld world) {
         connected = true;
+        joinWorld(world);
     }
 
     @Override

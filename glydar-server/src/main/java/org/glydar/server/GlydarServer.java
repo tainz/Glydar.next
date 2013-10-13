@@ -174,10 +174,13 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     @Override
     public void handle(CorePlayer player, Packet00EntityUpdate packet) {
         if (!player.isConnected()) {
-            player.setConnected();
+            // TODO: Figure out in which world to put the player
+            player.connect(getDefaultWorld());
             registerEntity(player);
-            player.getWorld().registerEntity(player);
-            // INSERT JOIN EVENT!
+
+            Packet10Chat chatPacket = new Packet10Chat(JOIN_MESSAGE + getVersion());
+            player.sendPackets(chatPacket);
+            // TODO: INSERT JOIN EVENT!
         }
 
         // TODO: FINISH EVENTS
@@ -428,13 +431,8 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
             return;
         }
 
-        // TODO: Figure out in which world to put the player
-        player.initWorld(getDefaultWorld());
-
         Packet16Join joinPacket = new Packet16Join(player);
-        Packet15Seed seedPacket = new Packet15Seed(player.getWorld().getSeed());
-        Packet10Chat chatPacket = new Packet10Chat(JOIN_MESSAGE + getVersion());
-        player.sendPackets(joinPacket, seedPacket, chatPacket);
+        player.sendPackets(joinPacket);
     }
 
     @Override
@@ -447,5 +445,4 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
             world.tick();
         }
     }
-
 }
