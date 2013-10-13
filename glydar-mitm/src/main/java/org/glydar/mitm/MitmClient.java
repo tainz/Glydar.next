@@ -2,6 +2,10 @@ package org.glydar.mitm;
 
 import io.netty.channel.Channel;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.glydar.api.Glydar;
 import org.glydar.api.logging.GlydarLogger;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.ProtocolHandler;
@@ -22,6 +26,8 @@ import org.glydar.core.protocol.packet.Packet15Seed;
 import org.glydar.core.protocol.packet.Packet16Join;
 import org.glydar.core.protocol.packet.Packet17VersionExchange;
 import org.glydar.core.protocol.packet.Packet18ServerFull;
+import org.glydar.mitm.events.PacketEvent;
+import org.glydar.mitm.events.ServerPacketEvent;
 
 public class MitmClient implements ProtocolHandler<Relay> {
 
@@ -67,11 +73,19 @@ public class MitmClient implements ProtocolHandler<Relay> {
     }
 
     private void forward(Relay relay, Packet... packets) {
+        List<Packet> packetsToSend = new ArrayList<>();
         for (Packet packet : packets) {
+            PacketEvent event = new ServerPacketEvent(relay, packet);
+            Glydar.getEventManager().callEvent(event);
+            if (event.isCancelled()) {
+                continue;
+            }
+
+            packetsToSend.add(packet);
             logger.fine("Relaying packet {0}", packet.getPacketType());
         }
 
-        relay.sendToClient(packets);
+        relay.sendToClient(packetsToSend);
     }
 
     @Override
