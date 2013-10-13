@@ -267,8 +267,7 @@ public class GlydarScheduler {
             catch (final Throwable throwable) {
                 task.getPlugin()
                         .getLogger()
-                        .warning(throwable, "Task #{0} for {1} generated an exception", task.getID(),
-                                task.getPlugin().getName());
+                        .warning(throwable, "Task #{0} for {1} generated an exception", task.getID());
             }
             parsePending();
             final long period = task.getInterval(); // State consistency
@@ -302,7 +301,6 @@ public class GlydarScheduler {
     private static void validate(final Plugin plugin, final Object task) {
         Preconditions.checkNotNull(plugin, "Plugin cannot be null");
         Preconditions.checkNotNull(task, "Task cannot be null");
-        Preconditions.checkArgument(plugin.isEnabled(), "Plugin must be enabled");
     }
 
     private int nextId() {

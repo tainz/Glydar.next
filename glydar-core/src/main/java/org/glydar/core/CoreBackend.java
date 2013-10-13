@@ -4,27 +4,27 @@ import java.nio.file.Path;
 
 import org.glydar.api.Backend;
 import org.glydar.api.logging.GlydarLogger;
-import org.glydar.api.plugin.PluginLoader;
 import org.glydar.api.plugin.command.CommandManager;
 import org.glydar.api.plugin.event.EventManager;
 import org.glydar.core.logging.CoreGlydarLogger;
+import org.glydar.core.plugin.CorePluginManager;
 import org.glydar.core.plugin.command.ConsoleCommandReader;
 import org.glydar.core.plugin.command.CoreCommandManager;
 import org.glydar.core.plugin.event.CoreEventManager;
 
 public abstract class CoreBackend implements Backend {
 
-    private final String           name;
-    private final String           version;
-    private final Path             baseFolder;
-    private final Path             configFolder;
-    private final Path             configFile;
-    private final Path             pluginsFolder;
+    private final String name;
+    private final String version;
+    private final Path baseFolder;
+    private final Path configFolder;
+    private final Path configFile;
+    private final Path pluginsFolder;
     private final CoreGlydarLogger logger;
-    private final PluginLoader     pluginLoader;
-    private final CommandManager   commandManager;
+    private final CorePluginManager pluginManager;
+    private final CommandManager commandManager;
     private final ConsoleCommandReader consoleReader;
-    private final EventManager     eventManager;
+    private final EventManager eventManager;
 
     public CoreBackend(String name) {
         BackendBootstrap bootstrap = new BackendBootstrap(getClass(), name);
@@ -37,7 +37,7 @@ public abstract class CoreBackend implements Backend {
         this.pluginsFolder = bootstrap.getPluginsFolder();
         this.logger = bootstrap.getLogger();
 
-        this.pluginLoader = new PluginLoader(this);
+        this.pluginManager = new CorePluginManager(this);
         this.commandManager = new CoreCommandManager(this);
         this.consoleReader = new ConsoleCommandReader(this);
         this.eventManager = new CoreEventManager(this);
@@ -87,8 +87,8 @@ public abstract class CoreBackend implements Backend {
     }
 
     @Override
-    public PluginLoader getPluginLoader() {
-        return pluginLoader;
+    public CorePluginManager getPluginManager() {
+        return pluginManager;
     }
 
     @Override

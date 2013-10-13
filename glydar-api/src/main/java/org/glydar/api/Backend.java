@@ -3,7 +3,7 @@ package org.glydar.api;
 import java.nio.file.Path;
 
 import org.glydar.api.logging.GlydarLogger;
-import org.glydar.api.plugin.PluginLoader;
+import org.glydar.api.plugin.PluginManager;
 import org.glydar.api.plugin.command.CommandManager;
 import org.glydar.api.plugin.event.EventManager;
 
@@ -25,7 +25,7 @@ public interface Backend {
 
     GlydarLogger getLogger(Class<?> clazz, String prefix);
 
-    PluginLoader getPluginLoader();
+    PluginManager getPluginManager();
 
     CommandManager getCommandManager();
 

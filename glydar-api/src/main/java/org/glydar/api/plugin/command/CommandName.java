@@ -79,7 +79,7 @@ public final class CommandName {
      */
     public CommandName getPluginPrefixed(Plugin plugin) {
         String[] prefixedParts = new String[parts.length + 1];
-        prefixedParts[0] = plugin.getName().toLowerCase();
+        prefixedParts[0] = plugin.getDescriptor().getName().toLowerCase();
         System.arraycopy(parts, 0, prefixedParts, 1, parts.length);
         return new CommandName(prefixedParts);
     }
