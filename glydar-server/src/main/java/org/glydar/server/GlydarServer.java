@@ -91,10 +91,9 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     @Override
     public void shutdown() {
         Packet10Chat chatPacket = new Packet10Chat("Stopping server, bye !");
-        for (Player player : getPlayers()) {
-            CorePlayer corePlayer = (CorePlayer) player;
-            corePlayer.sendPackets(chatPacket);
-            corePlayer.remove();
+        for (CorePlayer player : getCorePlayers()) {
+            player.sendPackets(chatPacket);
+            player.remove();
         }
 
         getConsoleReader().interrupt();
@@ -135,10 +134,14 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     }
 
     public ImmutableList<Player> getPlayers() {
-        ImmutableList.Builder<Player> builder = ImmutableList.builder();
-        for (Entity e : entities.values()) {
-            if (e instanceof Player) {
-                builder.add((Player) e);
+        return ImmutableList.<Player> copyOf(getCorePlayers());
+    }
+
+    public ImmutableList<CorePlayer> getCorePlayers() {
+        ImmutableList.Builder<CorePlayer> builder = ImmutableList.builder();
+        for (Entity entity : entities.values()) {
+            if (entity instanceof CorePlayer) {
+                builder.add((CorePlayer) entity);
             }
         }
         return builder.build();
@@ -166,8 +169,8 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     }
 
     private void sendPacketsToAll(Packet... packets) {
-        for (Player player : getPlayers()) {
-            ((CorePlayer) player).sendPackets(packets);
+        for (CorePlayer player : getCorePlayers()) {
+            player.sendPackets(packets);
         }
     }
 
@@ -426,7 +429,7 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
             return;
         }
 
-        if (getPlayers().size() >= config.getMaxPlayers()) {
+        if (getCorePlayers().size() >= config.getMaxPlayers()) {
             player.sendPackets(new Packet18ServerFull());
             return;
         }

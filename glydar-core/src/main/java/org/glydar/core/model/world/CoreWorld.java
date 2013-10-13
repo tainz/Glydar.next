@@ -1,37 +1,29 @@
 package org.glydar.core.model.world;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.glydar.api.model.entity.Entity;
 import org.glydar.api.model.entity.Player;
 import org.glydar.api.model.world.World;
 import org.glydar.core.model.entity.CoreEntity;
-import org.glydar.core.model.entity.CoreEntityData;
 import org.glydar.core.model.entity.CorePlayer;
 import org.glydar.core.protocol.Packet;
 import org.glydar.core.protocol.codec.WorldUpdates;
 import org.glydar.core.protocol.packet.Packet00EntityUpdate;
 import org.glydar.core.protocol.packet.Packet02UpdateFinished;
 import org.glydar.core.protocol.packet.Packet04WorldUpdate;
-import org.glydar.core.util.IdPool;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
 
 public class CoreWorld implements World {
 
-    private static final IdPool ID_POOL = new IdPool();
-
-    private final long id;
     private final String name;
     private final int seed;
     private boolean pvpAllowed;
-    private final HashMap<Long, Entity> entities;
+    private final HashMap<Long, CoreEntity> entities;
     private final WorldUpdates updateData;
 
     public CoreWorld(String name, int seed) {
-        this.id = ID_POOL.pop();
         this.name = name;
         this.seed = seed;
         this.pvpAllowed = false;
@@ -39,25 +31,25 @@ public class CoreWorld implements World {
         this.updateData = new WorldUpdates();
     }
 
-    public long getId() {
-        return id;
+    public ImmutableList<Entity> getEntities() {
+        return ImmutableList.<Entity> copyOf(entities.values());
     }
 
-    public List<Entity> getEntities() {
-        return Lists.newArrayList(entities.values());
+    public ImmutableList<Player> getPlayers() {
+        return ImmutableList.<Player> copyOf(getCorePlayers());
     }
 
-    public List<Player> getPlayers() {
-        List<Player> players = new ArrayList<Player>();
-        for (Entity e : entities.values()) {
-            if (e instanceof Player) {
-                players.add((Player) e);
+    public ImmutableList<CorePlayer> getCorePlayers() {
+        ImmutableList.Builder<CorePlayer> builder = ImmutableList.builder();
+        for (Entity entity : entities.values()) {
+            if (entity instanceof CorePlayer) {
+                builder.add((CorePlayer) entity);
             }
         }
-        return players;
+        return builder.build();
     }
 
-    public Entity getEntityById(long id) {
+    public CoreEntity getEntityById(long id) {
         return entities.get(id);
     }
 
@@ -65,8 +57,9 @@ public class CoreWorld implements World {
         entities.remove(id);
     }
 
-    public void registerEntity(Entity e) {
-        entities.put(((CoreEntity) e).getId(), e);
+    public void registerEntity(Entity entity) {
+        CoreEntity coreEntity = (CoreEntity) entity;
+        entities.put(coreEntity.getId(), coreEntity);
     }
 
     @Override
@@ -87,14 +80,14 @@ public class CoreWorld implements World {
     @Override
     public void setPvpAllowed(boolean pvpAllowed) {
         this.pvpAllowed = pvpAllowed;
-        for (Player p : getPlayers()) {
-            p.getData().setFlags1((byte) 32);
+        for (CorePlayer player : getCorePlayers()) {
+            player.getData().setFlags1((byte) 32);
         }
     }
 
     public void sendPacketsToWorld(Packet... packets) {
-        for (Player p : getPlayers()) {
-            ((CorePlayer) p).sendPackets(packets);
+        for (CorePlayer player : getCorePlayers()) {
+            player.sendPackets(packets);
         }
     }
 
@@ -103,8 +96,8 @@ public class CoreWorld implements World {
     }
 
     public void tick() {
-        for (Player p : getPlayers()) {
-            sendPacketsToWorld(new Packet00EntityUpdate(p.getId(), (CoreEntityData) p.getData()));
+        for (CorePlayer p : getCorePlayers()) {
+            sendPacketsToWorld(new Packet00EntityUpdate(p.getId(), p.getData()));
         }
         sendPacketsToWorld(new Packet02UpdateFinished());
 
@@ -112,5 +105,4 @@ public class CoreWorld implements World {
             sendPacketsToWorld(new Packet04WorldUpdate(updateData));
         }
     }
-
 }
