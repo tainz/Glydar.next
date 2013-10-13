@@ -9,7 +9,7 @@ import org.glydar.api.Glydar;
 public final class Versioning {
 
     private static final String GLYDAR_POM_PROPERTIES = "/META-INF/maven/org.glydar/glydar-api/pom.properties";
-    private static final String UNKNOW_VERSION        = "Unknown-Version";
+    private static final String UNKNOW_VERSION = "Unknown-Version";
 
     public static String getGlydarVersion() {
         InputStream stream = Glydar.class.getResourceAsStream(GLYDAR_POM_PROPERTIES);

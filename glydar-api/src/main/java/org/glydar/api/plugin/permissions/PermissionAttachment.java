@@ -33,9 +33,9 @@ public class PermissionAttachment {
         }
     }
 
-    private final Plugin      owner;
+    private final Plugin owner;
     private final Permissible p;
-    private List<Permission>  permissions;
+    private List<Permission> permissions;
 
     public PermissionAttachment(Plugin owner, Permissible p, List<Permission> permissions) {
         this.owner = owner;

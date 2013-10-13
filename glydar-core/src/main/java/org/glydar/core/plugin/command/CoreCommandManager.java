@@ -25,13 +25,13 @@ import com.google.common.base.Preconditions;
  */
 public class CoreCommandManager implements CommandManager {
 
-    private static final String                       LOGGER_PREFIX            = "Command Manager";
-    private static final String                       PERMISSION_ERROR         = "Sorry, you do not have permission for this command.";
-    private static final String                       INVALID_COMMAND          = "Invalid command entered! Type /help for help!";
-    private static final String                       ERROR_OCCURRED           = "An error occurred! Please contact the server administrators.";
-    private static final String                       UNSUPPORTED_SENDER_ERROR = "";
+    private static final String LOGGER_PREFIX = "Command Manager";
+    private static final String PERMISSION_ERROR = "Sorry, you do not have permission for this command.";
+    private static final String INVALID_COMMAND = "Invalid command entered! Type /help for help!";
+    private static final String ERROR_OCCURRED = "An error occurred! Please contact the server administrators.";
+    private static final String UNSUPPORTED_SENDER_ERROR = "";
 
-    private final GlydarLogger                        logger;
+    private final GlydarLogger logger;
     private final Map<CommandName, RegisteredCommand> commands;
 
     public CoreCommandManager(Backend backend) {

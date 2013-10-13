@@ -1,6 +1,5 @@
 package org.glydar.api.plugin;
 
-
 public interface PluginManager {
 
     void load();

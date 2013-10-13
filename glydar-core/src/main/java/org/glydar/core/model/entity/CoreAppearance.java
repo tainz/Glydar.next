@@ -6,47 +6,47 @@ import org.glydar.api.model.geom.FloatVector3;
 /* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class CoreAppearance implements Appearance {
 
-    private byte         notUsed1;
-    private byte         notUsed2;
+    private byte notUsed1;
+    private byte notUsed2;
 
-    private byte         hairR;
-    private byte         hairG;
-    private byte         hairB;
+    private byte hairR;
+    private byte hairG;
+    private byte hairB;
 
-    private byte         movementFlags;
-    private byte         entityFlags;
+    private byte movementFlags;
+    private byte entityFlags;
 
-    private float        scale;
-    private float        boundingRadius;
-    private float        boundingHeight;
+    private float scale;
+    private float boundingRadius;
+    private float boundingHeight;
 
-    private int          headModel;
-    private int          hairModel;
-    private int          handModel;
-    private int          footModel;
-    private int          bodyModel;
-    private int          backModel;
-    private int          shoulderModel;
-    private int          wingModel;
+    private int headModel;
+    private int hairModel;
+    private int handModel;
+    private int footModel;
+    private int bodyModel;
+    private int backModel;
+    private int shoulderModel;
+    private int wingModel;
 
-    private float        headScale;
-    private float        hairScale;
-    private float        handScale;
-    private float        footScale;
-    private float        bodyScale;
-    private float        backScale;
-    private float        unknown;
-    private float        wingScale;
-    private float        shoulderScale;
-    private float        weaponScale;
+    private float headScale;
+    private float hairScale;
+    private float handScale;
+    private float footScale;
+    private float bodyScale;
+    private float backScale;
+    private float unknown;
+    private float wingScale;
+    private float shoulderScale;
+    private float weaponScale;
 
-    private float        bodyPitch;
-    private float        armPitch;
-    private float        armRoll;
-    private float        armYaw;
-    private float        feetPitch;
-    private float        wingPitch;
-    private float        backPitch;
+    private float bodyPitch;
+    private float armPitch;
+    private float armRoll;
+    private float armYaw;
+    private float feetPitch;
+    private float wingPitch;
+    private float backPitch;
 
     private FloatVector3 bodyOffset;
     private FloatVector3 headOffset;

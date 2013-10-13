@@ -206,8 +206,8 @@ public class GlydarServerConfig {
 
     class WorldConfig {
 
-        private final String  name;
-        private final int     seed;
+        private final String name;
+        private final int seed;
         private final boolean pvpAllowed;
 
         public WorldConfig(ConfigurationSection section) {

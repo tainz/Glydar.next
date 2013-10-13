@@ -20,24 +20,24 @@ import org.glydar.core.protocol.util.BufWritable;
 /* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class WorldUpdates implements BufWritable {
 
-	private boolean							changes;
-	
-    private final List<Unknown1Data>        unknown1List;
-    private final List<Packet07Hit>         hitPackets;
-    private final List<Particle>            particles;
-    private final List<SoundAction>         soundActions;
-    private final List<Packet09Shoot>       shootPackets;
-    private final List<Unknown6Data>        unknown6List;
-    private final List<ChunkItems>          chunkItemsList;
-    private final List<Unknown8Data>        unknown8List;
-    private final List<PickupAction>        pickupActions;
-    private final List<KillAction>          killActions;
-    private final List<DamageAction>        damageActions;
-    private final List<Unknown12Data>       unknown12List;
+    private boolean changes;
+
+    private final List<Unknown1Data> unknown1List;
+    private final List<Packet07Hit> hitPackets;
+    private final List<Particle> particles;
+    private final List<SoundAction> soundActions;
+    private final List<Packet09Shoot> shootPackets;
+    private final List<Unknown6Data> unknown6List;
+    private final List<ChunkItems> chunkItemsList;
+    private final List<Unknown8Data> unknown8List;
+    private final List<PickupAction> pickupActions;
+    private final List<KillAction> killActions;
+    private final List<DamageAction> damageActions;
+    private final List<Unknown12Data> unknown12List;
     private final List<Packet13MissionData> missions;
 
     public WorldUpdates() {
-    	changes = false;
+        changes = false;
         this.unknown1List = new ArrayList<>();
         this.hitPackets = new ArrayList<>();
         this.particles = new ArrayList<>();
@@ -56,7 +56,7 @@ public class WorldUpdates implements BufWritable {
     public WorldUpdates(ByteBuf buf) {
         this();
         int length;
-        
+
         length = buf.readInt();
         for (int i = 0; i < length; i++) {
             unknown1List.add(new Unknown1Data(buf));
@@ -189,12 +189,12 @@ public class WorldUpdates implements BufWritable {
         for (Packet13MissionData p : missions) {
             p.writeTo(receiver, buf);
         }
-        
+
         changes = false;
     }
-    
+
     public void flush() {
-    	unknown1List.clear();
+        unknown1List.clear();
         hitPackets.clear();
         particles.clear();
         soundActions.clear();
@@ -210,24 +210,24 @@ public class WorldUpdates implements BufWritable {
     }
 
     public boolean hasChanges() {
-    	return changes;
+        return changes;
     }
-    
+
     public void pushShoot(Packet09Shoot shootPacket) {
-		shootPackets.add(shootPacket);
-		changes = true;
-	}
+        shootPackets.add(shootPacket);
+        changes = true;
+    }
 
-	public void pushKill(KillAction killAction) {
-		killActions.add(killAction);
-		changes = true;
-	}
+    public void pushKill(KillAction killAction) {
+        killActions.add(killAction);
+        changes = true;
+    }
 
-	public void pushHit(Packet07Hit hitPacket) {
-		hitPackets.add(hitPacket);
-		changes = true;
-	}
-    
+    public void pushHit(Packet07Hit hitPacket) {
+        hitPackets.add(hitPacket);
+        changes = true;
+    }
+
     public List<ChunkItems> getChunkItemsList() {
         return chunkItemsList;
     }
@@ -235,14 +235,14 @@ public class WorldUpdates implements BufWritable {
 
 class Unknown1Data {
 
-    private final int   blockX;
-    private final int   blockY;
-    private final int   blockZ;
+    private final int blockX;
+    private final int blockY;
+    private final int blockZ;
     private final short colorRed;
     private final short colorGreen;
     private final short colorBlue;
     private final short blockType;
-    private final long  unknown8;
+    private final long unknown8;
 
     public Unknown1Data(ByteBuf buf) {
         this.blockX = buf.readInt();
@@ -283,7 +283,7 @@ class Unknown6Data {
 
 class Unknown8Data {
 
-    private final long              unknown1;
+    private final long unknown1;
     private final ArrayList<byte[]> bytesList;
 
     public Unknown8Data(ByteBuf buf) {

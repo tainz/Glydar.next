@@ -8,20 +8,20 @@ import java.util.Properties;
 
 public class PropertiesI18nLoader implements I18nFormatLoader {
 
-	@Override
-	public String[] getExtensions() {
-		return new String[] { "properties" };
-	}
+    @Override
+    public String[] getExtensions() {
+        return new String[] { "properties" };
+    }
 
-	@Override
-	public Map<?, ?> load(Reader reader) {
-		Properties properties = new Properties();
-		try {
-			properties.load(reader);
-			return properties;
-		}
-		catch (IOException exc) {
-			return Collections.<String, String> emptyMap();
-		}
-	}
+    @Override
+    public Map<?, ?> load(Reader reader) {
+        Properties properties = new Properties();
+        try {
+            properties.load(reader);
+            return properties;
+        }
+        catch (IOException exc) {
+            return Collections.<String, String> emptyMap();
+        }
+    }
 }

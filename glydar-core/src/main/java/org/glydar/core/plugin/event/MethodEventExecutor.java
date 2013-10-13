@@ -15,8 +15,8 @@ import org.glydar.api.plugin.event.Listener;
 public class MethodEventExecutor<E extends Event> implements EventExecutor<E> {
 
     private final Listener listener;
-    private final Method   method;
-    private final boolean  ignoreCancelled;
+    private final Method method;
+    private final boolean ignoreCancelled;
 
     public MethodEventExecutor(Class<E> eventClass, Listener listener, Method method, EventHandler annotation) {
         this.listener = listener;

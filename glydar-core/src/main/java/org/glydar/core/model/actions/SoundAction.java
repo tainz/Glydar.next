@@ -5,9 +5,9 @@ import org.glydar.api.model.geom.FloatVector3;
 public class SoundAction {
 
     private final FloatVector3 position;
-    private final int          soundType;
-    private float              pitch;
-    private float              volume;
+    private final int soundType;
+    private float pitch;
+    private float volume;
 
     public SoundAction(FloatVector3 position, int type) {
         this.position = position;

@@ -10,8 +10,8 @@ import org.glydar.api.logging.GlydarLogger;
 
 public class ConsoleCommandReader extends Thread {
 
-    private final Backend              backend;
-    private final GlydarLogger         logger;
+    private final Backend backend;
+    private final GlydarLogger logger;
     private final ConsoleCommandSender sender;
 
     public ConsoleCommandReader(Backend backend) {

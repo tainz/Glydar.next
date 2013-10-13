@@ -7,13 +7,13 @@ import org.glydar.api.plugin.permissions.Permission;
  */
 public interface CommandExecutor {
 
-	String getUsage();
+    String getUsage();
 
-	Permission getPermission();
+    Permission getPermission();
 
-	int minArgs();
+    int minArgs();
 
-	int maxArgs();
+    int maxArgs();
 
-	CommandOutcome execute(CommandSender sender, String[] args);
+    CommandOutcome execute(CommandSender sender, String[] args);
 }

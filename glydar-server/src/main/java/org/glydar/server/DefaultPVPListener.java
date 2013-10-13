@@ -5,12 +5,12 @@ import org.glydar.api.plugin.event.events.EntityFlagsUpdateEvent;
 
 public class DefaultPVPListener implements EventExecutor<EntityFlagsUpdateEvent> {
 
-	@Override
-	public void execute(EntityFlagsUpdateEvent event) {
-		if (event.getEntity().getWorld().isPvpAllowed()) {
-			event.setFlags1((byte) 32);
-		}
-	
-	}
+    @Override
+    public void execute(EntityFlagsUpdateEvent event) {
+        if (event.getEntity().getWorld().isPvpAllowed()) {
+            event.setFlags1((byte) 32);
+        }
+
+    }
 
 }

@@ -9,7 +9,7 @@ public class ProtocolHandlerException extends Exception {
 
     private static final long serialVersionUID = -1332842290699958541L;
 
-    private final Packet      packet;
+    private final Packet packet;
 
     public ProtocolHandlerException(Exception exception, Packet packet) {
         super(exception);

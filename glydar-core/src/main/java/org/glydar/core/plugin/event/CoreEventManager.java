@@ -20,11 +20,11 @@ import com.google.common.base.Predicate;
 
 public class CoreEventManager implements EventManager {
 
-    private static final String                                   LOGGER_PREFIX = "Event Manager";
+    private static final String LOGGER_PREFIX = "Event Manager";
 
-    private final GlydarLogger                                    logger;
+    private final GlydarLogger logger;
     private final Map<Class<? extends Event>, RegisteredHandlers> map;
-    private int                                                   handlerIndex;
+    private int handlerIndex;
 
     public CoreEventManager(Backend backend) {
         this.logger = backend.getLogger(getClass(), LOGGER_PREFIX);

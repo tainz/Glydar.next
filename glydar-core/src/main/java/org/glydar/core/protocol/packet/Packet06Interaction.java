@@ -15,13 +15,13 @@ import org.glydar.core.protocol.codec.ItemCodec;
 /* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet06Interaction implements Packet {
 
-    private final Item       item;
+    private final Item item;
     private final IntVector2 chunkPosition;
-    private final int        itemIndex;    // Index of item in ChunkItems
-    private final long       something4;   // uint
-    private final byte       interactType; // TODO ENUM
-    private final byte       something6;
-    private final int        something7;   // ushort
+    private final int itemIndex; // Index of item in ChunkItems
+    private final long something4; // uint
+    private final byte interactType; // TODO ENUM
+    private final byte something6;
+    private final int something7; // ushort
 
     public Packet06Interaction(ByteBuf buf) {
         item = ItemCodec.readItem(buf);

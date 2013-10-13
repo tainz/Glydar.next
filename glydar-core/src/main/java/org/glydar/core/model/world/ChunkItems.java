@@ -8,7 +8,7 @@ import org.glydar.api.model.geom.IntVector2;
 
 public class ChunkItems {
 
-    private final IntVector2      position;
+    private final IntVector2 position;
     private final List<ChunkItem> items;
 
     public ChunkItems(IntVector2 position) {

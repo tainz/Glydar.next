@@ -116,8 +116,7 @@ public class JavaPluginLoader implements PluginLoader {
         GlydarLogger logger = Glydar.getLogger(pluginClass, descriptor.getName());
         try {
             Method method = JavaPlugin.class.getDeclaredMethod("initialize", GlydarLogger.class,
-                    JavaPluginClassLoader.class,
-                    JavaPluginDescriptor.class);
+                    JavaPluginClassLoader.class, JavaPluginDescriptor.class);
             method.setAccessible(true);
             method.invoke(instance, logger, classLoader, descriptor);
             return instance;

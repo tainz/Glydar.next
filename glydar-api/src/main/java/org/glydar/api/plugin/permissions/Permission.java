@@ -5,24 +5,24 @@ package org.glydar.api.plugin.permissions;
  */
 public class Permission {
 
-	public static enum PermissionDefault {
-		TRUE, FALSE, ADMIN, NON_ADMIN;
-	}
+    public static enum PermissionDefault {
+        TRUE, FALSE, ADMIN, NON_ADMIN;
+    }
 
-	private final String permission;
-	private final PermissionDefault pdefault;
+    private final String permission;
+    private final PermissionDefault pdefault;
 
-	public Permission(String permission, PermissionDefault pdefault) {
-		this.permission = permission;
-		this.pdefault = pdefault;
-	}
+    public Permission(String permission, PermissionDefault pdefault) {
+        this.permission = permission;
+        this.pdefault = pdefault;
+    }
 
-	public String getPermission() {
-		return this.permission;
-	}
+    public String getPermission() {
+        return this.permission;
+    }
 
-	public PermissionDefault getPermissionDefault() {
-		return this.pdefault;
-	}
+    public PermissionDefault getPermissionDefault() {
+        return this.pdefault;
+    }
 
 }

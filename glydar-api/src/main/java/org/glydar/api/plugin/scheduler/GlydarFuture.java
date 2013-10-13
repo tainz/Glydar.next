@@ -17,8 +17,8 @@ import org.glydar.api.plugin.Plugin;
 class GlydarFuture<T> extends GlydarTask implements Future<T> {
 
     private final Callable<T> callable;
-    private T                 value;
-    private Exception         exception = null;
+    private T value;
+    private Exception exception = null;
 
     GlydarFuture(final Callable<T> callable, final Plugin plugin, final int id) {
         super(plugin, null, id, -1l);

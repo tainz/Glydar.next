@@ -4,8 +4,8 @@ import org.glydar.api.model.world.World;
 
 public interface Entity {
 
-	long getId();
-	
+    long getId();
+
     EntityData getData();
 
     World getWorld();

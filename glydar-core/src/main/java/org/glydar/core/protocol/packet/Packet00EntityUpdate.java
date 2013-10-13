@@ -15,7 +15,7 @@ import org.glydar.core.protocol.util.ZLibOperations;
 /* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet00EntityUpdate implements Packet {
 
-    private final long           entityId;
+    private final long entityId;
     private final CoreEntityData data;
 
     public Packet00EntityUpdate(ByteBuf buf) {

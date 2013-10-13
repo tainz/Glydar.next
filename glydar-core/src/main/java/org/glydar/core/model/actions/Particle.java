@@ -6,16 +6,16 @@ import org.glydar.api.model.geom.LongVector3;
 public class Particle {
 
     private final LongVector3 position;
-    private FloatVector3      acceleration;
-    private float             colorRed;
-    private float             colorBlue;
-    private float             colorGreen;
-    private float             colorAlpha;
-    private float             scale;
-    private int               count;
-    private int               type;
-    private float             spreading;
-    private int               unknown18;
+    private FloatVector3 acceleration;
+    private float colorRed;
+    private float colorBlue;
+    private float colorGreen;
+    private float colorAlpha;
+    private float scale;
+    private int count;
+    private int type;
+    private float spreading;
+    private int unknown18;
 
     public Particle(LongVector3 position) {
         this.position = position;

@@ -8,19 +8,19 @@ import org.yaml.snakeyaml.Yaml;
 
 public class YamlI18nLoader implements I18nFormatLoader {
 
-	@Override
-	public String[] getExtensions() {
-		return new String[] { "yml", "yaml" };
-	}
+    @Override
+    public String[] getExtensions() {
+        return new String[] { "yml", "yaml" };
+    }
 
-	@Override
-	public Map<?, ?> load(Reader reader) {
-		Yaml yaml = new Yaml();
-		Object obj = yaml.load(reader);
-		if (!(obj instanceof Map)) {
-			return Collections.<String, String>emptyMap();
-		}
+    @Override
+    public Map<?, ?> load(Reader reader) {
+        Yaml yaml = new Yaml();
+        Object obj = yaml.load(reader);
+        if (!(obj instanceof Map)) {
+            return Collections.<String, String> emptyMap();
+        }
 
-		return (Map<?, ?>) obj;
-	}
+        return (Map<?, ?>) obj;
+    }
 }

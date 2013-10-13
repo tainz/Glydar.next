@@ -18,11 +18,11 @@ class GlydarTask implements Runnable {
      * Never 0 <br>
      * >0 means number of ticks to wait between each execution
      */
-    private volatile long       interval;
-    private long                nextRun;
-    private final Runnable      task;
-    private final Plugin        plugin;
-    private final int           id;
+    private volatile long interval;
+    private long nextRun;
+    private final Runnable task;
+    private final Plugin plugin;
+    private final int id;
 
     GlydarTask() {
         this(null, null, -1, -1);

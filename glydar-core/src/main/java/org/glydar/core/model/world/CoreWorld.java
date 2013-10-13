@@ -20,49 +20,53 @@ import com.google.common.collect.Lists;
 
 public class CoreWorld implements World {
 
-	private static long             NEXT_WORLD_ID = 2;
-	
-	private final long 				id;
-    private final String 			name;
-    private final int    			seed;
-    private boolean      			pvpAllowed;
-    private HashMap<Long, Entity> 	entities;
-    private final WorldUpdates		updateData;
+    private static long NEXT_WORLD_ID = 2;
+
+    private final long id;
+    private final String name;
+    private final int seed;
+    private boolean pvpAllowed;
+    private final HashMap<Long, Entity> entities;
+    private final WorldUpdates updateData;
 
     public CoreWorld(String name, int seed) {
-    	this.id = NEXT_WORLD_ID++;
+        this.id = NEXT_WORLD_ID++;
         this.name = name;
         this.seed = seed;
         this.pvpAllowed = false;
-        entities = new HashMap<>();
-        updateData = new WorldUpdates();
+        this.entities = new HashMap<>();
+        this.updateData = new WorldUpdates();
     }
-    
-    public List<Entity> getEntities(){
-    	return Lists.newArrayList(entities.values());
+
+    public long getId() {
+        return id;
     }
-    
+
+    public List<Entity> getEntities() {
+        return Lists.newArrayList(entities.values());
+    }
+
     public List<Player> getPlayers() {
-    	List<Player> players = new ArrayList<Player>();
-    	for (Entity e : entities.values()){
-    		if (e instanceof Player){
-    			players.add((Player) e);
-    		}
-    	}
-    	return players;
+        List<Player> players = new ArrayList<Player>();
+        for (Entity e : entities.values()) {
+            if (e instanceof Player) {
+                players.add((Player) e);
+            }
+        }
+        return players;
     }
-    
+
     public Entity getEntityById(long id) {
-    	return entities.get(id);
+        return entities.get(id);
     }
-    
-    public void unregisterEntity(long id){
-    	entities.remove(id);
+
+    public void unregisterEntity(long id) {
+        entities.remove(id);
     }
-    
-	public void registerEntity(Entity e) {
-		entities.put(((CoreEntity) e).getId(), e);
-	}
+
+    public void registerEntity(Entity e) {
+        entities.put(((CoreEntity) e).getId(), e);
+    }
 
     @Override
     public String getName() {
@@ -82,30 +86,30 @@ public class CoreWorld implements World {
     @Override
     public void setPvpAllowed(boolean pvpAllowed) {
         this.pvpAllowed = pvpAllowed;
-        for (Player p : getPlayers()){
-        	p.getData().setFlags1((byte) 32);
+        for (Player p : getPlayers()) {
+            p.getData().setFlags1((byte) 32);
         }
     }
-    
+
     public void sendPacketsToWorld(Packet... packets) {
-        for (Player p : getPlayers()){
-        	((CorePlayer) p).sendPackets(packets);
+        for (Player p : getPlayers()) {
+            ((CorePlayer) p).sendPackets(packets);
         }
     }
-    
+
     public WorldUpdates getUpdateData() {
-    	return updateData;
+        return updateData;
     }
-    
+
     public void tick() {
-    	for (Player p :getPlayers()){
-    		sendPacketsToWorld(new Packet00EntityUpdate(p.getId(), (CoreEntityData) p.getData()));
-    	}
-    	sendPacketsToWorld(new Packet02UpdateFinished());
-    	
-    	if (updateData.hasChanges()){
-    		sendPacketsToWorld(new Packet04WorldUpdate(updateData));
-    	}
+        for (Player p : getPlayers()) {
+            sendPacketsToWorld(new Packet00EntityUpdate(p.getId(), (CoreEntityData) p.getData()));
+        }
+        sendPacketsToWorld(new Packet02UpdateFinished());
+
+        if (updateData.hasChanges()) {
+            sendPacketsToWorld(new Packet04WorldUpdate(updateData));
+        }
     }
-    
+
 }

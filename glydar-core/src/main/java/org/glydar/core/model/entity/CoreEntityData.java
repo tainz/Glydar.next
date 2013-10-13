@@ -17,74 +17,74 @@ public class CoreEntityData implements EntityData {
 
     private final EntityChanges changes;
 
-    private LongVector3         position;
-    private Orientation         orientation;
-    private FloatVector3        velocity;
-    private FloatVector3        acceleration;
-    private FloatVector3        extraVelocity;
+    private LongVector3 position;
+    private Orientation orientation;
+    private FloatVector3 velocity;
+    private FloatVector3 acceleration;
+    private FloatVector3 extraVelocity;
 
-    private float               lookPitch;
-    private long                physicsFlags;        // Uint
-    private byte                hostileType;
-    private long                entityTypeId;        // Uint
-    private byte                currentMode;
-    private long                lastShootTime;       // Uint
-    private long                hitCounter;          // Uint
-    private long                lastHitTime;         // Uint
-    private Appearance          appearance;
-    private byte                flags1;
-    private byte                flags2;
-    private long                rollTime;            // Uint
-    private int                 stunTime;
-    private long                slowedTime;          // Uint
-    private long                makeBlueTime;        // Uint
-    private long                speedUpTime;         // Uint
-    private float               slowPatchTime;
-    private byte                entityClassId;
-    private byte                specializationId;
-    private float               chargedMP;
+    private float lookPitch;
+    private long physicsFlags; // Uint
+    private byte hostileType;
+    private long entityTypeId; // Uint
+    private byte currentMode;
+    private long lastShootTime; // Uint
+    private long hitCounter; // Uint
+    private long lastHitTime; // Uint
+    private Appearance appearance;
+    private byte flags1;
+    private byte flags2;
+    private long rollTime; // Uint
+    private int stunTime;
+    private long slowedTime; // Uint
+    private long makeBlueTime; // Uint
+    private long speedUpTime; // Uint
+    private float slowPatchTime;
+    private byte entityClassId;
+    private byte specializationId;
+    private float chargedMP;
 
-    private FloatVector3        rayHit;
+    private FloatVector3 rayHit;
 
-    private float               hp;
-    private float               mp;
+    private float hp;
+    private float mp;
 
-    private float               blockPower;
-    private float               maxHPMultiplier;
-    private float               shootSpeed;
-    private float               damageMultiplier;
-    private float               armorMultiplier;
-    private float               resistanceMultiplier;
-    private long                level;               // Uint
-    private long                currentXP;           // Uint
-    private Item                quickItem;
-    private Equipment           equipment;
+    private float blockPower;
+    private float maxHPMultiplier;
+    private float shootSpeed;
+    private float damageMultiplier;
+    private float armorMultiplier;
+    private float resistanceMultiplier;
+    private long level; // Uint
+    private long currentXP; // Uint
+    private Item quickItem;
+    private Equipment equipment;
 
-    private long                iceBlockFour;        // Uint
-    private long[]              skills;
-    private String              name;
+    private long iceBlockFour; // Uint
+    private long[] skills;
+    private String name;
 
-    private long                na1;                 // Uint
-    private long                na2;                 // |
-    private byte                na3;
-    private long                na4;
-    private long                na5;
-    private long                nu1;
-    private long                nu2;
-    private long                nu3;
-    private long                nu4;
-    private long                nu5;
-    private long                nu6;
-    private byte                nu7;
-    private byte                nu8;
-    private long                parentOwner;
-    private long                nu11;
-    private long                nu12;
-    private LongVector3         spawnPosition;
-    private long                nu20;
-    private long                nu21;
-    private long                nu22;
-    private byte                nu19;
+    private long na1; // Uint
+    private long na2; // |
+    private byte na3;
+    private long na4;
+    private long na5;
+    private long nu1;
+    private long nu2;
+    private long nu3;
+    private long nu4;
+    private long nu5;
+    private long nu6;
+    private byte nu7;
+    private byte nu8;
+    private long parentOwner;
+    private long nu11;
+    private long nu12;
+    private LongVector3 spawnPosition;
+    private long nu20;
+    private long nu21;
+    private long nu22;
+    private byte nu19;
 
     public CoreEntityData(EntityChanges changes) {
         this.changes = changes;
@@ -266,6 +266,7 @@ public class CoreEntityData implements EntityData {
     public EntityChanges getChanges() {
         return changes;
     }
+
     @Override
     public LongVector3 getPosition() {
         return position;

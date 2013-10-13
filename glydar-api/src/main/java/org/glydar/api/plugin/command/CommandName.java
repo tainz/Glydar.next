@@ -16,7 +16,7 @@ public final class CommandName {
 
     private static final Joiner TO_STRING = Joiner.on(' ');
 
-    private final String[]      parts;
+    private final String[] parts;
 
     /**
      * Creates a new CommandName with the given parts.

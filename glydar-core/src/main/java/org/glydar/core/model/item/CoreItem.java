@@ -7,16 +7,16 @@ import org.glydar.api.model.item.Material;
 
 public class CoreItem implements Item {
 
-    private final byte    typeId;
-    protected final byte  subtypeId;
-    private long          modifier;     // Uint
-    private long          minusModifier; // Uint
-    private byte          rarity;
-    private byte          materialId;
-    private byte          flags;
-    private short         level;        // ushort
+    private final byte typeId;
+    protected final byte subtypeId;
+    private long modifier; // Uint
+    private long minusModifier; // Uint
+    private byte rarity;
+    private byte materialId;
+    private byte flags;
+    private short level; // ushort
     private ItemUpgrade[] upgrades;
-    private long          upgradeCount; // unsigned
+    private long upgradeCount; // unsigned
 
     public CoreItem() {
         this(getItemTypeId(ItemType.NONE), (byte) 0);

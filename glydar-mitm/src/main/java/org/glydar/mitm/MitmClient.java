@@ -38,7 +38,7 @@ public class MitmClient implements ProtocolHandler<Relay> {
     public MitmClient(GlydarMitm mitm) {
         this.logger = mitm.getLogger(getClass(), LOGGER_PREFIX);
     }
-    
+
     @Override
     public GlydarLogger getLogger() {
         return logger;

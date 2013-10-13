@@ -12,7 +12,7 @@ import com.google.common.collect.Sets;
 public class GlydarMitm extends CoreBackend {
 
     private static final String NAME = "Glydar MITM";
-    
+
     private final GlydarMitmConfig config;
     private final MitmServer mitmServer;
     private final MitmClient mitmClient;
@@ -53,6 +53,7 @@ public class GlydarMitm extends CoreBackend {
     public GlydarMitmConfig getConfig() {
         return config;
     }
+
     public MitmServer getMitmServer() {
         return mitmServer;
     }

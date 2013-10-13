@@ -15,19 +15,19 @@ import org.glydar.core.protocol.codec.GeomCodec;
 /* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet07Hit implements Packet {
 
-    private final long         damagerId;
-    private final long         targetId;
-    private final float        damage;
-    private final byte         critical;
-    private final byte[]       unknown5;
-    private final long         stunDuration; // uint
-    private final long         unknown7;    // uint
-    private final LongVector3  position;
+    private final long damagerId;
+    private final long targetId;
+    private final float damage;
+    private final byte critical;
+    private final byte[] unknown5;
+    private final long stunDuration; // uint
+    private final long unknown7; // uint
+    private final LongVector3 position;
     private final FloatVector3 hitDirection;
-    private final byte         skillHit;
-    private final byte         type;
-    private final byte         showLight;
-    private final byte         unknown13;
+    private final byte skillHit;
+    private final byte type;
+    private final byte showLight;
+    private final byte unknown13;
 
     public Packet07Hit(CoreEntity entity) {
         this.damagerId = entity.getId();

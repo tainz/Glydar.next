@@ -15,30 +15,30 @@ import org.glydar.core.protocol.codec.GeomCodec;
 /* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet09Shoot implements Packet {
 
-    private final long         entityId;     // Unsigned!
+    private final long entityId; // Unsigned!
 
-    private final IntVector2   chunkPosition;
+    private final IntVector2 chunkPosition;
 
-    private final long         something5;   // Unsigned Int!
+    private final long something5; // Unsigned Int!
 
-    private final LongVector3  position;
+    private final LongVector3 position;
 
-    private final long         something13;  // uint
-    private final long         something14;  // uint
-    private final long         something15;  // uint
+    private final long something13; // uint
+    private final long something14; // uint
+    private final long something15; // uint
 
     private final FloatVector3 velocity;
 
-    private final float        something19;  // rand() ??
-    private final float        something20;
-    private final float        something21;
-    private final float        something22;  // ?????
-    private final long         something23;  // uint
-    private final byte         something24;
-    private final long         something25;  // uint
-    private final byte         something26;
-    private final long         something27;  // uint
-    private final long         something28;  // uint
+    private final float something19; // rand() ??
+    private final float something20;
+    private final float something21;
+    private final float something22; // ?????
+    private final long something23; // uint
+    private final byte something24;
+    private final long something25; // uint
+    private final byte something26;
+    private final long something27; // uint
+    private final long something28; // uint
 
     public Packet09Shoot(ByteBuf buf) {
         this.entityId = buf.readLong(); // Unsigned long actually!

@@ -8,19 +8,19 @@ import org.glydar.api.plugin.PluginDescriptor;
 
 public class JavaPluginDescriptor implements PluginDescriptor {
 
-    private static final String PROPERTY_MAIN_CLASS  = "main-class";
-    private static final String PROPERTY_NAME        = "name";
-    private static final String PROPERTY_VERSION     = "version";
-    private static final String PROPERTY_AUTHOR      = "author";
-    private static final String PROPERTY_WEBSITE     = "website";
+    private static final String PROPERTY_MAIN_CLASS = "main-class";
+    private static final String PROPERTY_NAME = "name";
+    private static final String PROPERTY_VERSION = "version";
+    private static final String PROPERTY_AUTHOR = "author";
+    private static final String PROPERTY_WEBSITE = "website";
     private static final String PROPERTY_DESCRIPTION = "description";
 
-    private final String        mainClass;
-    private final String        name;
-    private final String        version;
-    private final String        author;
-    private final String        website;
-    private final String        description;
+    private final String mainClass;
+    private final String name;
+    private final String version;
+    private final String author;
+    private final String website;
+    private final String description;
 
     public JavaPluginDescriptor(Properties properties) {
         this.mainClass = requiredProperty(properties, PROPERTY_MAIN_CLASS);

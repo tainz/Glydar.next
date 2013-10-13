@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used to note methods that handle specific events. These methods will not be invoked otherwise.
- * 
- * All methods using this annotation must be contained in a {@link Listener}.
+ * Used to note methods that handle specific events. These methods will not be
+ * invoked otherwise. All methods using this annotation must be contained in a
+ * {@link Listener}.
  * 
  * @see {@link Listener}
  */
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EventHandler {
 
-	EventPriority priority() default EventPriority.NORMAL;
+    EventPriority priority() default EventPriority.NORMAL;
 
-	boolean ignoreCancelled() default false;
+    boolean ignoreCancelled() default false;
 }

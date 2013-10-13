@@ -23,22 +23,22 @@ import org.glydar.core.util.Versioning;
 
 public class BackendBootstrap implements I18nTarget {
 
-    private static final String BACKUP_SUFFIX       = ".bk";
-    private static final String LOGS_FOLDER_NAME    = "logs";
-    private static final String CONFIG_FOLDER_NAME  = "config";
+    private static final String BACKUP_SUFFIX = ".bk";
+    private static final String LOGS_FOLDER_NAME = "logs";
+    private static final String CONFIG_FOLDER_NAME = "config";
     private static final String PLUGINS_FOLDER_NAME = "plugins";
 
-    private final Class<?>      clazz;
-    private final String        name;
-    private final String        version;
-    private final String 		configFileName;
-    private final Logger        logger;
-    private Path                baseFolder;
-    private Path                logsFolder;
-    private Path                configFolder;
-    private Path                pluginsFolder;
-    private CoreGlydarLogger    serverLogger;
-    private Path                configFile;
+    private final Class<?> clazz;
+    private final String name;
+    private final String version;
+    private final String configFileName;
+    private final Logger logger;
+    private Path baseFolder;
+    private Path logsFolder;
+    private Path configFolder;
+    private Path pluginsFolder;
+    private CoreGlydarLogger serverLogger;
+    private Path configFile;
 
     public BackendBootstrap(Class<? extends Backend> clazz, String name) {
         this.clazz = clazz;
@@ -46,7 +46,7 @@ public class BackendBootstrap implements I18nTarget {
         this.version = Versioning.getGlydarVersion();
         this.logger = Logger.getLogger(getClass().getCanonicalName());
         this.configFileName = name.toLowerCase().trim().replaceAll(" ", "");
-        
+
         setupFolders();
         setupLogger();
         readConfig();

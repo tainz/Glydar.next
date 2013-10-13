@@ -14,19 +14,19 @@ import org.glydar.core.protocol.codec.GeomCodec;
 public class Packet13MissionData implements Packet {
 
     private final IntVector2 sectorPosition;
-    private final long       something1;    // uint
-    private final long       something2;    // uint
-    private final long       something3;    // uint
-    private final long       missionId;     // uint
-    private final long       something5;    // uint
-    private final long       monsterId;     // uint
-    private final long       questLevel;    // uint
-    private final short      something8;    // ubyte
-    private final short      state;         // ubyte
-    private final float      something10;
-    private final float      something11;
-    private final long       chunkX;
-    private final long       chunkY;
+    private final long something1; // uint
+    private final long something2; // uint
+    private final long something3; // uint
+    private final long missionId; // uint
+    private final long something5; // uint
+    private final long monsterId; // uint
+    private final long questLevel; // uint
+    private final short something8; // ubyte
+    private final short state; // ubyte
+    private final float something10;
+    private final float something11;
+    private final long chunkX;
+    private final long chunkY;
 
     public Packet13MissionData(ByteBuf buf) {
         this.sectorPosition = GeomCodec.readIntVector2(buf).divide(8);

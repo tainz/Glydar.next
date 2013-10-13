@@ -7,9 +7,9 @@ import org.glydar.api.plugin.command.CommandSender;
 
 public class RegisteredCommand {
 
-    private final Plugin          plugin;
+    private final Plugin plugin;
     private final CommandExecutor executor;
-    private final boolean         isAlias;
+    private final boolean isAlias;
 
     public RegisteredCommand(Plugin plugin, CommandExecutor executor, boolean isAlias) {
         this.plugin = plugin;

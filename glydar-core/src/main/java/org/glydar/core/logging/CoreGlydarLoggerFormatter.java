@@ -10,13 +10,12 @@ import java.util.logging.LogRecord;
 
 import org.glydar.api.logging.GlydarLogRecord;
 
-
 public class CoreGlydarLoggerFormatter extends Formatter {
 
-    private static final String     LINE_SEPARATOR = System.getProperty("line.separator");
-    private static final DateFormat DATE_FORMAT    = new SimpleDateFormat("[HH:mm:ss]");
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("[HH:mm:ss]");
 
-    private final boolean           displaySource;
+    private final boolean displaySource;
 
     public CoreGlydarLoggerFormatter(boolean displaySource) {
         this.displaySource = displaySource;

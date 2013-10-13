@@ -5,7 +5,7 @@ import org.glydar.core.model.item.CoreItem;
 public class PickupAction {
 
     private final long entityId;
-    private CoreItem   item;
+    private CoreItem item;
 
     public PickupAction(long entityId, CoreItem item) {
         this.entityId = entityId;

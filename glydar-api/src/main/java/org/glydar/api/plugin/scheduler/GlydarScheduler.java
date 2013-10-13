@@ -25,40 +25,36 @@ public class GlydarScheduler {
     /**
      * Counter for IDs. Order doesn't matter, only uniqueness.
      */
-    private final AtomicInteger                          ids         = new AtomicInteger(1);
+    private final AtomicInteger ids = new AtomicInteger(1);
     /**
      * Current head of linked-list. This reference is always stale,
      * {@link GlydarTask#next} is the live reference.
      */
-    private volatile GlydarTask                          head        = new GlydarTask();
+    private volatile GlydarTask head = new GlydarTask();
     /**
      * Tail of a linked-list. AtomicReference only matters when adding to queue
      */
-    private final AtomicReference<GlydarTask>            tail        = new AtomicReference<GlydarTask>(head);
+    private final AtomicReference<GlydarTask> tail = new AtomicReference<GlydarTask>(head);
     /**
      * Main thread logic only
      */
-    private final PriorityQueue<GlydarTask>              pending     = new PriorityQueue<GlydarTask>(10,
-                                                                             new Comparator<GlydarTask>() {
-                                                                                 @Override
-                                                                                 public int compare(
-                                                                                         final GlydarTask o1,
-                                                                                         final GlydarTask o2) {
-                                                                                     return (int) (o1.getNextRun() - o2
-                                                                                             .getNextRun());
-                                                                                 }
-                                                                             });
+    private final PriorityQueue<GlydarTask> pending = new PriorityQueue<GlydarTask>(10, new Comparator<GlydarTask>() {
+        @Override
+        public int compare(final GlydarTask o1, final GlydarTask o2) {
+            return (int) (o1.getNextRun() - o2.getNextRun());
+        }
+    });
     /**
      * Main thread logic only
      */
-    private final List<GlydarTask>                       temp        = new ArrayList<GlydarTask>();
+    private final List<GlydarTask> temp = new ArrayList<GlydarTask>();
     /**
      * These are tasks that are currently active. It's provided for 'viewing'
      * the current state.
      */
-    private final ConcurrentHashMap<Integer, GlydarTask> runners     = new ConcurrentHashMap<Integer, GlydarTask>();
-    private volatile int                                 currentTick = -1;
-    private static final int                             RECENT_TICKS;
+    private final ConcurrentHashMap<Integer, GlydarTask> runners = new ConcurrentHashMap<Integer, GlydarTask>();
+    private volatile int currentTick = -1;
+    private static final int RECENT_TICKS;
 
     static {
         RECENT_TICKS = 30;
@@ -265,8 +261,7 @@ public class GlydarScheduler {
                 task.run();
             }
             catch (final Throwable throwable) {
-                task.getPlugin()
-                        .getLogger()
+                task.getPlugin().getLogger()
                         .warning(throwable, "Task #{0} for {1} generated an exception", task.getID());
             }
             parsePending();

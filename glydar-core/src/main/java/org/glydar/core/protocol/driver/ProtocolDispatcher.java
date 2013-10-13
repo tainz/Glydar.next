@@ -14,7 +14,7 @@ public class ProtocolDispatcher<T extends Remote> extends SimpleChannelInboundHa
 
     private final ProtocolHandler<T> handler;
     private final Object data;
-    private T                        remote;
+    private T remote;
 
     public ProtocolDispatcher(ProtocolHandler<T> handler, Object data) {
         this.handler = handler;

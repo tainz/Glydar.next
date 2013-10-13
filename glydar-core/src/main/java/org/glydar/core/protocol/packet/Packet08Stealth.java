@@ -11,7 +11,7 @@ import org.glydar.core.protocol.RemoteType;
 /* Structures and data discovered by cuwo (http://github.com/matpow2) */
 public class Packet08Stealth implements Packet {
 
-    private final long   id;
+    private final long id;
     private final byte[] unknownData;
 
     public Packet08Stealth(ByteBuf buf) {

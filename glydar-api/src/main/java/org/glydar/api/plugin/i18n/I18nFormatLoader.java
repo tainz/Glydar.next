@@ -8,13 +8,13 @@ import java.util.Map;
  */
 public interface I18nFormatLoader {
 
-	/**
-	 * File extensions (without the dot) accepted by this loader.
-	 */
-	String[] getExtensions();
+    /**
+     * File extensions (without the dot) accepted by this loader.
+     */
+    String[] getExtensions();
 
-	/**
-	 * Parse the reader as a Map of &lt;key, message&gt;.
-	 */
-	Map<?, ?> load(Reader reader);
+    /**
+     * Parse the reader as a Map of &lt;key, message&gt;.
+     */
+    Map<?, ?> load(Reader reader);
 }

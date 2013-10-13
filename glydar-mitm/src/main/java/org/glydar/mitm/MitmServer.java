@@ -34,12 +34,12 @@ public class MitmServer implements ProtocolHandler<Relay> {
 
     private static final String LOGGER_PREFIX = "MITM Server";
 
-    private final GlydarLogger  logger;
+    private final GlydarLogger logger;
 
     public MitmServer(GlydarMitm mitm) {
         this.logger = mitm.getLogger(getClass(), LOGGER_PREFIX);
     }
-    
+
     @Override
     public GlydarLogger getLogger() {
         return logger;

@@ -6,7 +6,7 @@ import org.glydar.api.plugin.Plugin;
 public class JavaPlugin implements Plugin {
 
     private JavaPluginClassLoader classLoader;
-    private JavaPluginDescriptor  descriptor;
+    private JavaPluginDescriptor descriptor;
     private GlydarLogger logger;
 
     public JavaPlugin() {

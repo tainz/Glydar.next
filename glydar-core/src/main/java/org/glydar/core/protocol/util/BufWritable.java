@@ -1,8 +1,8 @@
 package org.glydar.core.protocol.util;
 
-import org.glydar.core.protocol.RemoteType;
-
 import io.netty.buffer.ByteBuf;
+
+import org.glydar.core.protocol.RemoteType;
 
 public interface BufWritable {
 

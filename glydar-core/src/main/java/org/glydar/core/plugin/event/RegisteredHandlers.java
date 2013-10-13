@@ -24,10 +24,10 @@ import com.google.common.base.Predicate;
  */
 class RegisteredHandlers {
 
-    private final RegisteredHandlers       parent;
-    private final List<RegisteredHandlers> children          = new ArrayList<>();
-    private final List<RegisteredHandler>  list              = new ArrayList<>();
-    EventExecutor<?>[]                     resolvedExecutors = new EventExecutor<?>[0];
+    private final RegisteredHandlers parent;
+    private final List<RegisteredHandlers> children = new ArrayList<>();
+    private final List<RegisteredHandler> list = new ArrayList<>();
+    EventExecutor<?>[] resolvedExecutors = new EventExecutor<?>[0];
 
     public RegisteredHandlers() {
         this.parent = null;
@@ -91,10 +91,10 @@ class RegisteredHandlers {
 
     static class RegisteredHandler implements Comparable<RegisteredHandler> {
 
-        private final Plugin           plugin;
-        private final EventPriority    priority;
+        private final Plugin plugin;
+        private final EventPriority priority;
         private final EventExecutor<?> executor;
-        private final int              index;
+        private final int index;
 
         public RegisteredHandler(Plugin plugin, int index, EventPriority priority, EventExecutor<?> executor) {
             this.plugin = plugin;

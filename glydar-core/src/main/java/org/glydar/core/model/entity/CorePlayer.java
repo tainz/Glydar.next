@@ -6,7 +6,6 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.List;
 
-import org.glydar.api.Glydar;
 import org.glydar.api.model.entity.Player;
 import org.glydar.api.plugin.permissions.Permission;
 import org.glydar.api.plugin.permissions.Permission.PermissionDefault;
@@ -19,11 +18,11 @@ import org.glydar.core.protocol.packet.Packet15Seed;
 public class CorePlayer extends CoreEntity implements Player, Remote {
 
     private final Channel channel;
-    private boolean       admin;
-    private boolean		  connected = false;
+    private boolean admin;
+    private boolean connected = false;
 
     public CorePlayer(Channel channel) {
-    	super();
+        super();
         this.channel = channel;
     }
 
@@ -73,7 +72,7 @@ public class CorePlayer extends CoreEntity implements Player, Remote {
             case ADMIN:
                 return isAdmin();
             case NON_ADMIN:
-                return (!isAdmin());
+                return !isAdmin();
             }
         }
 
@@ -101,30 +100,30 @@ public class CorePlayer extends CoreEntity implements Player, Remote {
 
         channel.flush();
     }
-    
-    public boolean isConnected () {
-    	return connected;
+
+    public boolean isConnected() {
+        return connected;
     }
-    
+
     public void setConnected() {
-    	connected = true;
+        connected = true;
     }
 
     @Override
     public void remove() {
-    	super.remove();
-    	connected = false;
-    	channel.close();
+        super.remove();
+        connected = false;
+        channel.close();
     }
-    
+
     @Override
     public void joinWorld(CoreWorld world) {
-    	super.joinWorld(world);
-    	sendPackets(new Packet15Seed(world.getSeed()));
+        super.joinWorld(world);
+        sendPackets(new Packet15Seed(world.getSeed()));
     }
-    
+
     public void initWorld(CoreWorld w) {
-    	world = w;
+        world = w;
     }
-    
+
 }

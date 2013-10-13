@@ -23,11 +23,11 @@ import com.google.common.base.Preconditions;
  */
 public class YamlConfiguration extends FileConfiguration {
 
-    protected static final String COMMENT_PREFIX  = "# ";
-    protected static final String BLANK_CONFIG    = "{}\n";
-    private final DumperOptions   yamlOptions     = new DumperOptions();
-    private final Representer     yamlRepresenter = new YamlRepresenter();
-    private final Yaml            yaml            = new Yaml(new YamlConstructor(), yamlRepresenter, yamlOptions);
+    protected static final String COMMENT_PREFIX = "# ";
+    protected static final String BLANK_CONFIG = "{}\n";
+    private final DumperOptions yamlOptions = new DumperOptions();
+    private final Representer yamlRepresenter = new YamlRepresenter();
+    private final Yaml yaml = new Yaml(new YamlConstructor(), yamlRepresenter, yamlOptions);
 
     @Override
     public String saveToString() {
@@ -90,7 +90,7 @@ public class YamlConfiguration extends FileConfiguration {
         boolean readingHeader = true;
         boolean foundHeader = false;
 
-        for (int i = 0; (i < lines.length) && (readingHeader); i++) {
+        for (int i = 0; i < lines.length && readingHeader; i++) {
             String line = lines[i];
 
             if (line.startsWith(COMMENT_PREFIX)) {
@@ -104,7 +104,7 @@ public class YamlConfiguration extends FileConfiguration {
 
                 foundHeader = true;
             }
-            else if ((foundHeader) && (line.length() == 0)) {
+            else if (foundHeader && line.length() == 0) {
                 result.append("\n");
             }
             else if (foundHeader) {
@@ -122,11 +122,11 @@ public class YamlConfiguration extends FileConfiguration {
         if (options().copyHeader()) {
             Configuration def = getDefaults();
 
-            if ((def != null) && (def instanceof FileConfiguration)) {
+            if (def != null && def instanceof FileConfiguration) {
                 FileConfiguration filedefaults = (FileConfiguration) def;
                 String defaultsHeader = filedefaults.buildHeader();
 
-                if ((defaultsHeader != null) && (defaultsHeader.length() > 0)) {
+                if (defaultsHeader != null && defaultsHeader.length() > 0) {
                     return defaultsHeader;
                 }
             }
@@ -143,7 +143,7 @@ public class YamlConfiguration extends FileConfiguration {
         for (int i = lines.length - 1; i >= 0; i--) {
             builder.insert(0, "\n");
 
-            if ((startedHeader) || (lines[i].length() != 0)) {
+            if (startedHeader || lines[i].length() != 0) {
                 builder.insert(0, lines[i]);
                 builder.insert(0, COMMENT_PREFIX);
                 startedHeader = true;

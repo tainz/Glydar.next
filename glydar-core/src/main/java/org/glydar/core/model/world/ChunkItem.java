@@ -5,14 +5,14 @@ import org.glydar.api.model.item.Item;
 
 public class ChunkItem {
 
-    private final Item  item;
+    private final Item item;
     private LongVector3 position;
-    private float       rotation;
-    private float       scale;
-    private byte        unknown1;
-    private long        dropTime;
-    private long        unknown2;
-    private int         unknown3;
+    private float rotation;
+    private float scale;
+    private byte unknown1;
+    private long dropTime;
+    private long unknown2;
+    private int unknown3;
 
     public ChunkItem(Item item) {
         this(item, new LongVector3());

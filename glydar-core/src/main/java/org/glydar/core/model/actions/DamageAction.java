@@ -4,7 +4,7 @@ public class DamageAction {
 
     private final long damagerId;
     private final long targetId;
-    private float      damage;
+    private float damage;
 
     public DamageAction(long damagerId, long targetId) {
         this.damagerId = damagerId;
