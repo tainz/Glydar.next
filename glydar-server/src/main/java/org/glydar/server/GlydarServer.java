@@ -48,18 +48,16 @@ import org.glydar.core.protocol.packet.Packet16Join;
 import org.glydar.core.protocol.packet.Packet17VersionExchange;
 import org.glydar.core.protocol.packet.Packet18ServerFull;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.ImmutableList;
 
 public class GlydarServer extends CoreBackend implements Server, ProtocolHandler<CorePlayer> {
 
     private static final String NAME = "Glydar";
-    // TODO: Better place to put this?
-    private static final String VERSION = "0.0.1-SNAPSHOT";
-    private static final String JOIN_MESSAGE = "Server powered by Glydar " + VERSION;
+    private static final String JOIN_MESSAGE = "Server powered by Glydar ";
 
     private final GlydarServerConfig config;
-    private final List<World> worlds;
-    private final HashMap<Long, Entity> entities;
+    private final List<CoreWorld> worlds;
+    private final HashMap<Long, CoreEntity> entities;
 
     public GlydarServer() {
         super(NAME);
@@ -107,16 +105,17 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
         return config;
     }
 
-    public World getDefaultWorld() {
+    public CoreWorld getDefaultWorld() {
         return worlds.get(0);
     }
 
-    public List<World> getWorlds() {
-        return Lists.newArrayList(worlds);
+    @Override
+    public ImmutableList<World> getWorlds() {
+        return ImmutableList.<World> copyOf(worlds);
     }
 
     @Override
-    public Entity getEntityById(long id) {
+    public CoreEntity getEntityById(long id) {
         return entities.get(id);
     }
 
@@ -126,22 +125,23 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     }
 
     @Override
-    public void registerEntity(Entity e) {
-        entities.put(((CoreEntity) e).getId(), e);
+    public void registerEntity(Entity entity) {
+        CoreEntity coreEntity = (CoreEntity) entity;
+        entities.put(coreEntity.getId(), coreEntity);
     }
 
-    public List<Entity> getEntities() {
-        return Lists.newArrayList(entities.values());
+    public ImmutableList<Entity> getEntities() {
+        return ImmutableList.<Entity> copyOf(entities.values());
     }
 
-    public List<Player> getPlayers() {
-        List<Player> players = new ArrayList<Player>();
+    public ImmutableList<Player> getPlayers() {
+        ImmutableList.Builder<Player> builder = ImmutableList.builder();
         for (Entity e : entities.values()) {
             if (e instanceof Player) {
-                players.add((Player) e);
+                builder.add((Player) e);
             }
         }
-        return players;
+        return builder.build();
     }
 
     @Override
@@ -429,11 +429,11 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
         }
 
         // TODO: Figure out in which world to put the player
-        player.initWorld((CoreWorld) getDefaultWorld());
+        player.initWorld(getDefaultWorld());
 
         Packet16Join joinPacket = new Packet16Join(player);
         Packet15Seed seedPacket = new Packet15Seed(player.getWorld().getSeed());
-        Packet10Chat chatPacket = new Packet10Chat(JOIN_MESSAGE);
+        Packet10Chat chatPacket = new Packet10Chat(JOIN_MESSAGE + getVersion());
         player.sendPackets(joinPacket, seedPacket, chatPacket);
     }
 
@@ -443,8 +443,8 @@ public class GlydarServer extends CoreBackend implements Server, ProtocolHandler
     }
 
     public void tick() {
-        for (World w : worlds) {
-            ((CoreWorld) w).tick();
+        for (CoreWorld world : worlds) {
+            world.tick();
         }
     }
 
